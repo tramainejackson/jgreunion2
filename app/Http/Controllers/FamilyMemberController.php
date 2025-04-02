@@ -2,19 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\FamilyMember;
 use App\Models\State;
 use App\Models\Registration;
 use App\Models\Reunion;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class FamilyMemberController extends Controller
 {
     /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['auth']);
+    }
+
+    /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -22,26 +34,26 @@ class FamilyMemberController extends Controller
 		$duplicates_check = FamilyMember::checkDuplicates();
 		$duplicates = $duplicates_check->isNotEmpty() ? $duplicates_check : null;
 
-		return view('admin.index', compact('distribution_list', 'duplicates'));
+		return response()->view('admin.members.index', compact('distribution_list', 'duplicates'));
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
         $states = State::all();
 
-        return view('admin.members.create', compact('states'));
+        return response()->view('admin.members.create', compact('states'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -90,7 +102,7 @@ class FamilyMemberController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show($id)
     {
@@ -101,21 +113,33 @@ class FamilyMemberController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(FamilyMember $member)
     {
-		$family_member = $member;
-        $states = State::all();
-		$members = FamilyMember::orderby('firstname', 'asc')->get();
-		$siblings = explode('; ', $family_member->sibling);
-		$children = explode('; ', $family_member->child);
-		$family_members = FamilyMember::household($family_member->family_id);
-		$potential_family_members = FamilyMember::potentialHousehold($member);
-		$active_reunion = Reunion::active()->first();
-		$registered_for_reunion = $active_reunion !== null ? Registration::memberRegistered($family_member->id, $active_reunion->id)->first() : null;
+        $reunions = Reunion::orderby('reunion_year', 'desc')->get();
 
-        return view('admin.members.edit', compact('states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion'));
+        $newReunionCheck = Reunion::active();
+        $newReunionCheck->count() > 0 ? $newReunionCheck = $newReunionCheck->first() : $newReunionCheck = null;
+        $newReunionCheck = Reunion::where('reunion_complete', 'N')->get()->last();
+
+        $user = $member->user;
+        $userPhone1 = substr($user["phone"], 0, 3);
+        $userPhone2 = substr($user["phone"], 3, 3);
+        $userPhone3 = substr($user["phone"], 6, 4);
+
+        $family_member = $member;
+        $states = State::all();
+        $members = FamilyMember::orderby('firstname', 'asc')->get();
+        $siblings = $family_member->siblings != null ? explode('; ', $family_member->siblings) : null;
+        $children = $family_member->children != null ? explode('; ', $family_member->children) : null;
+//        dd($siblings);
+        $family_members = FamilyMember::household($family_member->family_id);
+        $potential_family_members = FamilyMember::potentialHousehold($family_member);
+        $active_reunion = Reunion::active()->first();
+        $registered_for_reunion = $active_reunion !== null ? Registration::memberRegistered($family_member->id, $active_reunion->id)->first() : null;
+
+        return response()->view('admin.my_profile.edit', compact('user', 'userPhone1', 'userPhone2', 'userPhone3', 'states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
     }
 
     /**
@@ -123,11 +147,10 @@ class FamilyMemberController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, FamilyMember $member)
     {
-		// dd($request);
         $this->validate($request, [
 			'firstname' => 'required|max:30',
 			'lastname' => 'required|max:30',
@@ -150,9 +173,16 @@ class FamilyMemberController extends Controller
 		$member->mother = $request->mother != 'blank' ? $request->mother : null;
 		$member->father = $request->father != 'blank' ? $request->father : null;
 		$member->spouse = $request->spouse != 'blank' ? $request->spouse : null;
-		$member->sibling = str_ireplace('; blank', '', implode('; ', $request->siblings)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $request->siblings)) : null;
-		$member->child = str_ireplace('; blank', '', implode('; ', $request->children)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $request->children)) : null;
-		$houseMembers = str_ireplace('; blank', '', implode('; ', $request->houseMember)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $request->houseMember)) : null;
+        $new_siblings = isset($request->new_siblings) ? $request->new_siblings : array();
+        $new_children = isset($request->new_children) ? $request->new_children : array();
+        $current_siblings = isset($request->siblings) ? $request->siblings : array();
+        $current_children = isset($request->children) ? $request->children : array();
+        $current_siblings = $new_siblings != null ? array_merge($new_siblings, $current_siblings) : $current_siblings;
+        $current_children = $new_children != null ? array_merge($new_children, $current_children) : $current_children;
+        $member->siblings = str_ireplace('; blank', '', implode('; ', $current_siblings)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $current_siblings)) : null;
+        $member->children = str_ireplace('; blank', '', implode('; ', $current_children)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $current_children)) : null;
+        dd($member->children);
+        $houseMembers = str_ireplace('; blank', '', implode('; ', $request->houseMember)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $request->houseMember)) : null;
 		$member->phone = $request->phone;
 		$member->age_group = $request->age_group;
 		$member->mail_preference = $request->mail_preference;
@@ -193,7 +223,7 @@ class FamilyMemberController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(FamilyMember $member)
     {
@@ -205,88 +235,24 @@ class FamilyMemberController extends Controller
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function reunion_registration(Reunion $reunion, FamilyMember $member)
-    {
-
-		$states = \App\State::all();
-		$registered_for_reunion = Registration::memberRegistered($member->id, $reunion->id)->first();
-
-		return view('users.registration', compact('reunion', 'member', 'states', 'registered_for_reunion'));
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function store_registration(Request $request, Reunion $reunion, FamilyMember $member)
-    {
-
-		$this->validate($request, [
-			'registree' => 'required|max:100',
-			'address' => 'required|max:100',
-			'city' => 'required|max:100',
-			'zip' => 'required|max:99999|min:0|numeric',
-			'email' => 'required|email',
-			'phone' => 'nullable|numeric',
-		]);
-
-		// Create New Registration
-		$registration = new Registration();
-		$registration->reunion_id = $reunion->id;
-		$registration->family_member_id = $member->id;
-		$registration->adult_names = $member->firstname;
-		$registration->address = $request->address;
-		$registration->city = $request->city;
-		$registration->state = $request->state;
-		$registration->zip = $request->zip;
-		$registration->email = $request->email;
-		$registration->phone = $request->phone;
-		$registration->registree_name = $request->registree;
-		$registration->reg_date = Carbon::now();
-
-		// Calculate registration cost
-		$aCost = $request->numAdults * $reunion->adult_price;
-		$yCost = $request->numYouth * $reunion->youth_price;
-		$cCost = $request->numChildren * $reunion->child_price;
-
-		$registration->due_at_reg = $registration->total_amount_due = ($aCost + $yCost + $cCost);
-
-		if($registration->save()) {
-
-			return redirect()->back()->with('status', 'You have been registered for the upcoming reunion');
-
-		}
-
-
-    }
-
 	/**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
     */
     public function duplicates()
     {
 		$duplicates_check = FamilyMember::checkDuplicates();
 		$duplicates_check = $duplicates_check->isNotEmpty() ? $duplicates_check : null;
 
-		return view('admin.members.duplicates', compact('duplicates_check'));
+		return response()->view('admin.members.duplicates', compact('duplicates_check'));
 
     }
 
 	/**
      * Delete the duplicate account.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
     */
     public function delete_duplicates(FamilyMember $member)
     {
@@ -405,7 +371,7 @@ class FamilyMemberController extends Controller
 	/**
      * Keep the potential duplicate account.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
     */
     public function keep_duplicate(FamilyMember $member)
     {
@@ -421,5 +387,108 @@ class FamilyMemberController extends Controller
 
 		}
 
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function add_house_hold(Request $request) {
+        $member = FamilyMember::find($request->FamilyMember);
+        $addingMember = FamilyMember::find($request->houseMember);
+        $maxFamilyID = FamilyMember::max('family_id');
+
+        // If household members isn't empty then add a family ID
+        // to all the parties
+        if($member->family_id == null) {
+            $newFamilyID = $maxFamilyID + 1;
+            $member->family_id = $newFamilyID;
+            $addingMember->family_id = $newFamilyID;
+
+            if($addingMember->save()) {
+                $member->save();
+            }
+        } else {
+            $addingMember->family_id = $member->family_id;
+            $addingMember->save();
+        }
+
+        $states = State::all();
+        $members = FamilyMember::orderby('firstname', 'asc')->get();
+        $siblings = explode('; ', $member->sibling);
+        $children = explode('; ', $member->child);
+        $active_reunion = Reunion::where('reunion_complete', 'N')->first();
+
+        $FamilyMembers = FamilyMember::where([
+            ['family_id', $member->family_id],
+            ['family_id', '<>', 'null']
+        ])->get();
+
+        $potential_FamilyMembers = FamilyMember::where([
+            ['address', $member->address],
+            ['city', $member->city],
+            ['state', $member->state]
+        ])->get();
+
+        $registered_for_reunion = Registration::where([
+            ['family_id', $member->family_id],
+            ['family_id', '<>', 'null']
+        ])
+            ->orwhere('dl_id', $member->id)
+            ->get();
+
+        return response()->view('admin.members.edit', compact('states', 'FamilyMembers', 'member', 'active_reunion', 'potential_FamilyMembers', 'members', 'siblings', 'children', 'registered_for_reunion'));
+    }
+
+    /**
+     * Show the application dashboard.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function remove_house_hold(Request $request) {
+        $member = FamilyMember::find($request->FamilyMember);
+        $removeHH = FamilyMember::find($request->remove_hh);
+        $familyID = $member->family_id;
+        $familyMembers = FamilyMember::where([
+            ['family_id', $familyID],
+            ['family_id', '<>', null]
+        ])->get();
+
+        // If household members is equal to 2 then remove
+        // family ID from both users
+        if($familyMembers->count() <= 2) {
+            $removeHH->family_id = $member->family_id = null;
+
+            if($removeHH->save()) {
+                if($member->save()) {}
+            }
+        } else {
+            $removeHH->family_id = null;
+            $removeHH->save();
+        }
+
+        $states = State::all();
+        $members = FamilyMember::orderby('firstname', 'asc')->get();
+        $siblings = explode('; ', $member->sibling);
+        $children = explode('; ', $member->child);
+        $FamilyMembers = FamilyMember::where([
+            ['family_id', $member->family_id],
+            ['family_id', '<>', 'null']
+        ])->get();
+        $potential_FamilyMembers = FamilyMember::where([
+            ['address', $member->address],
+            ['city', $member->city],
+            ['state', $member->state]
+        ])->get();
+        $active_reunion = Reunion::where('reunion_complete', 'N')->first();
+        $registered_for_reunion = Registration::where([
+            ['family_id', $member->family_id],
+            ['family_id', '<>', 'null']
+        ])
+            ->orwhere('dl_id', $member->id)
+            ->get();
+
+        return response()->view('admin.members.edit', compact('states', 'FamilyMembers', 'member', 'active_reunion', 'potential_FamilyMembers', 'members', 'siblings', 'children', 'registered_for_reunion'));
     }
 }

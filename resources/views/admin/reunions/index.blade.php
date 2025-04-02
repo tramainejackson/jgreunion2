@@ -2,9 +2,9 @@
 
     <div class="container-fluid" id="profilePage">
 
-        @include('admin.nav')
+        @include('components.nav')
 
-        <div class="row white">
+        <div class="row">
 
             <div class="col-12 col-lg-2 my-2">
                 <div class="">
@@ -33,6 +33,7 @@
                                 <div class="container-fluid collapse{{ $loop->iteration == 1 ? ' show' : '' }}"
                                      role="tabpanel" id="reunionAccordion{{$loop->iteration}}"
                                      data-parent="#accordionEx">
+
                                     <div class="form-row my-3">
                                         <div class="form-group col-12 col-md-4">
                                             <label class="form-label" for="reunion_city">City</label>
@@ -43,20 +44,16 @@
                                             <label class="form-label" for="reunion_state">State</label>
 
                                             <select class="form-control browser-default" disabled>
-
                                                 <option
-                                                    value="{{ $reunion->reunion_state }}">{{ $reunion->reunion_state }}</option>
-
+                                                        value="{{ $reunion->reunion_state }}">{{ $reunion->reunion_state }}</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-6 col-md-4">
                                             <label class="form-label" for="reunion_state">Year</label>
 
                                             <select class="form-control browser-default" disabled>
-
                                                 <option
-                                                    value="{{ $reunion->reunion_year }}">{{ $reunion->reunion_year }}</option>
-
+                                                        value="{{ $reunion->reunion_year }}">{{ $reunion->reunion_year }}</option>
                                             </select>
 
                                         </div>
@@ -120,7 +117,7 @@
                                     <div class="form-row justify-content-around mb-3">
                                         <button type="button" class="btn btn-primary col-12 col-md-4">Registrations
                                             <span
-                                                class="badge badge-light">{{ $reunion->registrations->count() }}</span>
+                                                    class="badge badge-light">{{ $reunion->registrations->count() }}</span>
                                             <span class="sr-only">total registrations</span>
                                         </button>
 

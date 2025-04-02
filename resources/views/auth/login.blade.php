@@ -1,30 +1,6 @@
-<x-app-layout>
+<x-guest-layout>
+
     <div class="container" id="loginPage">
-        <div id="navi" class="loginPageNavi">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col">
-                        <nav class="nav nav-pills justify-content-end">
-                            <a href="/" class="homeLink profileLink nav-link">Home</a>
-
-                            @if(!Auth::check())
-                                <a href='/register' class='profileLink nav-link'>Register</a>
-
-                                <a href='/login' class='profileLink nav-link active'>Login</a>
-                            @else
-                                <!-- <a href='/profile' class='profileLink nav-link'>My Profile</a> -->
-                                <a href='/logout' class='profileLink nav-link'>Logout</a>
-                            @endif
-                        </nav>
-                    </div>
-                </div>
-            </div>
-            <div id="family_account" class="mt-5">
-                <div class="page_header">
-                    <h1 class="text-center display-3 my-5">Jackson &amp; Green Family Reunion</h1>
-                </div>
-            </div>
-        </div>
         <div id="login_div_wrapper">
             <div id="login_div">
                 <h2 id="reg_form_header">Login</h2>
@@ -33,34 +9,37 @@
                     <form class="form-horizontal" method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                        <div class="form-outline mb-2" data-mdb-input-init>
+                            <input id="username"
+                                   type="text"
+                                   class="form-control"
+                                   name="username"
+                                   value="{{ old('username') }}"
+                                   placeholder="Enter Username" required autofocus>
+
                             <label for="username" class="form-label">Username</label>
 
-                            <div class="">
-                                <input id="username" type="text" class="form-control" name="username"
-                                       value="{{ old('username') }}" placeholder="Enter Username" required autofocus>
-
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
+                            @if ($errors->has('username'))
+                                <span class="help-block">
 										<strong>{{ $errors->first('username') }}</strong>
 									</span>
-                                @endif
-                            </div>
+                            @endif
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div class="form-outline mb-2" data-mdb-input-init>
+                            <input id="password"
+                                   type="password"
+                                   class="form-control"
+                                   name="password"
+                                   placeholder="Enter Password" required>
+
                             <label for="password" class="form-label">Password</label>
 
-                            <div class="">
-                                <input id="password" type="password" class="form-control" name="password"
-                                       placeholder="Enter Password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
+                            @if ($errors->has('password'))
+                                <span class="help-block">
 										<strong>{{ $errors->first('password') }}</strong>
 									</span>
-                                @endif
-                            </div>
+                            @endif
                         </div>
 
                         <!-- Remember me not working -->
@@ -74,18 +53,20 @@
 							</div>
 						</div> -->
 
-                        <div class="form-group">
-                            <a class="btn btn-info" href="{{ route('password.request') }}">
-                                Forgot Your Password?
-                            </a>
-                        </div>
+                        <div class="d-flex flex-row py-3 justify-content-center">
+                            <div class="px-3">
+                                <a class="btn btn-info" href="{{ route('password.request') }}">
+                                    Forgot Your Password?
+                                </a>
+                            </div>
 
-                        <div class="form-group">
-                            <button type="submit" class="form-control mt-3" id="login_submit_btn">Login</button>
+                            <div class="px-3">
+                                <button type="submit" class="btn btn-info" id="">Login</button>
+                            </div>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-</x-app-layout>
+</x-guest-layout>

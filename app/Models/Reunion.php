@@ -37,15 +37,15 @@ class Reunion extends Model
      */
     public function registrations(): HasMany
     {
-        return $this->hasMany(Registration::class, 'reunion_id')->parents();
+        return $this->hasMany(Registration::class);
     }
 
 	/**
-     * Get the registered members for the reunion.
+     * Get the imagaes for the reunion.
      */
     public function images(): HasMany
     {
-        return $this->hasMany(ReunionImage::class);
+        return $this->hasMany(Images::class);
     }
 
     public function scopeActive($query) {

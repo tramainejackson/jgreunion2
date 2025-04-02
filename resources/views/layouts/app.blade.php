@@ -44,38 +44,18 @@
     <link rel="stylesheet" href="{{ asset('css/custom_styles.min.css') }}">
 
     <!-- Bootstrap core CSS -->
-    <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('/css/mdb.min.css') }}" rel="stylesheet">
+{{--    <link href="{{ asset('/css/bootstrap.min.css') }}" rel="stylesheet">--}}
+{{--    <link href="{{ asset('/css/mdb.min.css') }}" rel="stylesheet">--}}
 
     <!-- Custom CSS -->
-    <link href="{{ asset('/css/jgreunion.css') }}" rel="stylesheet">
+{{--    <link href="{{ asset('/css/jgreunion.css') }}" rel="stylesheet">--}}
 
     @yield('add_styles')
-
-    @if(substr_count(request()->server('HTTP_USER_AGENT'), 'rv:') > 0)
-        <link href="{{ asset('/css/myIEcss.css') }}" rel="stylesheet">
-    @endif
-
 </head>
 
 <body>
+
 <div id="app" class="">
-
-    @if(session('status'))
-        <h2 class="flashMessage text-center">{{ session('status') }}</h2>
-    @endif
-
-    @if(session('error'))
-        <h2 class="errorMessage text-center">{{ session('error') }}</h2>
-    @endif
-
-    <div class="modal fade loadingSpinner">
-        <div class="loader"></div>
-
-        <div class="">
-            <p class="text-white d-table mx-auto display-3"></p>
-        </div>
-    </div>
 
     {{--MAIN CONTENT--}}
     {{ $slot }}
@@ -98,54 +78,16 @@
     </div>
 </div>
 
-@if(Auth::guest())
-    <!-- Footer -->
-    <footer class="page-footer font-small unique-color-dark pt-4">
-
-        <!-- Footer Elements -->
-        <div class="container">
-
-            <!-- Call to action -->
-            <ul class="list-unstyled list-inline text-center py-2">
-                <li class="list-inline-item">
-                    <h5 class="mb-1">Register an account</h5>
-                </li>
-
-                <li class="list-inline-item">
-                    <a href="{{ route('register') }}" class="btn btn-outline-white btn-rounded">Sign up!</a>
-                </li>
-            </ul>
-            <!-- Call to action -->
-
-        </div>
-        <!-- Footer Elements -->
-
-        <!-- Copyright -->
-        <div class="footer-copyright text-center py-3">© 2018 Copyright:
-            <a href="http://jgreunion.com/">JGRunion.com</a>
-        </div>
-        <!-- Copyright -->
-
-    </footer>
-    <!-- Footer -->
-@endif
+@include('components.footer')
 
 <!-- Scripts -->
-<!-- Bootstrap core JS -->
-<script type="text/javascript" src="{{ asset('/js/jquery-3.3.1.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/js/popper.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/js/bootstrap.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/js/mdb.min.js') }}"></script>
-<script type="text/javascript" src="{{ asset('/js/addons/datatables.min.js') }}"></script>
-
-<!-- Custom JS -->
-{{--<script src="{{ asset('/js/jgreunion.js') }}"></script>--}}
-
-<!-- Bootstrap core -->
+<!-- Core -->
 <script type="module" src="{{ asset('js/mdb.es.min.js') }}"></script>
 <!-- Custom Scripts -->
 <script type="module" src="{{ asset('js/myjs_modules.js') }}"></script>
-<script type="text/javascript" src="{{ asset('js/myjs_functions.js') }}"></script>
+<script type="module" src="{{ asset('js/myjs_functions.js') }}"></script>
+
+@yield('add_scripts')
 
 @if(session('status'))
     <script type="module">

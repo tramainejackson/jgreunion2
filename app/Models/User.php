@@ -48,7 +48,7 @@ class User extends Authenticatable
      */
     public function member(): HasOne
     {
-        return $this->hasOne(FamilyMember::class, 'users_id');
+        return $this->hasOne(FamilyMember::class);
     }
 
     /**

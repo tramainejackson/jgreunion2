@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -20,25 +22,25 @@ class Registration extends Model
     /**
      * Get the activities for the trip.
      */
-    public function reunion_dl()
+    public function reunion_dl(): BelongsTo
     {
-        return $this->belongsTo('App\FamilyMember', 'family_member_id');
+        return $this->belongsTo(FamilyMember::class, 'family_id');
     }
 
 	/**
      * Get the activities for the trip.
      */
-    public function reunion()
+    public function reunion(): BelongsTo
     {
-        return $this->belongsTo('App\Reunion');
+        return $this->belongsTo(Reunion::class);
     }
 
 	/**
      * Get the additional members on this registration.
     */
-    public function children_reg()
+    public function children_reg(): HasMany
     {
-        return $this->hasMany('\App\Registration', 'parent_reg');
+        return $this->hasMany(Registration::class, 'parent_registration_id');
     }
 
 	/**
@@ -46,7 +48,7 @@ class Registration extends Model
     */
     public function scopeParents($query)
     {
-        return $query->where('parent_reg', null);
+        return $query->where('parent_registration_id', null);
     }
 
 	/**
@@ -81,7 +83,7 @@ class Registration extends Model
     public function scopeMemberRegistered($query, $member_id, $reunion_id)
     {
         return $query->where([
-			['family_member_id', $member_id],
+			['family_members_id', $member_id],
 			['reunion_id', $reunion_id],
 		]);
     }

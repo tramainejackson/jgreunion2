@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FamilyMember extends Model
@@ -38,25 +40,17 @@ class FamilyMember extends Model
 	/**
      * Get the registrations for the family member.
      */
-    public function registrations()
+    public function registrations(): HasMany
     {
-        return $this->hasMany('App\Registration');
+        return $this->hasMany(Registration::class);
     }
 
 	/**
      * Get the committees that the member is a part of.
      */
-    public function committees()
+    public function committees(): HasMany
     {
-        return $this->hasMany('App\ReunionCommittee');
-    }
-
-	/**
-	* Get the post for the user.
-	*/
-    public function posts()
-    {
-        return $this->hasMany('App\ProfilePost');
+        return $this->hasMany(ReunionCommittee::class);
     }
 
 	/**
@@ -70,9 +64,9 @@ class FamilyMember extends Model
 	/**
 	* Get the image avatar for the family member account.
 	*/
-    public function avatar()
+    public function avatar(): HasOne
     {
-        return $this->hasOne('App\ProfileAvatar');
+        return $this->hasOne(ProfileAvatar::class);
     }
 
 	/**
