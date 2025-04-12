@@ -1,4 +1,5 @@
 <x-guest-layout>
+
     <div id="jgreunion_page" class="container-fluid mb-5">
         <div class="col-12">
             <h1 class="text-center">View our future reunions and take a look at where we've been in the past.</h1>
