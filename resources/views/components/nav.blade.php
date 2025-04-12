@@ -32,6 +32,10 @@
                     <a class="nav-link" aria-current="page" href="{{ route('guest_home') }}">Home</a>
                 </li>
 
+                <li class="nav-item active">
+                    <a class="nav-link" aria-current="page" href="{{ route('contact') }}">Contact</a>
+                </li>
+
                 @if($setting->current_reunion != null)
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('reunions.show', $setting->current_reunion) }}">Upcoming

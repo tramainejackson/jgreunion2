@@ -62,13 +62,13 @@ class HomeController extends Controller
     }
 
 	/**
-     * Show the application dashboard.
+     * Show the application contacts page.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function contact()
     {
-
+        return response()->view('contact');
     }
 
 	/**
