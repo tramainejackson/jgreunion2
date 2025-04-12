@@ -8,7 +8,7 @@
                     Reunion</h1>
             </div>
 
-            <div class="col-12 col-md-8 mx-auto mt-4">
+            <div class="col-8 col-md-8 mx-auto mt-4">
                 <div class="card mb-3">
                     <div class="row g-0">
                         <div class="col-md-4">
