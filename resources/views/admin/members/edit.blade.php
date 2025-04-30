@@ -2,8 +2,8 @@
 
     @section('add_scripts')
         <script type="module">
-            import { addNewRowFromBtn } from '/js/myjs_functions.js';
-            import { btnToggle } from '/js/myjs_functions.js';
+            import {addNewRowFromBtn} from '/js/myjs_functions.js';
+            import {btnToggle} from '/js/myjs_functions.js';
 
             document.getElementById('addSiblingRow').addEventListener("click", (event) => addNewRowFromBtn('sibling'));
             document.getElementById('addChildrenRow').addEventListener("click", (event) => addNewRowFromBtn('child'));
@@ -53,7 +53,8 @@
 
             @else
 
-                <div class="col-12 pt-5 text-center font7" style="background: radial-gradient(darkgreen, green, #303a30); color: whitesmoke;">
+                <div class="col-12 pt-5 text-center font7"
+                     style="background: radial-gradient(darkgreen, green, #303a30); color: whitesmoke;">
                     <h1 class="pt-5">Jackson/Green Family Reunion</h1>
                     <h3 class="pb-5 text-decoration-underline">My Profile</h3>
                 </div>
@@ -94,15 +95,15 @@
                     @csrf
                     @method('PUT')
 
-                    @include('components.user_profile')
+                    @include('components.forms.user_profile_form')
 
                     <hr class="hr hr-blurry">
 
-                    @include('components.family_tree')
+                    @include('components.forms.family_tree_form')
 
                     <hr class="hr hr-blurry">
 
-                    @include('components.social_media')
+                    @include('components.forms.social_media_form')
 
                     <div class="houseHoldBlock">
                         <div class="form-block-header">

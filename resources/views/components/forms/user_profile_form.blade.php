@@ -1,7 +1,7 @@
-<div id="user_profile" class="my-5">
+<div id="user_profile" class="mt-2 mb-5">
     <div id="profile_photo">
         @if($user["upload_photo"] == "")
-            <img id="profile_photo" src="images/img_placeholder.jpg"/>
+            <img id="profile_photo" src="{{ asset('/images/img_placeholder.jpg') }}"/>
         @else
             <img id="profile_photo" src="../uploads/{{ $user["upload_photo"] }}"/>
         @endif

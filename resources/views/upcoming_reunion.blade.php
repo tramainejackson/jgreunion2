@@ -12,44 +12,46 @@
         </div>
 
         <!-- Registration Form -->
-        <div class="row reunion_content my-4" id="registration_information">
+        <div class="row reunion_content my-5" id="registration_information">
             <div class="col">
                 <h2 id="" class="text-center">Registration Forms</h2>
 
                 <div class="col-12" id="registrationReminderMsg">
-                    <p class="text-center">Please do not send any payment without completing the registration form first. You can click
-{{--                        <span id="registrationLink"--}}
-{{--                                    class="d-none d-sm-inline"--}}
-{{--                                    data-toggle="modal"--}}
-{{--                                    data-target="#registration_modal">here</span>--}}
-                        <a href="/reunion/{{$reunion->id}}/guest_registration_form" target="_blank" id="registrationLink"
+                    <p class="text-center">Please do not send any payment without completing the registration form
+                        first. You can click
+                        {{--                        <span id="registrationLink"--}}
+                        {{--                                    class="d-none d-sm-inline"--}}
+                        {{--                                    data-toggle="modal"--}}
+                        {{--                                    data-target="#registration_modal">here</span>--}}
+                        <a href="/reunion/{{$reunion->id}}/guest_registration_form" target="_blank"
+                           id="registrationLink"
                            class="">here</a> to complete your registration for the upcoming reunion.
                     </p>
                 </div>
 
-{{--                @if(Auth::check())--}}
+                {{--                @if(Auth::check())--}}
 
-{{--                    <div class="col-12" id="registrationReminderMsg">--}}
-{{--                        <p class="text-center">You are currently logged in as an admin. Please select <a--}}
-{{--                                href="/registrations/create/{{$reunion->id}}" id="registrationLink"--}}
-{{--                                class="d-inline">here</a> to complete the registration for someone else.</p>--}}
-{{--                    </div>--}}
+                {{--                    <div class="col-12" id="registrationReminderMsg">--}}
+                {{--                        <p class="text-center">You are currently logged in as an admin. Please select <a--}}
+                {{--                                href="/registrations/create/{{$reunion->id}}" id="registrationLink"--}}
+                {{--                                class="d-inline">here</a> to complete the registration for someone else.</p>--}}
+                {{--                    </div>--}}
 
-{{--                @endif--}}
+                {{--                @endif--}}
 
-{{--                @if(!Auth::check())--}}
-{{--                    <div class="row">--}}
-{{--                        <div class="col-12">--}}
-{{--                            <button data-mdb-modal-init--}}
-{{--                                    data-mdb-ripple-init--}}
-{{--                                    type="button"--}}
-{{--                                    class="btn btn-info btn-lg d-block"--}}
-{{--                                    id="registrationFormBtn"--}}
-{{--                                    data-mdb-target="#registration_modal">Registration Form--}}
-{{--                            </button>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                @endif--}}
+                {{--                @if(!Auth::check())--}}
+                {{--                    <div class="row">--}}
+                {{--                        <div class="col-12">--}}
+                {{--                            <button data-mdb-modal-init--}}
+                {{--                                    data-mdb-ripple-init--}}
+                {{--                                    type="button"--}}
+                {{--                                    class="btn btn-info btn-lg d-block"--}}
+                {{--                                    id="registrationFormBtn"--}}
+                {{--                                    data-mdb-target="#registration_modal">Registration Form--}}
+                {{--                            </button>--}}
+                {{--                        </div>--}}
+                {{--                    </div>--}}
+                {{--                @endif--}}
             </div>
         </div>
         <!-- Registration Form -->
@@ -57,92 +59,99 @@
         <hr class="hr hr-blurry"/>
 
         <!-- Hotel information -->
-        <div class="row reunion_content my-4" id="hotel_information">
+        <div class="row reunion_content my-5" id="hotel_information">
 
             @if($reunion->hotel)
+                <div class="col-10 mx-auto">
+                    <div class="card">
 
-                <div class="col-12 reunionInformationHeader py-1">
-                    <h2 id="" class="text-center">Hotel Information</h2>
-                </div>
+                        <img
+                            src="{{ asset($reunion->hotel->picture != null ? $reunion->hotel->picture : '/images/hotel_default.jpg' ) }}"
+                            class="card-img"/>
 
-                <div class="col-12 col-xl-4 my-1">
-                    <img
-                        src="{{ asset($reunion->hotel->picture != null ? $reunion->hotel->picture : '/images/hotel_default.jpg' ) }}"
-                        class="mw-100"/>
-                </div>
+                        <div class="card-title">
+                            <h1 class="text-center display-5 fw-bold my-3">Hotel Information</h1>
+                        </div>
 
-                <div class="col-12 col-xl-8">
-                    <p class="my-1">
-                        <span class="hotelInfoLabel">Hotel:</span>
-                        <span>{{ $reunion->hotel->name != null ? $reunion->hotel->name : 'No Hotel Added Yet' }}</span>
-                    </p>
+                        <div class="row pb-3">
+                            <p class="col-12 ps-5 mb-1">
+                                <span class="text-decoration-underline">Hotel:</span>
+                                <span>{{ $reunion->hotel->name != null ? $reunion->hotel->name : 'No Hotel Added Yet' }}</span>
+                            </p>
 
-                    <p class="my-1">
-                        <span class="hotelInfoLabel">Location:</span>
-                        <span>{{ $reunion->hotel->location != null ? $reunion->hotel->location : 'No Hotel Location Added Yet' }}</span>
-                    </p>
+                            <p class="col-12 ps-5 mb-1">
+                                <span class="text-decoration-underline">Location:</span>
+                                <span>{{ $reunion->hotel->location != null ? $reunion->hotel->location : 'No Hotel Location Added Yet' }}</span>
+                            </p>
 
-                    <p class="my-1">
-                        <span class="hotelInfoLabel">Room:</span>
-                        <span
-                            class="">{{ $reunion->hotel->cost != null ? '$' . $reunion->hotel->cost . '/per night (not including taxes and fees)' : 'No Hotel Room Cost Added Yet' }}</span>
-                    </p>
+                            <p class="col-12 ps-5 mb-1">
+                                <span class="text-decoration-underline">Room:</span>
+                                <span
+                                    class="">{{ $reunion->hotel->cost != null ? '$' . $reunion->hotel->cost . '/per night (not including taxes and fees)' : 'No Hotel Room Cost Added Yet' }}</span>
+                            </p>
 
-                    <p class="my-1">
-                        <span class="hotelInfoLabel">Contact:</span>
-                        <span
-                            class="">{{ $reunion->hotel->phone != null ? $reunion->hotel->phone : 'No Hotel Contact Added Yet'  }}</span>
-                    </p>
+                            <p class="col-12 ps-5 mb-1">
+                                <span class="text-decoration-underline">Contact:</span>
+                                <span
+                                    class="">{{ $reunion->hotel->phone != null ? $reunion->hotel->phone : 'No Hotel Contact Added Yet'  }}</span>
+                            </p>
 
-                    @if($reunion->hotel->phone != null)
-                        <p class="my-1">
-                            <span class="hotelInfoLabel">Additional Info:</span> Please call for any
-                            room upgrades.
-                        </p>
-                    @endif
+                            @if($reunion->hotel->phone != null)
+                                <p class="col-12 ps-5 mb-1">
+                                    <span class="text-decoration-underline">Additional Info:</span> Please call for any
+                                    room upgrades.
+                                </p>
+                            @endif
 
-                    @if($reunion->hotel->book_room_link == null && $reunion->hotel->phone != null)
-                        <p class="my-1">*** Please Call To Book Room ***</p>
-                    @endif
+                            @if($reunion->hotel->book_room_link == null && $reunion->hotel->phone != null)
+                                <p class="my-1">*** Please Call To Book Room ***</p>
+                            @endif
 
-                </div>
+                        </div>
 
-{{--                <div class="col-12">--}}
+                        {{--                <div class="col-12">--}}
 
-{{--                    <div class="form-block-header mb-xl-3">--}}
-{{--                        <h2 class="text-center">Hotel Amenities</h2>--}}
-{{--                    </div>--}}
+                        {{--                    <div class="form-block-header mb-xl-3">--}}
+                        {{--                        <h2 class="text-center">Hotel Amenities</h2>--}}
+                        {{--                    </div>--}}
 
-{{--                    <div class="">--}}
+                        {{--                    <div class="">--}}
 
-{{--                        <ul class="list-unstyled px-1">--}}
+                        {{--                        <ul class="list-unstyled px-1">--}}
 
-{{--                            @if($reunion->hotel->features->isNotEmpty())--}}
+                        {{--                            @if($reunion->hotel->features->isNotEmpty())--}}
 
-{{--                                @foreach($reunion->hotel->features as $hotel_feature)--}}
-{{--                                    <li class="">{{ $hotel_feature->feature_desc }}</li>--}}
-{{--                                @endforeach--}}
+                        {{--                                @foreach($reunion->hotel->features as $hotel_feature)--}}
+                        {{--                                    <li class="">{{ $hotel_feature->feature_desc }}</li>--}}
+                        {{--                                @endforeach--}}
 
-{{--                            @else--}}
+                        {{--                            @else--}}
 
-{{--                                <li class="text-center text-muted">We're still gathering information about the--}}
-{{--                                    hotel and its amenities. Check back later for additional information--}}
-{{--                                </li>--}}
+                        {{--                                <li class="text-center text-muted">We're still gathering information about the--}}
+                        {{--                                    hotel and its amenities. Check back later for additional information--}}
+                        {{--                                </li>--}}
 
-{{--                            @endif--}}
+                        {{--                            @endif--}}
 
-{{--                        </ul>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+                        {{--                        </ul>--}}
+                        {{--                    </div>--}}
+                        {{--                </div>--}}
 
-                @if($reunion->hotel->book_room_link !== null)
+                        @if($reunion->hotel->book_room_link !== null)
 
-                    <div class="col-12 text-center">
-                        <a href="{{ $reunion->hotel->book_room_link }}" class="btn btn-warning btn-lg"
-                           target="_blank">Book Hotel Room</a>
+                            <div class="col-12 reunionInformationHeader py-1">
+                                <h1 class="text-center display-5 fw-bold">Hotel Information</h1>
+                            </div>
+
+                            <div class="col-12 text-center">
+                                <a href="{{ $reunion->hotel->book_room_link }}" class="btn btn-warning btn-lg"
+                                   target="_blank">Book Hotel Room</a>
+                            </div>
+
+                        @endif
+
                     </div>
-
-                @endif
+                </div>
 
             @else
 
@@ -156,9 +165,9 @@
         <hr class="hr hr-blurry"/>
 
         <!-- Activities information -->
-        <div class="row reunion_content my-4" id="activities_information" style="position: relative;">
+        <div class="row reunion_content my-5" id="activities_information" style="position: relative;">
             <div class="col-12 reunionInformationHeader py-1">
-                <h2 id="" class="text-center">Reunion Itinerary</h2>
+                <h1 class="text-center display-5 fw-bold">Reunion Itinerary</h1>
             </div>
 
             @if($events->count() < 1)
@@ -218,59 +227,76 @@
         <hr class="hr hr-blurry"/>
 
         <!-- Payment Information -->
-        <div class="row reunion_content my-4" id="payment_information">
-            <div class="col-12 reunionInformationHeader py-1">
-                <h2 class="text-center">Payment Information</h2>
+        <div class="row reunion_content my-5" id="payment_information">
+            <div class="col-12 py-1 mb-3">
+                <h1 class="text-center display-5 fw-bold">Payment Information</h1>
             </div>
 
-            <div id="paper_payment_option" class="payment_option col-11 col-xl-5 my-3 mx-auto">
-                <h2 class="">Pay By Check</h2>
+            <div id="paper_payment_option" class="payment_option col-12 col-xl-5 mx-auto my-2">
+                <div class="card border border-2 border-light-subtle">
 
-                @if($committee_president->count() > 0)
-                    <p class="">Please make all checks payable
-                        to {{ $committee_president->firstname . ' ' . $committee_president->lastname }}. Checks can be
-                        sent to:</p>
+                    <div class="card-header">
+                        <h2 class="text-center">Pay By Check</h2>
+                    </div>
 
-                    @if(strlen($committee_president->family_member->full_address()) > 5)
-                        <p id="checks_address">
-                            <span class="">Address:</span>
-                            <span class="">{{ $committee_president->family_member->full_address()}}</span>
-                        </p>
-                        <p class="paymentsFinePrint">*Partial payments accepted</p>
-                        <p class="paymentsFinePrint">*Any return checks will incur a $30 penalty fee</p>
-                    @endif
+                    <div class="card-body">
+                        @if($committee_president->count() > 0)
+                            <p class="">Please make all checks payable to {{ $committee_president->member_name }}.</p>
 
-                    @if($reunion->registration_form != null)
-                        <p>Click
-                            <a href="{{ asset('storage/' . str_ireplace('public/', '', $reunion->registration_form)) }}"
-                               download="{{ $reunion->reunion_year }}_Registration_Form">here</a> to download
-                            the registration form.
-                        </p>
-                    @else
-                        <p class="">Paper Registration Form Has Not Been Uploaded Yet</p>
-                    @endif
-                @else
-                    <p class="text-danger" id="checks_address">Committee Members Not Completed Yet. Once Committee is
-                        Finalized, The Information To Fill Out A Check Will Be Added For You</p>
-                @endif
+                            @if(strlen($committee_president->family_member->full_address()) > 5)
+                                <p id="checks_address">
+                                    <span class="">Checks can be mailed to:</span>
+                                    <span class="mb-0">{{ $committee_president->family_member->full_address()}}</span>
+                                </p>
+                            @endif
+
+{{--                            @if($reunion->registration_form != null)--}}
+{{--                                <p>Click--}}
+{{--                                    <a href="{{ asset('storage/' . str_ireplace('public/', '', $reunion->registration_form)) }}"--}}
+{{--                                       download="{{ $reunion->reunion_year }}_Registration_Form">here</a> to download--}}
+{{--                                    the registration form.--}}
+{{--                                </p>--}}
+{{--                            @else--}}
+{{--                                <p class="">Paper Registration Form Has Not Been Uploaded Yet</p>--}}
+{{--                            @endif--}}
+                        @else
+                            <p class="text-danger" id="checks_address">Committee Members Not Completed Yet. Once Committee is Finalized, The Information To Fill Out A Check Will Be Added For You</p>
+                        @endif
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-around py-2">
+                            <button type="button" class="paymentsFinePrint btn btn-outline-success"><i class="fas fa-square-check"></i>&nbsp;Partial payments accepted&nbsp;<i class="fas fa-square-check"></i></button>
+                            <button type="button" class="paymentsFinePrint btn btn-outline-warning"><i class="fas fa-triangle-exclamation"></i>&nbsp;Any return checks will incur a $30 penalty fee&nbsp;<i class="fas fa-triangle-exclamation"></i></button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div id="electronic_payment_option" class="payment_option my-3 col-11 col-xl-5 mx-auto">
-                <h2 class="">Electronic Payment</h2>
-                <p class="">All electronic payments can be sent to administrator@jgreunion.com for anyone who already
-                    has
-                    a paypal account.</p>
-                <p class="">Click <a href=" https://www.paypal.com/pools/c/85OCIIUoUB" target="_blank">here</a> to go to
-                    paypal.</p>
+            <div id="electronic_payment_option" class="payment_option col-12 col-xl-5 mx-auto my-2">
+                <div class="card border border-2 border-light-subtle">
+
+                    <div class="card-header">
+                        <h2 class="text-center">Electronic Payment</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <p class="">All electronic payments can be sent to administrator@jgreunion.com for anyone who
+                            already has a paypal account.</p>
+                        <p class="">Click <a href=" https://www.paypal.com/pools/c/85OCIIUoUB" target="_blank">here</a>
+                            to go to
+                            paypal.</p>
+                    </div>
+                </div>
             </div>
         </div>
 
         <hr class="hr hr-blurry"/>
 
         <!-- Contact/Committee information -->
-        <div class="row reunion_content my-4" id="">
+        <div class="row reunion_content my-5" id="">
             <div class="col-12 reunionInformationHeader py-1">
-                <h2 id="" class="text-center">Committee Information</h2>
+                <h1 class="text-center display-5 fw-bold">Committee Information</h1>
             </div>
 
             <div class="col-12">
@@ -303,7 +329,7 @@
         </div>
 
         <!-- Registered Members For This Reunion -->
-        <div class="row reunion_content my-4" id="registered_members_information">
+        <div class="row reunion_content my-5" id="registered_members_information">
             <div class="col-12 reunionInformationHeader py-1">
                 <h2 class="text-center">Registered Family Members</h2>
             </div>

@@ -48,7 +48,6 @@ class UserController extends Controller
         $userPhone3 = substr($user["phone"], 6, 4);
 
         $family_member = Auth::user()->member;
-//        dd($family_member);
         $states = State::all();
         $members = FamilyMember::orderby('firstname', 'asc')->get();
         $siblings = $family_member->sibling != null ? explode('; ', $family_member->sibling) : null;
@@ -193,7 +192,7 @@ class UserController extends Controller
      * @param FamilyMember $member
      * @return Response
      */
-    public function reunion_registration(Reunion $reunion, FamilyMember $member)
+    public function member_reunion_registration(Reunion $reunion, FamilyMember $member)
     {
         $states = State::all();
         $registered_for_reunion = Registration::memberRegistered($member->id, $reunion->id)->first();

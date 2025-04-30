@@ -1,8 +1,28 @@
 <x-app-layout>
 
-    <div class="container-fluid">
+    <div id="" class="container-fluid">
+        <div class="row">
+            <div class="col-12 pt-5 text-center font7"
+                 style="background: radial-gradient(darkgreen, green, #303a30); color: whitesmoke;">
+                <h1 class="pt-5">Jackson/Green Family
+                    Reunion {{ $reunion->reunion_year }}</h1>
+                <h3 class="pb-5 text-decoration-underline">{{ $reunion->reunion_city }}
+                    , {{ $reunion->reunion_state }}</h3>
+            </div>
+        </div>
+    </div>
 
-        @include('components.nav')
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="text-center pt-3 mb-3">{{ $member->full_name() }} Registration Form</h2>
+            </div>
+        </div>
+    </div>
+
+    @include('components.forms.reunion_registration_form')
+
+    <div class="container-fluid">
 
         <div class="row">
 
@@ -152,507 +172,507 @@
 
         </div>
 
-        @if($registered_for_reunion !== null)
+{{--        @if($registered_for_reunion !== null)--}}
 
-            <div class="row py-3">
+{{--            <div class="row py-3">--}}
 
-                <div class="col-12">
-                    <div id="reunion_registration_form" class="p-2 bg-light rounded">
+{{--                <div class="col-12">--}}
+{{--                    <div id="reunion_registration_form" class="p-2 bg-light rounded">--}}
 
-                        <div class="text-center">
+{{--                        <div class="text-center">--}}
 
-                            <h2 class="">{{ $reunion->reunion_year }} Registration Form</h2>
-                            <h3 class="mb-4">{{ $reunion->reunion_city . ', ' . $reunion->reunion_state }}</h3>
+{{--                            <h2 class="">{{ $reunion->reunion_year }} Registration Form</h2>--}}
+{{--                            <h3 class="mb-4">{{ $reunion->reunion_city . ', ' . $reunion->reunion_state }}</h3>--}}
 
-                        </div>
+{{--                        </div>--}}
 
-                        <div class="d-flex align-items-center justify-content-around my-4">
+{{--                        <div class="d-flex align-items-center justify-content-around my-4">--}}
 
-                            <div class="col">
-                                <h3 class="text-center h3-responsive">Adult Prices</h3>
+{{--                            <div class="col">--}}
+{{--                                <h3 class="text-center h3-responsive">Adult Prices</h3>--}}
 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                    </div>
+{{--                                <div class="input-group">--}}
+{{--                                    <div class="input-group-prepend">--}}
+{{--                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                    </div>--}}
 
-                                    <input type="text" class="text-center form-control adultCostSpan"
-                                           value="{{ $reunion->adult_price }}" disabled/>
+{{--                                    <input type="text" class="text-center form-control adultCostSpan"--}}
+{{--                                           value="{{ $reunion->adult_price }}" disabled/>--}}
 
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Per Adult</span>
-                                    </div>
-                                </div>
-                            </div>
+{{--                                    <div class="input-group-append">--}}
+{{--                                        <span class="input-group-text">Per Adult</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                            <div class="col">
-                                <h3 class="text-center h3-responsive">Youth Prices</h3>
+{{--                            <div class="col">--}}
+{{--                                <h3 class="text-center h3-responsive">Youth Prices</h3>--}}
 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                    </div>
+{{--                                <div class="input-group">--}}
+{{--                                    <div class="input-group-prepend">--}}
+{{--                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                    </div>--}}
 
-                                    <input type="text" class="text-center form-control youthCostSpan"
-                                           value="{{ $reunion->youth_price }}" disabled/>
+{{--                                    <input type="text" class="text-center form-control youthCostSpan"--}}
+{{--                                           value="{{ $reunion->youth_price }}" disabled/>--}}
 
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Per Youth</span>
-                                    </div>
-                                </div>
-                            </div>
+{{--                                    <div class="input-group-append">--}}
+{{--                                        <span class="input-group-text">Per Youth</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                            <div class="col">
-                                <h3 class="text-center h3-responsive">Children Prices</h3>
+{{--                            <div class="col">--}}
+{{--                                <h3 class="text-center h3-responsive">Children Prices</h3>--}}
 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                    </div>
+{{--                                <div class="input-group">--}}
+{{--                                    <div class="input-group-prepend">--}}
+{{--                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                    </div>--}}
 
-                                    <input type="text" class="text-center form-control childCostSpan"
-                                           value="{{ $reunion->child_price }}" disabled/>
+{{--                                    <input type="text" class="text-center form-control childCostSpan"--}}
+{{--                                           value="{{ $reunion->child_price }}" disabled/>--}}
 
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Per Child</span>
-                                    </div>
-                                </div>
-                            </div>
+{{--                                    <div class="input-group-append">--}}
+{{--                                        <span class="input-group-text">Per Child</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                        </div>
+{{--                        </div>--}}
 
-                        <form
-                            action="{{ action([FamilyMemberController::class, 'store_registration'], [$reunion->id, $member->id]) }}"
-                            method="POST">
+{{--                        <form--}}
+{{--                            action="{{ action([FamilyMemberController::class, 'store_registration'], [$reunion->id, $member->id]) }}"--}}
+{{--                            method="POST">--}}
 
-                            <div class="d-flex align-items-center justify-content-around my-5">
+{{--                            <div class="d-flex align-items-center justify-content-around my-5">--}}
 
-                                <div class="rounded border col">
-                                    <h3 class="text-center h3-responsive">Total Adults</h3>
+{{--                                <div class="rounded border col">--}}
+{{--                                    <h3 class="text-center h3-responsive">Total Adults</h3>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="numAdults" id="attending_adult" class="form-control"
-                                               value="" placeholder="of Adults" min="1"/>
+{{--                                        <input type="number" name="numAdults" id="attending_adult" class="form-control"--}}
+{{--                                               value="" placeholder="of Adults" min="1"/>--}}
 
-                                    </div>
+{{--                                    </div>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="" id="total_adult" class="form-control" value=""
-                                               placeholder="Adult Cost" disabled/>
+{{--                                        <input type="number" name="" id="total_adult" class="form-control" value=""--}}
+{{--                                               placeholder="Adult Cost" disabled/>--}}
 
-                                    </div>
-                                </div>
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="rounded border col">
-                                    <h3 class="text-center h3-responsive">Total Youths</h3>
+{{--                                <div class="rounded border col">--}}
+{{--                                    <h3 class="text-center h3-responsive">Total Youths</h3>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="numYouth" id="attending_youth" class="form-control"
-                                               value="" placeholder="of Youths" min="0"/>
-                                    </div>
+{{--                                        <input type="number" name="numYouth" id="attending_youth" class="form-control"--}}
+{{--                                               value="" placeholder="of Youths" min="0"/>--}}
+{{--                                    </div>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="" id="total_youth" class="form-control" value=""
-                                               placeholder="Youth Cost" disabled/>
-                                    </div>
-                                </div>
+{{--                                        <input type="number" name="" id="total_youth" class="form-control" value=""--}}
+{{--                                               placeholder="Youth Cost" disabled/>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="rounded border col">
-                                    <h3 class="text-center h3-responsive">Total Children</h3>
-
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>
-                                        </div>
-
-                                        <input type="number" name="numChildren" id="attending_children"
-                                               class="form-control" value="" placeholder="of Children" min="0"/>
-                                    </div>
+{{--                                <div class="rounded border col">--}}
+{{--                                    <h3 class="text-center h3-responsive">Total Children</h3>--}}
+
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
+
+{{--                                        <input type="number" name="numChildren" id="attending_children"--}}
+{{--                                               class="form-control" value="" placeholder="of Children" min="0"/>--}}
+{{--                                    </div>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                        </div>
-
-                                        <input type="number" name="" id="total_children" class="form-control" value=""
-                                               placeholder="Children Cost" disabled/>
-                                    </div>
-                                </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
+
+{{--                                        <input type="number" name="" id="total_children" class="form-control" value=""--}}
+{{--                                               placeholder="Children Cost" disabled/>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="rounded border align-self-start col">
-                                    <h3 class="text-center h3-responsive">Total Cost</h3>
+{{--                                <div class="rounded border align-self-start col">--}}
+{{--                                    <h3 class="text-center h3-responsive">Total Cost</h3>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="" id="total_amount_due" class="form-control" value=""
-                                               placeholder="Total Cost" min="0" disabled/>
+{{--                                        <input type="number" name="" id="total_amount_due" class="form-control" value=""--}}
+{{--                                               placeholder="Total Cost" min="0" disabled/>--}}
 
-                                    </div>
-                                </div>
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                            </div>
+{{--                            </div>--}}
 
-                            <div class="form-group">
+{{--                            <div class="form-group">--}}
 
-                                <label for="name" class="form-label">Registree Name:</label>
+{{--                                <label for="name" class="form-label">Registree Name:</label>--}}
 
-                                <input type="text" name="registree" class="form-control"
-                                       value="{{ $member->full_name() }}" placeholder="Enter Registree's Name"/>
+{{--                                <input type="text" name="registree" class="form-control"--}}
+{{--                                       value="{{ $member->full_name() }}" placeholder="Enter Registree's Name"/>--}}
 
-                                @if($errors->has('registree'))
-                                    <span class="text-danger">{{ $errors->first('firstname') }}</span>
-                                @endif
+{{--                                @if($errors->has('registree'))--}}
+{{--                                    <span class="text-danger">{{ $errors->first('firstname') }}</span>--}}
+{{--                                @endif--}}
 
-                            </div>
+{{--                            </div>--}}
 
-                            <div class="form-group">
-                                <label for="email" class="form-label">Email:</label>
+{{--                            <div class="form-group">--}}
+{{--                                <label for="email" class="form-label">Email:</label>--}}
 
-                                <input type="email" name="email" id="email" class="form-control"
-                                       placeholder="Email Address" value="{{ $member->email }}"/>
+{{--                                <input type="email" name="email" id="email" class="form-control"--}}
+{{--                                       placeholder="Email Address" value="{{ $member->email }}"/>--}}
 
-                                @if($errors->has('email'))
-                                    <span class="text-danger">{{ $errors->first('email') }}</span>
-                                @endif
-                            </div>
+{{--                                @if($errors->has('email'))--}}
+{{--                                    <span class="text-danger">{{ $errors->first('email') }}</span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
 
-                            <div class="form-group">
-                                <label for="address" class="form-label">Address:</label>
-                                <input type="text" name="address" id="address" class="form-control"
-                                       placeholder="Home Address" value="{{ $member->address }}"/>
+{{--                            <div class="form-group">--}}
+{{--                                <label for="address" class="form-label">Address:</label>--}}
+{{--                                <input type="text" name="address" id="address" class="form-control"--}}
+{{--                                       placeholder="Home Address" value="{{ $member->address }}"/>--}}
 
-                                @if($errors->has('address'))
-                                    <span class="text-danger">{{ $errors->first('address') }}</span>
-                                @endif
-                            </div>
+{{--                                @if($errors->has('address'))--}}
+{{--                                    <span class="text-danger">{{ $errors->first('address') }}</span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
 
-                            <div class="form-row">
-                                <div class="form-group col-12 col-sm-4">
-                                    <label for="city" class="form-label">City:</label>
-                                    <input type="text" name="city" id="city" class="form-control"
-                                           placeholder="Enter City" value="{{ $member->city }}"/>
+{{--                            <div class="form-row">--}}
+{{--                                <div class="form-group col-12 col-sm-4">--}}
+{{--                                    <label for="city" class="form-label">City:</label>--}}
+{{--                                    <input type="text" name="city" id="city" class="form-control"--}}
+{{--                                           placeholder="Enter City" value="{{ $member->city }}"/>--}}
 
-                                    @if($errors->has('city'))
-                                        <span class="text-danger">{{ $errors->first('city') }}</span>
-                                    @endif
-                                </div>
+{{--                                    @if($errors->has('city'))--}}
+{{--                                        <span class="text-danger">{{ $errors->first('city') }}</span>--}}
+{{--                                    @endif--}}
+{{--                                </div>--}}
 
-                                <div class="form-group col-6 col-sm-4">
-                                    <label for="state" class="form-label">State:</label>
+{{--                                <div class="form-group col-6 col-sm-4">--}}
+{{--                                    <label for="state" class="form-label">State:</label>--}}
 
-                                    <select class="form-control browser-default" name="state">
-                                        @foreach($states as $state)
-                                            <option
-                                                value="{{ $state->state_abb }}" {{ old('reunion_state') && old('state') == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+{{--                                    <select class="form-control browser-default" name="state">--}}
+{{--                                        @foreach($states as $state)--}}
+{{--                                            <option--}}
+{{--                                                value="{{ $state->state_abb }}" {{ old('reunion_state') && old('state') == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
 
-                                <div class="form-group col-6 col-sm-4">
-                                    <label for="zip" class="form-label">Zip:</label>
-                                    <input type="number" name="zip" id="zip" class="form-control"
-                                           placeholder="Enter Zip Code" value="{{ $member->zip }}"/>
+{{--                                <div class="form-group col-6 col-sm-4">--}}
+{{--                                    <label for="zip" class="form-label">Zip:</label>--}}
+{{--                                    <input type="number" name="zip" id="zip" class="form-control"--}}
+{{--                                           placeholder="Enter Zip Code" value="{{ $member->zip }}"/>--}}
 
-                                    @if($errors->has('zip'))
-                                        <span class="text-danger">{{ $errors->first('zip') }}</span>
-                                    @endif
-                                </div>
-                            </div>
+{{--                                    @if($errors->has('zip'))--}}
+{{--                                        <span class="text-danger">{{ $errors->first('zip') }}</span>--}}
+{{--                                    @endif--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                            <div class="form-group">
-                                <label for="phone" class="form-label">Phone:</label>
+{{--                            <div class="form-group">--}}
+{{--                                <label for="phone" class="form-label">Phone:</label>--}}
 
-                                <input type="text" name="phone" id="phone" class="form-control" placeholder="###"
-                                       value="{{ $member->phone }}"/>
+{{--                                <input type="text" name="phone" id="phone" class="form-control" placeholder="###"--}}
+{{--                                       value="{{ $member->phone }}"/>--}}
 
-                                @if($errors->has('phone'))
-                                    <span class="text-danger">{{ $errors->first('phone') }}. No special charactions required</span>
-                                @endif
-                            </div>
+{{--                                @if($errors->has('phone'))--}}
+{{--                                    <span class="text-danger">{{ $errors->first('phone') }}. No special charactions required</span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
 
-                            <div class="">
+{{--                            <div class="">--}}
 
-                                <button class="btn blue" type="submit">Update Your Registration</button>
+{{--                                <button class="btn blue" type="submit">Update Your Registration</button>--}}
 
-                            </div>
+{{--                            </div>--}}
 
-                        </form>
+{{--                        </form>--}}
 
-                    </div>
+{{--                    </div>--}}
 
-                </div>
+{{--                </div>--}}
 
-            </div>
+{{--            </div>--}}
 
-        @else
+{{--        @else--}}
 
-            <div class="row py-3">
+{{--            <div class="row py-3">--}}
 
-                <div class="col-12">
-                    <div id="reunion_registration_form" class="p-2 bg-light rounded">
+{{--                <div class="col-12">--}}
+{{--                    <div id="reunion_registration_form" class="p-2 bg-light rounded">--}}
 
-                        <div class="text-center">
+{{--                        <div class="text-center">--}}
 
-                            <h2 class="">{{ $reunion->reunion_year }} Registration Form</h2>
-                            <h3 class="mb-4">{{ $reunion->reunion_city . ', ' . $reunion->reunion_state }}</h3>
+{{--                            <h2 class="">{{ $reunion->reunion_year }} Registration Form</h2>--}}
+{{--                            <h3 class="mb-4">{{ $reunion->reunion_city . ', ' . $reunion->reunion_state }}</h3>--}}
 
-                        </div>
+{{--                        </div>--}}
 
-                        <div class="d-flex align-items-center justify-content-around my-4">
+{{--                        <div class="d-flex align-items-center justify-content-around my-4">--}}
 
-                            <div class="col">
-                                <h3 class="text-center h3-responsive">Adult Prices</h3>
+{{--                            <div class="col">--}}
+{{--                                <h3 class="text-center h3-responsive">Adult Prices</h3>--}}
 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                    </div>
+{{--                                <div class="input-group">--}}
+{{--                                    <div class="input-group-prepend">--}}
+{{--                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                    </div>--}}
 
-                                    <input type="text" class="text-center form-control adultCostSpan"
-                                           value="{{ $reunion->adult_price }}" disabled/>
+{{--                                    <input type="text" class="text-center form-control adultCostSpan"--}}
+{{--                                           value="{{ $reunion->adult_price }}" disabled/>--}}
 
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Per Adult</span>
-                                    </div>
-                                </div>
-                            </div>
+{{--                                    <div class="input-group-append">--}}
+{{--                                        <span class="input-group-text">Per Adult</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                            <div class="col">
-                                <h3 class="text-center h3-responsive">Youth Prices</h3>
+{{--                            <div class="col">--}}
+{{--                                <h3 class="text-center h3-responsive">Youth Prices</h3>--}}
 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                    </div>
+{{--                                <div class="input-group">--}}
+{{--                                    <div class="input-group-prepend">--}}
+{{--                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                    </div>--}}
 
-                                    <input type="text" class="text-center form-control youthCostSpan"
-                                           value="{{ $reunion->youth_price }}" disabled/>
+{{--                                    <input type="text" class="text-center form-control youthCostSpan"--}}
+{{--                                           value="{{ $reunion->youth_price }}" disabled/>--}}
 
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Per Youth</span>
-                                    </div>
-                                </div>
-                            </div>
+{{--                                    <div class="input-group-append">--}}
+{{--                                        <span class="input-group-text">Per Youth</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                            <div class="col">
-                                <h3 class="text-center h3-responsive">Children Prices</h3>
+{{--                            <div class="col">--}}
+{{--                                <h3 class="text-center h3-responsive">Children Prices</h3>--}}
 
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                    </div>
+{{--                                <div class="input-group">--}}
+{{--                                    <div class="input-group-prepend">--}}
+{{--                                        <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                    </div>--}}
 
-                                    <input type="text" class="text-center form-control childCostSpan"
-                                           value="{{ $reunion->child_price }}" disabled/>
+{{--                                    <input type="text" class="text-center form-control childCostSpan"--}}
+{{--                                           value="{{ $reunion->child_price }}" disabled/>--}}
 
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Per Child</span>
-                                    </div>
-                                </div>
-                            </div>
+{{--                                    <div class="input-group-append">--}}
+{{--                                        <span class="input-group-text">Per Child</span>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                        </div>
+{{--                        </div>--}}
 
-                        <form action="">
+{{--                        <form action="">--}}
 
-                            <div class="d-flex align-items-center justify-content-around my-5">
+{{--                            <div class="d-flex align-items-center justify-content-around my-5">--}}
 
-                                <div class="rounded border col">
-                                    <h3 class="text-center h3-responsive">Total Adults</h3>
+{{--                                <div class="rounded border col">--}}
+{{--                                    <h3 class="text-center h3-responsive">Total Adults</h3>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="numAdults" id="attending_adult" class="form-control"
-                                               value="" placeholder="of Adults" min="1"/>
+{{--                                        <input type="number" name="numAdults" id="attending_adult" class="form-control"--}}
+{{--                                               value="" placeholder="of Adults" min="1"/>--}}
 
-                                    </div>
+{{--                                    </div>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="" id="total_adult" class="form-control" value=""
-                                               placeholder="Adult Cost" disabled/>
+{{--                                        <input type="number" name="" id="total_adult" class="form-control" value=""--}}
+{{--                                               placeholder="Adult Cost" disabled/>--}}
 
-                                    </div>
-                                </div>
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="rounded border col">
-                                    <h3 class="text-center h3-responsive">Total Youths</h3>
+{{--                                <div class="rounded border col">--}}
+{{--                                    <h3 class="text-center h3-responsive">Total Youths</h3>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="numYouth" id="attending_youth" class="form-control"
-                                               value="" placeholder="of Youths" min="0"/>
-                                    </div>
+{{--                                        <input type="number" name="numYouth" id="attending_youth" class="form-control"--}}
+{{--                                               value="" placeholder="of Youths" min="0"/>--}}
+{{--                                    </div>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="" id="total_youth" class="form-control" value=""
-                                               placeholder="Youth Cost" disabled/>
-                                    </div>
-                                </div>
+{{--                                        <input type="number" name="" id="total_youth" class="form-control" value=""--}}
+{{--                                               placeholder="Youth Cost" disabled/>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="rounded border col">
-                                    <h3 class="text-center h3-responsive">Total Children</h3>
+{{--                                <div class="rounded border col">--}}
+{{--                                    <h3 class="text-center h3-responsive">Total Children</h3>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-hashtag" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="numChildren" id="attending_children"
-                                               class="form-control" value="" placeholder="of Children" min="0"/>
-                                    </div>
+{{--                                        <input type="number" name="numChildren" id="attending_children"--}}
+{{--                                               class="form-control" value="" placeholder="of Children" min="0"/>--}}
+{{--                                    </div>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="" id="total_children" class="form-control" value=""
-                                               placeholder="Children Cost" disabled/>
-                                    </div>
-                                </div>
+{{--                                        <input type="number" name="" id="total_children" class="form-control" value=""--}}
+{{--                                               placeholder="Children Cost" disabled/>--}}
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                                <div class="rounded border align-self-start col">
-                                    <h3 class="text-center h3-responsive">Total Cost</h3>
+{{--                                <div class="rounded border align-self-start col">--}}
+{{--                                    <h3 class="text-center h3-responsive">Total Cost</h3>--}}
 
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>
-                                        </div>
+{{--                                    <div class="input-group">--}}
+{{--                                        <div class="input-group-prepend">--}}
+{{--                                            <i class="input-group-text fa fa-dollar" aria-hidden="true"></i>--}}
+{{--                                        </div>--}}
 
-                                        <input type="number" name="" id="total_amount_due" class="form-control" value=""
-                                               placeholder="Total Cost" min="0" disabled/>
+{{--                                        <input type="number" name="" id="total_amount_due" class="form-control" value=""--}}
+{{--                                               placeholder="Total Cost" min="0" disabled/>--}}
 
-                                    </div>
-                                </div>
+{{--                                    </div>--}}
+{{--                                </div>--}}
 
-                            </div>
+{{--                            </div>--}}
 
-                            <div class="form-group">
+{{--                            <div class="form-group">--}}
 
-                                <label for="name" class="form-label">Registree Name:</label>
+{{--                                <label for="name" class="form-label">Registree Name:</label>--}}
 
-                                <input type="text" name="registree" class="form-control"
-                                       value="{{ $member->full_name() }}" placeholder="Enter Registree's Name"/>
+{{--                                <input type="text" name="registree" class="form-control"--}}
+{{--                                       value="{{ $member->full_name() }}" placeholder="Enter Registree's Name"/>--}}
 
-                                @if($errors->has('registree'))
-                                    <span class="text-danger">{{ $errors->first('firstname') }}</span>
-                                @endif
+{{--                                @if($errors->has('registree'))--}}
+{{--                                    <span class="text-danger">{{ $errors->first('firstname') }}</span>--}}
+{{--                                @endif--}}
 
-                            </div>
+{{--                            </div>--}}
 
-                            <div class="form-group">
-                                <label for="email" class="form-label">Email:</label>
+{{--                            <div class="form-group">--}}
+{{--                                <label for="email" class="form-label">Email:</label>--}}
 
-                                <input type="email" name="email" id="email" class="form-control"
-                                       placeholder="Email Address" value="{{ $member->email }}"/>
+{{--                                <input type="email" name="email" id="email" class="form-control"--}}
+{{--                                       placeholder="Email Address" value="{{ $member->email }}"/>--}}
 
-                                @if($errors->has('email'))
-                                    <span class="text-danger">{{ $errors->first('email') }}</span>
-                                @endif
-                            </div>
+{{--                                @if($errors->has('email'))--}}
+{{--                                    <span class="text-danger">{{ $errors->first('email') }}</span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
 
-                            <div class="form-group">
-                                <label for="address" class="form-label">Address:</label>
-                                <input type="text" name="address" id="address" class="form-control"
-                                       placeholder="Home Address" value="{{ $member->address }}"/>
+{{--                            <div class="form-group">--}}
+{{--                                <label for="address" class="form-label">Address:</label>--}}
+{{--                                <input type="text" name="address" id="address" class="form-control"--}}
+{{--                                       placeholder="Home Address" value="{{ $member->address }}"/>--}}
 
-                                @if($errors->has('address'))
-                                    <span class="text-danger">{{ $errors->first('address') }}</span>
-                                @endif
-                            </div>
+{{--                                @if($errors->has('address'))--}}
+{{--                                    <span class="text-danger">{{ $errors->first('address') }}</span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
 
-                            <div class="form-row">
-                                <div class="form-group col-12 col-sm-4">
-                                    <label for="city" class="form-label">City:</label>
-                                    <input type="text" name="city" id="city" class="form-control"
-                                           placeholder="Enter City" value="{{ $member->city }}"/>
+{{--                            <div class="form-row">--}}
+{{--                                <div class="form-group col-12 col-sm-4">--}}
+{{--                                    <label for="city" class="form-label">City:</label>--}}
+{{--                                    <input type="text" name="city" id="city" class="form-control"--}}
+{{--                                           placeholder="Enter City" value="{{ $member->city }}"/>--}}
 
-                                    @if($errors->has('city'))
-                                        <span class="text-danger">{{ $errors->first('city') }}</span>
-                                    @endif
-                                </div>
+{{--                                    @if($errors->has('city'))--}}
+{{--                                        <span class="text-danger">{{ $errors->first('city') }}</span>--}}
+{{--                                    @endif--}}
+{{--                                </div>--}}
 
-                                <div class="form-group col-6 col-sm-4">
-                                    <label for="state" class="form-label">State:</label>
+{{--                                <div class="form-group col-6 col-sm-4">--}}
+{{--                                    <label for="state" class="form-label">State:</label>--}}
 
-                                    <select class="form-control browser-default" name="state">
-                                        @foreach($states as $state)
-                                            <option
-                                                value="{{ $state->state_abb }}" {{ old('reunion_state') && old('state') == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+{{--                                    <select class="form-control browser-default" name="state">--}}
+{{--                                        @foreach($states as $state)--}}
+{{--                                            <option--}}
+{{--                                                value="{{ $state->state_abb }}" {{ old('reunion_state') && old('state') == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>--}}
+{{--                                        @endforeach--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
 
-                                <div class="form-group col-6 col-sm-4">
-                                    <label for="zip" class="form-label">Zip:</label>
-                                    <input type="number" name="zip" id="zip" class="form-control"
-                                           placeholder="Enter Zip Code" value="{{ $member->zip }}"/>
+{{--                                <div class="form-group col-6 col-sm-4">--}}
+{{--                                    <label for="zip" class="form-label">Zip:</label>--}}
+{{--                                    <input type="number" name="zip" id="zip" class="form-control"--}}
+{{--                                           placeholder="Enter Zip Code" value="{{ $member->zip }}"/>--}}
 
-                                    @if($errors->has('zip'))
-                                        <span class="text-danger">{{ $errors->first('zip') }}</span>
-                                    @endif
-                                </div>
-                            </div>
+{{--                                    @if($errors->has('zip'))--}}
+{{--                                        <span class="text-danger">{{ $errors->first('zip') }}</span>--}}
+{{--                                    @endif--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
 
-                            <div class="form-group">
-                                <label for="phone" class="form-label">Phone:</label>
+{{--                            <div class="form-group">--}}
+{{--                                <label for="phone" class="form-label">Phone:</label>--}}
 
-                                <input type="text" name="phone" id="phone" class="form-control" placeholder="###"
-                                       value="{{ $member->phone }}"/>
+{{--                                <input type="text" name="phone" id="phone" class="form-control" placeholder="###"--}}
+{{--                                       value="{{ $member->phone }}"/>--}}
 
-                                @if($errors->has('phone'))
-                                    <span class="text-danger">{{ $errors->first('phone') }}. No special charactions required</span>
-                                @endif
-                            </div>
+{{--                                @if($errors->has('phone'))--}}
+{{--                                    <span class="text-danger">{{ $errors->first('phone') }}. No special charactions required</span>--}}
+{{--                                @endif--}}
+{{--                            </div>--}}
 
-                            <div class="">
+{{--                            <div class="">--}}
 
-                                <button class="btn green" type="submit">Sign Up For This Reunion</button>
+{{--                                <button class="btn green" type="submit">Sign Up For This Reunion</button>--}}
 
-                            </div>
+{{--                            </div>--}}
 
-                        </form>
+{{--                        </form>--}}
 
-                    </div>
+{{--                    </div>--}}
 
-                </div>
+{{--                </div>--}}
 
-            </div>
+{{--            </div>--}}
 
-        @endif
+{{--        @endif--}}
 
         <div id="" class="d-flex flex-wrap align-items-stretch justify-content-center">
 

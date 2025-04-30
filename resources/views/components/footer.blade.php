@@ -1,20 +1,36 @@
 <!-- Footer -->
-<footer class="page-footer bg-dark pt-4 mt-5">
+<footer class="page-footer bg-secondary-subtle pt-4 mt-5">
 
     <!-- Footer Elements -->
     <div class="container">
 
-        <!-- Call to action -->
-        <ul class="list-unstyled list-inline text-center py-2">
-            <li class="list-inline-item">
-                <h5 class="mb-1">Register an account</h5>
-            </li>
+        @if(Auth::check())
+            <!-- Call to action -->
+            <ul class="list-unstyled list-inline text-center mb-0">
+                <li class="list-inline-item">
+                    <a href="{{ route('logout') }}" class="btn btn-outline-primary btn-rounded"
+                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log
+                        Out</a>
 
-            <li class="list-inline-item">
-                <a href="{{ route('register') }}" class="btn btn-outline-white btn-rounded">Sign up!</a>
-            </li>
-        </ul>
-        <!-- Call to action -->
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                </li>
+            </ul>
+            <!-- Call to action -->
+        @else
+            <!-- Call to action -->
+            <ul class="list-unstyled list-inline text-center mb-0">
+                <li class="list-inline-item">
+                    <h5 class="mb-1">Register an account</h5>
+                </li>
+
+                <li class="list-inline-item">
+                    <a href="{{ route('register') }}" class="btn btn-outline-primary btn-rounded">Sign up!</a>
+                </li>
+            </ul>
+            <!-- Call to action -->
+        @endif
 
     </div>
     <!-- Footer Elements -->

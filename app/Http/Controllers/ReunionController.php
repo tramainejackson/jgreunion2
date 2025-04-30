@@ -121,6 +121,8 @@ class ReunionController extends Controller
         $states = State::all();
         $events = $reunion->events->groupBy('event_date');
 
+//        dd($committee_president);
+
         return response()->view('upcoming_reunion', compact('registrations', 'committee_members', 'events', 'committee_president', 'reunion', 'states'));
 
     }

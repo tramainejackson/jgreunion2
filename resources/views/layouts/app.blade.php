@@ -57,9 +57,10 @@
 
 <div id="app" class="">
 
+    @include('components.nav')
+
     {{--MAIN CONTENT--}}
     {{ $slot }}
-    {{--MAIN CONTENT--}}
 
     <!-- Progress Bar Modal -->
     <div class="modal fade" id="progress_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="true">
@@ -87,8 +88,6 @@
 <script type="module" src="{{ asset('js/myjs_modules.js') }}"></script>
 <script type="module" src="{{ asset('js/myjs_functions.js') }}"></script>
 
-@yield('add_scripts')
-
 @if(session('status'))
     <script type="module">
         import { Alert } from "{{ asset('/js/mdb.es.min.js') }}";
@@ -105,7 +104,7 @@
     </script>
 @endif
 
-@yield('additional_scripts')
+@yield('add_scripts')
 
 </body>
 </html>

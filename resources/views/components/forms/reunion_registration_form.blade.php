@@ -1,5 +1,5 @@
 <script type="module">
-    import { addNewRowNumber, updateAdultName} from '/js/myjs_functions.js';
+    import {addNewRowNumber, updateAdultName} from '/js/myjs_functions.js';
 
     document.getElementById('attending_adult').addEventListener("change", (event) => addNewRowNumber('adult'));
     document.getElementById('attending_youth').addEventListener("change", (event) => addNewRowNumber('youth'));
@@ -9,54 +9,195 @@
 
 <div id="reunion_registration_form">
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <h2 class="text-center py-3">Registration Form</h2>
-            </div>
-        </div>
-    </div>
-
     <form action="{{ route('registrations.store') }}" method="POST" name="registration_form">
         @csrf
 
         <div class="container-fluid" id="">
             <div class="row">
-                <div class="col-12 col-sm-6 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="text"
-                               name="firstname"
-                               id="firstname"
-                               class="form-control"
-                               value="{{ old('firstname') ? old('firstname') : '' }}"
-                               placeholder="Enter Firstname"
-                               required/>
 
-                        <label for="firstname" class="form-label">Enter First Name</label>
+                @if(Auth::check())
+
+                    <div class="col-12 col-sm-6 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="firstname"
+                                   id="firstname"
+                                   class="form-control"
+                                   value="{{ $member->firstname != '' ? $member->firstname : '' }}"
+                                   placeholder="Enter Firstname"
+                                   required/>
+
+                            <label for="firstname" class="form-label">Enter First Name</label>
+                        </div>
+
+                        @if($errors->has('firstname'))
+                            <span class="text-danger">{{ $errors->first('firstname') }}</span>
+                        @endif
                     </div>
 
-                    @if($errors->has('firstname'))
-                        <span class="text-danger">{{ $errors->first('firstname') }}</span>
+                    <div class="col-12 col-sm-6 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="lastname"
+                                   id="lastname"
+                                   class="form-control"
+                                   placeholder="Enter Lastname"
+                                   value="{{ $member->lastname != '' ? $member->lastname : '' }}"
+                                   required/>
+
+                            <label for="lastname" class="form-label">Enter Last Name</label>
+                        </div>
+
+                        @if($errors->has('lastname'))
+                            <span class="text-danger">{{ $errors->first('lastname') }}</span>
+                        @endif
+                    </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 my-2">
+                    <div class="form-outline" id="" data-mdb-input-init>
+                        <input type="text"
+                               name="address"
+                               id="address"
+                               class="form-control"
+                               placeholder="Enter Home Address"
+                               value="{{ $member->address != '' ? $member->address : '' }}"
+                               required/>
+
+                        <label for="address" class="form-label">Enter Address</label>
+                    </div>
+
+                    @if($errors->has('address'))
+                        <span class="text-danger">{{ $errors->first('address') }}</span>
+                    @endif
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-sm-4 my-2">
+                    <div class="form-outline" id="" data-mdb-input-init>
+                        <input type="text"
+                               name="city"
+                               id="city"
+                               class="form-control"
+                               placeholder="Enter City"
+                               value="{{ $member->city != '' ? $member->city : '' }}"
+                               required/>
+
+                        <label for="city" class="form-label">Enter City</label>
+                    </div>
+
+                    @if($errors->has('city'))
+                        <span class="text-danger">{{ $errors->first('city') }}</span>
                     @endif
                 </div>
 
-                <div class="col-12 col-sm-6 my-2">
+                <div class="col-6 col-sm-4 my-2">
+                    <div class="form-outline" id="">
+                        <select class="" name="state" data-mdb-select-init required>
+                            @foreach($states as $state)
+                                <option
+                                    value="{{ $state->state_abb }}" {{ $member->state == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
+                            @endforeach
+                        </select>
+
+                        <label for="state" class="form-label select-label">Select State</label>
+                    </div>
+                </div>
+
+                <div class="col-6 col-sm-4 my-2">
                     <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="text"
-                               name="lastname"
-                               id="lastname"
+                        <input type="number"
+                               name="zip"
+                               id="zip"
                                class="form-control"
-                               placeholder="Enter Lastname"
-                               value="{{ old('lastname') ? old('lastname') : '' }}"
+                               placeholder="Enter Zip Code"
+                               value="{{ $member->zip != '' ? $member->zip : '' }}"
                                required/>
 
-                        <label for="lastname" class="form-label">Enter Last Name</label>
+                        <label for="zip" class="form-label">Enter Zip Code</label>
                     </div>
 
-                    @if($errors->has('lastname'))
-                        <span class="text-danger">{{ $errors->first('lastname') }}</span>
+                    @if($errors->has('zip'))
+                        <span class="text-danger">{{ $errors->first('zip') }}</span>
                     @endif
                 </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-6 my-2">
+                    <div class="form-outline" id="" data-mdb-input-init>
+                        <input type="text"
+                               name="phone"
+                               id="phone"
+                               class="form-control"
+                               placeholder="Enter Phone Number"
+                               value="{{ $member->phone != '' ? $member->phone : '' }}"/>
+
+                        <label for="phone" class="form-label">Enter Phone Number</label>
+
+                        @if($errors->has('phone'))
+                            <span
+                                class="text-danger">{{ $errors->first('phone') }}. No special characters required</span>
+                        @endif
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-6 my-2">
+                    <div class="form-outline" id="" data-mdb-input-init>
+                        <input type="email"
+                               name="email"
+                               id="email"
+                               class="form-control"
+                               placeholder="Email Address"
+                               value="{{ $member->email != '' ? $member->email : '' }}"/>
+
+                        <label for="email" class="form-label">Enter Email Address</label>
+
+                        @if($errors->has('email'))
+                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        @endif
+                    </div>
+                </div>
+
+                @else
+
+                    <div class="col-12 col-sm-6 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="firstname"
+                                   id="firstname"
+                                   class="form-control"
+                                   value="{{ old('firstname') ? old('firstname') : '' }}"
+                                   placeholder="Enter Firstname"
+                                   required/>
+
+                            <label for="firstname" class="form-label">Enter First Name</label>
+                        </div>
+
+                        @if($errors->has('firstname'))
+                            <span class="text-danger">{{ $errors->first('firstname') }}</span>
+                        @endif
+                    </div>
+
+                    <div class="col-12 col-sm-6 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="lastname"
+                                   id="lastname"
+                                   class="form-control"
+                                   placeholder="Enter Lastname"
+                                   value="{{ old('lastname') ? old('lastname') : '' }}"
+                                   required/>
+
+                            <label for="lastname" class="form-label">Enter Last Name</label>
+                        </div>
+
+                        @if($errors->has('lastname'))
+                            <span class="text-danger">{{ $errors->first('lastname') }}</span>
+                        @endif
+                    </div>
             </div>
 
             <div class="row">
@@ -165,6 +306,9 @@
                         @endif
                     </div>
                 </div>
+
+                @endif
+
             </div>
 
             <div class="table-responsive">
@@ -224,9 +368,9 @@
                                 <input type="text"
                                        name="attending_adult_name[]"
                                        class="form-control"
-                                       value=""
+                                       value="{{ Auth::check() ? $member->firstname : '' }}"
                                        required
-                                       />
+                                />
 
                                 <label for="attending_adult_name" class="form-label">First Name</label>
                             </div>
@@ -324,12 +468,12 @@
 
                         <td>
                             <select name="youth_shirts[]" class="shirt_size" disabled>
-                                <option value="S">Youth XSmall</option>
-                                <option value="M">Youth Small</option>
-                                <option value="L">Youth Medium</option>
-                                <option value="XL">Youth Large</option>
-                                <option value="XXL">Adult Small</option>
-                                <option value="XXXL">Adult Medium</option>
+                                <option value="XS">Youth XSmall</option>
+                                <option value="S">Youth Small</option>
+                                <option value="M">Youth Medium</option>
+                                <option value="L">Youth Large</option>
+                                <option value="XL">Adult Small</option>
+                                <option value="XXL">Adult Medium</option>
                             </select>
 
                             <label for="youth_shirts" class="form-label select-label">Shirt Size</label>
@@ -394,7 +538,7 @@
                                 <option value="L">3T</option>
                                 <option value="XL">4T</option>
                                 <option value="XXL">5T</option>
-                                <option value="XXXL">6</option>
+                                <option value="XXXL">6T</option>
                             </select>
 
                             <label for="children_shirts" class="form-label select-label">Shirt Size</label>

@@ -52,7 +52,7 @@ Route::get('/past_reunion/{reunion}', [ReunionController::class, 'show_past_reun
 Route::resource('reunions', ReunionController::class);
 
 /*RESOURCE ROUTE*/
-Route::get('/my_registration/{reunion}/{member}', [UserController::class, 'reunion_registration'])->name('member_registration');
+Route::get('/my_registration/{reunion}/{member}', [UserController::class, 'member_reunion_registration'])->name('member_registration');
 Route::post('/my_registration/{reunion}/{member}', [UserController::class, 'store_registration']);
 Route::resource('my_profile', UserController::class);
 

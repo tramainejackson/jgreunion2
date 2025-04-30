@@ -181,7 +181,7 @@ class FamilyMemberController extends Controller
         $current_children = $new_children != null ? array_merge($new_children, $current_children) : $current_children;
         $member->siblings = str_ireplace('; blank', '', implode('; ', $current_siblings)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $current_siblings)) : null;
         $member->children = str_ireplace('; blank', '', implode('; ', $current_children)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $current_children)) : null;
-        dd($member->children);
+        dd($member->siblings);
         $houseMembers = str_ireplace('; blank', '', implode('; ', $request->houseMember)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $request->houseMember)) : null;
 		$member->phone = $request->phone;
 		$member->age_group = $request->age_group;

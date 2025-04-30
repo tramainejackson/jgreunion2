@@ -51,8 +51,8 @@ div#allMembersPage::after {
 }
 
 .bgrd-attr {
-	 background-repeat: no-repeat; 
-	 background-size: cover; 
+	 background-repeat: no-repeat;
+	 background-size: cover;
 	 background-position: center center;
 }
 
@@ -90,15 +90,15 @@ div#allMembersPage::after {
     box-shadow: 0px 0px 10px red;
     margin: 2% 0%;
 }
-.jumbotron-fluid {
-	margin: 0px -15px;
-	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0)), url(../storage/reunion_background/dark_texture_background.jpg);
-    background-size: cover !important;
-	background-size: cover !important;
-    background-repeat: no-repeat !important;
-    background-position: center center !important;
-	background-attachment: fixed !important;
-}
+/*.jumbotron-fluid {*/
+/*	margin: 0px -15px;*/
+/*	background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0)), url(../storage/reunion_background/dark_texture_background.jpg);*/
+/*    background-size: cover !important;*/
+/*	background-size: cover !important;*/
+/*    background-repeat: no-repeat !important;*/
+/*    background-position: center center !important;*/
+/*	background-attachment: fixed !important;*/
+/*}*/
 
 .jumbotron-fluid h1 {
     font-size: 200%;
@@ -153,7 +153,7 @@ h2.flashMessage {
 	background: radial-gradient(red, red, darkred);
 	color: whitesmoke;
 }
-		
+
 p#successMessage {
     padding: 0% 11%;
     margin: 0% 0% 5%;
@@ -882,7 +882,7 @@ div#paper_payment_option p.paymentsFinePrint {
 	margin: 0% 0%;
 }
 
-div#show_profiles {	
+div#show_profiles {
 	width: 100%;
 	overflow: auto;
 }
@@ -977,20 +977,20 @@ span#registrationLink, a#registrationLink {
 	color: white;
 }
 
-.activities_content:nth-of-type(1) {
-  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),url("../images/picnic_bgrd.jpg");
-}
+/*.activities_content:nth-of-type(1) {*/
+/*  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)),url("../images/picnic_bgrd.jpg");*/
+/*}*/
 
-.activities_content:nth-of-type(2) {
-  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("../images/cookout.jpg");
-}
+/*.activities_content:nth-of-type(2) {*/
+/*  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("../images/cookout.jpg");*/
+/*}*/
 
-.activities_content:nth-of-type(3) {
-    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("../images/banquet_hall.jpg");
-}
-.activities_content:nth-of-type(4) {
-  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("../images/goodby02.jpg");
-}
+/*.activities_content:nth-of-type(3) {*/
+/*    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("../images/banquet_hall.jpg");*/
+/*}*/
+/*.activities_content:nth-of-type(4) {*/
+/*  background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("../images/goodby02.jpg");*/
+/*}*/
 
 .activities_content:nth-of-type(4) p {
   padding: 0% 33%;
@@ -1239,7 +1239,7 @@ th.editRow25 {
     left: 103%;
     padding: 5px 0;
     border-radius: 6px;
- 
+
     //Position the tooltip text - see examples below!
     position: absolute;
     z-index: 1;
@@ -1252,15 +1252,13 @@ th.editRow25 {
 	background-color: black;
 	color: #fff;
 	text-align: center;
-	top;
 	top: 0px;
 	left: 400%;
 	padding: 5px 0;
 	border-radius: 6px;
- 
+
     /* Position the tooltip text - see examples below! */
 	position: absolute;
-	z-i;
 	word-wrap: break-word;
 }
 .tooltip .totalRegSpan {
@@ -1271,16 +1269,14 @@ th.editRow25 {
 	background-color: black;
 	color: #fff;
 	text-align: center;
-	top;
 	top: 110%;
 	left: 10%;
 	z-index: 1;
 	padding: 5px 0;
 	border-radius: 6px;
- 
+
     /* Position the tooltip text - see examples below! */
 	position: absolute;
-	z-i;
 	word-wrap: break-word;
 }
 .tooltipImage #fancy_cut_image {
@@ -1292,15 +1288,13 @@ th.editRow25 {
 	background-color: black;
 	color: #fff;
 	text-align: center;
-	top;
 	top: 89%;
 	left: 0px;
 	padding: 5px 0;
 	border-radius: 6px;
- 
+
     /* Position the tooltip text - see examples below! */
 	position: absolute;
-	z-i;
 	word-wrap: break-word;
 }
 span#fancy_cut_image img {
@@ -1553,19 +1547,19 @@ button.close_modal {
     border-radius: 10px;
     color: white;
 }
-div#scroll_to_top {
-    background-image: url("../images/topOfPage.jpg");
-    min-height: 6%;
-    min-width: 6%;
-    position: fixed;
-    z-index: 1;
-    right: 2%;
-    bottom: 2%;
-    background-size: 100% 100%;
-	background-position: center center;
-    border-radius: 50%;
-	display: none;
-}
+/*div#scroll_to_top {*/
+/*    background-image: url("../images/topOfPage.jpg");*/
+/*    min-height: 6%;*/
+/*    min-width: 6%;*/
+/*    position: fixed;*/
+/*    z-index: 1;*/
+/*    right: 2%;*/
+/*    bottom: 2%;*/
+/*    background-size: 100% 100%;*/
+/*	background-position: center center;*/
+/*    border-radius: 50%;*/
+/*	display: none;*/
+/*}*/
 p.updatedUser_data {
     padding: 3% 2%;
     border-radius: 5px;
@@ -1630,7 +1624,7 @@ button.submit_edit, button.submit_RegEdit, button.cancel_edit {
   width: 25%;
   display: inline-block;
   margin-left: 12%;
-} 
+}
 .mail_preference {
   width: 45.5%;
   max-width: 45.5%;
@@ -1640,15 +1634,15 @@ button.submit_edit, button.submit_RegEdit, button.cancel_edit {
   border-radius: 3px;
   position: absolute;
   bottom: 25%;
- } 
- 
+ }
+
 .ePreferred {
 	right: 0%;
-} 
+}
 .mPreferred {
 	left: 0%;
 }
-  
+
 #ePreferred_btn, #mPreferred_btn {
   background-color: greenyellow;
 }
@@ -1756,7 +1750,7 @@ div#image_caption {
 	left: initial;
 	width: 70%;
 	margin: 0% 14%;
-}  
+}
 
 h2.image_caption_header {
 	color: white;
@@ -1776,7 +1770,7 @@ button#stop_slideshow {
   background-color: bisque;
   position: absolute;
   bottom: 3%;
- 
+
 }
 button#slideshow_right {
   position: absolute;
@@ -1792,7 +1786,7 @@ button#slideshow_left {
   top: 33%;
   height: 12%;
   width: 3%;
-  border-radius: 65px;  
+  border-radius: 65px;
 }
 div#navi {
   /* background: linear-gradient(rgb(66, 66, 66), rgb(66, 66, 66), rgb(66, 66, 66), #6C9F3E); */
@@ -1929,16 +1923,16 @@ table#registered_members th {
     font-size: 125%;
     background-color: black;
 }
-button.closeBtn {
-    position: absolute;
-    top: -2%;
-    left: 2.3%;
-    border-radius: 50%;
-    padding: 15px;
-    background-image: url("../images/x.png");
-    background-size: 100% 100%;
-    background-position: center center;
-}
+/*button.closeBtn {*/
+/*    position: absolute;*/
+/*    top: -2%;*/
+/*    left: 2.3%;*/
+/*    border-radius: 50%;*/
+/*    padding: 15px;*/
+/*    background-image: url("../images/x.png");*/
+/*    background-size: 100% 100%;*/
+/*    background-position: center center;*/
+/*}*/
 table#registrationFormTable {
     width: 100%;
     padding: 3% 0% 3%;
@@ -2114,7 +2108,7 @@ table#contact_information_table th {
 @media only screen and (max-width:575px) {
 
 	.modal-dialog {
-		max-width: 500px; 
+		max-width: 500px;
 	}
 
 	h2.image_caption_header {
@@ -2128,11 +2122,11 @@ table#contact_information_table th {
 	div#registration_div_wrapper, div#login_div_wrapper {
 		padding: 0% 0% 15%;
 	}
-	
+
 	.activities_content ul {
 		padding: 0%;
 	}
-	
+
 	#reunion_page h1.display-4 {
 		font-size: 325%;
 	}
@@ -2140,11 +2134,11 @@ table#contact_information_table th {
 	ol {
 		padding-left: 5%;
 	}
-	
+
 	#family_tree_pic {
 		display: none;
 	}
-	
+
 	#reunion_history_pic {
 		max-width: 100%;
 		height: initial;
@@ -2154,36 +2148,36 @@ table#contact_information_table th {
 	}
 
 	nav.nav {
-		
+
 	}
-	
+
 	div#navi {
 		padding: 2% 0% 9%;
 	}
-	
+
 	#upcoming_btn, #past_btn {
 		white-space: normal;
 	}
-	
+
 	#admin_login {
 		padding: 2% 1%;
 		width: 64%;
 		right: 16%;
 	}
-	
+
 	button#admin_login_btn {
 		text-align: center;
 		width: 100%;
 		font-size: 120%;
 		padding: 1.1% 2%;
 	}
-	
+
 	#admin_form {
 		width: 35%;
 		top: 69%;
 		right: 29.5%;
 	}
-	
+
 	input#submit_button {
 		width: 100%;
 		margin-top: 1.3%;
@@ -2191,29 +2185,29 @@ table#contact_information_table th {
 		border: solid burlywood;
 		background-color: bisque;
 	}
-	
+
 	div.showing_image {
 		width: 100%;
 		margin: 0% 0%;
 	}
-	
+
 	div#image_caption {
 		top: 1%;
 		left: initial;
 		width: 70%;
 		margin: 0% 14%;
 	}
-	
+
 	div#reunion_history {
 	  padding: 1.5% 6% 1%;
 	}
-	
+
 	ul#jgreunion_past_future_list > li {
 	}
-	
+
 	ul#past_reunions {
 	}
-	
+
 	.payment_option {
 		width: initial;
 		max-width: initial;
@@ -2293,7 +2287,7 @@ table#contact_information_table th {
 	top: -25%;
 	}
 	h2.nextReunion {
-		
+
 	margin: 4% 0%;
 	}
 }
@@ -2309,13 +2303,13 @@ table#contact_information_table th {
 	body {
 		margin: 0 auto;
 	}
-	
+
 	.page_header:first-of-type {
 		text-align: -webkit-center;
 		text-align: center;
 		font-size: 150%;
 	}
-	
+
 	.modal-dialog {
 		max-width: 650px;
 	}
@@ -2324,19 +2318,19 @@ table#contact_information_table th {
 		min-height: 9%;
 		min-width: 9%;
 	}
-		
+
 	div#modal {
 	  left: 4%;
 	  width: 92%;
 	  height: 85%;
 	  top: -5%;
 	}
-	
+
 	h2.image_caption_header {
 		/* margin: 2% 0% 0% 0%; */
 		/* max-width: 100%; */
 	}
-	
+
 	div#navi {
 		padding-top: 1%;
 	}
@@ -2347,7 +2341,7 @@ table#contact_information_table th {
 	  right: 25%;
 	  bottom: 4%;
 	}
-	
+
 	button#admin_login_btn {
 	  text-align: -webkit-center;
 	  text-align: center;
@@ -2375,18 +2369,18 @@ table#contact_information_table th {
 	  top: 1%;
 	  left: 1%;
 	}
-	
+
 	ul#jgreunion_past_future_list > li {
 	  width: 92%;
 	  margin: 3% 4%;
 	  position: relative;
 	}
-	
+
 	ul#past_reunions {
 	  padding: 1% 3.2% 1%;
 	  width: inherit;
 	}
-	
+
 	div#reunion_history {
 	  padding: 1.5% 6% 1%;
 	}
@@ -2401,35 +2395,35 @@ table#contact_information_table th {
 	#reunion_page {
 	  padding: 0 1%;
 	}
-	
+
 	#form_information img {
 	  min-height: 400px;
 	  height: 400px;
 	}
-	
+
 	#hotel_pic {}
-	
+
 	button#registrationFormBtn {
 		display: none;
 	}
-	
+
 	.activities_content {
 	  min-height: 600px;
 	}
-	
+
 	.activities_content:nth-of-type(4) {
 	  background-size: 100% 70%;
 	  background-position: center bottom;
 	}
-	
+
 	.activities_content:nth-of-type(4) p {
 		padding: 0% 15%;
 	}
-	
+
 	#contact_content {
 	  padding: 1% 1%;
 	}
-	
+
 	div#contact_content p {
 	  margin: 4px;
 	  text-align: -webkit-center;
@@ -2453,7 +2447,7 @@ table#contact_information_table th {
 	a#fb_link button {
 		padding: 0% 0% 0% 30%;
 	}
-	
+
 	.payment_option {
 		width: initial;
 		max-width: initial;
@@ -2465,7 +2459,7 @@ table#contact_information_table th {
 	div#electronic_payment_option p:last-of-type {
 		padding: 1% 0% 25%;
 	}
-	
+
 	.activities_content ul {
 		padding: 0% 15%;
 	}
@@ -2476,20 +2470,20 @@ table#contact_information_table th {
 		width: 98%;
 		padding: 0.5%;
 	}
-	
+
 	div#paper_payment_option p.paymentsFinePrint {
 		margin: 0% 0%;
 	}
-	
+
 	table#contact_information_table th {
 		text-align: -webkit-center;
 		text-align: center;
 	}
-	
+
 	button#submitRegistration {
 		right: 12%;
 	}
-	
+
 	div#errors_modal {
 		top: 16%;
 		width: 50%;
@@ -2506,7 +2500,7 @@ table#contact_information_table th {
 		max-width: 50%;
 		min-width: 40%;
 	}
-	
+
 	div#calculations, div#search_field_regs {
 		width: 39%;
 	}
@@ -2515,7 +2509,7 @@ table#contact_information_table th {
 		padding: 15% 0% 0%;
 		top: -25%;
 	}
-	
+
 	.slideShowImage {
 		min-height: 300px;
 		max-height: 300px;
@@ -2537,15 +2531,15 @@ table#contact_information_table th {
 	h2#reg_form_header {
 		margin: 4% 10%;
 	}
-	
+
 	div#reg_form_input, div#login_form_input {
 		margin: 0% 10% 0%;
 	}
-	
+
 	div#reg_form_input input.regInput.regFNInput, div#reg_form_input input.regInput.regLNInput {
 		max-width: 47.8%;
 	}
-	
+
 	input#reg_form_btn, #login_submit_btn {
 	}
 
@@ -2554,20 +2548,20 @@ table#contact_information_table th {
 		display: -webkit-inline-box;
 		display: inline-block;
 	}
-	
+
 	div#profile_header, div.profile_info_div {
 		margin-left: 25.5%;
 	}
-	
+
 	div.profile_info_div {
 		font-size: 115%;
 	}
-	
+
 	div#profile_header, div#post_header_div {
 		padding-top: 3%;
 		padding-bottom: 2%;
 	}
-	
+
 	h2.postHeader, div.indPost {
 		text-align: -webkit-left;
 		text-align: left;
@@ -2797,7 +2791,7 @@ table#contact_information_table th {
 	}
 	div#family_account {
 	}
-	
+
 	div#home_link {
 		position: absolute;
 		top: 10px;
@@ -2807,7 +2801,7 @@ table#contact_information_table th {
 		text-align: -webkit-left;
 		text-align: left;
 	}
-	
+
 	div#profile_information {
 		position: relative;
 		max-width: 50%;
@@ -2845,7 +2839,7 @@ table#contact_information_table th {
 		width: 200px;
 		height: 200px;
 	}
-	
+
 	input#change_img_btn {
 		width: 200px !important;
 		position: absolute;
@@ -2864,7 +2858,7 @@ table#contact_information_table th {
 /*Smartphones portrait*/
 @media only screen and (min-width:991px) {
 	.modal-dialog {
-		max-width: 700px; 
+		max-width: 700px;
 	}
 }
 
@@ -2879,13 +2873,13 @@ table#contact_information_table th {
 	div#errors_modal {
 	   width: 13%;
 	}
-	
+
 	button#takeLater_btn, #no_music {
 	  right: 7%;
 	  width: 40%;
 	  padding: 2% 0%;
 	}
-	
+
 	button#takeNow_btn, #yes_music {
 	  left: 7%;
 	  width: 40%;
@@ -2896,53 +2890,53 @@ table#contact_information_table th {
 	  right: 1%;
 	  bottom: 18%;
 	}
-	
+
 	button#admin_login_btn {
 	  font-size: 110%;
 	}
-	
+
 	#admin_form {
 	  width: 10%;
 	  right: 0.5%;
 	}
-	
+
 	div#reunion_history {
 	  padding: 1.5% 6% 1%;
 	  font-size: 150%;
 	}
-	
+
 	#reunion_descent {
 	  font-size: 140%;
 	}
-	
+
 	#family_tree_pic {
 	}
-	
+
 	div#directions1 h2, div#directions3 h2 {
 		padding: 2% 23% 0%;
 	}
 	div#directions4 h2 {
 		padding: 2% 5% 0%;
 	}
-	
+
 	div#electronic_payment_option p:last-of-type {
 		padding: 0% 0% 25%;
 	}
 	table#contact_information_table th {
-		text-align: middle;
+		text-align: center;
 	}
-	
-	button.closeBtn {
-		position: absolute;
-		top: -2%;
-		left: -2.7%;
-		border-radius: 50%;
-		padding: 15px;
-		background-image: url("../images/x.png");
-		background-size: 100% 100%;
-		background-position: center center;
-	}
-	
+
+	/*button.closeBtn {*/
+	/*	position: absolute;*/
+	/*	top: -2%;*/
+	/*	left: -2.7%;*/
+	/*	border-radius: 50%;*/
+	/*	padding: 15px;*/
+	/*	background-image: url("../images/x.png");*/
+	/*	background-size: 100% 100%;*/
+	/*	background-position: center center;*/
+	/*}*/
+
 	div#profile_information {
 		max-width: 60%;
 		width: 60%;
@@ -3039,7 +3033,7 @@ table#contact_information_table th {
 		max-width: 27.6%;
 	}
 	h2#all_post_header.postHeader {
-		
+
 	padding: 0% 45% 0% 3%;
 	}
 	.profilePhoto, .profileHeader {
@@ -3073,7 +3067,7 @@ table#contact_information_table th {
 		text-align: left;
 		margin-bottom: 0.5%;
 	}
-	div#profile_information input.profileInputGreenBtn, 
+	div#profile_information input.profileInputGreenBtn,
 	div#profile_information input.profileInputJacksonBtn,
 	div#profile_information input.profileInputSpouseBtn,
 	div#profile_information input.profileInputFriendBtn {
@@ -3208,8 +3202,8 @@ table#contact_information_table th {
 	div#reg_form_input input.regInput {
 		width: 98%;
 	}
-	
+
 	.modal-dialog {
-		max-width: 1000px; 
+		max-width: 1000px;
 	}
 }
