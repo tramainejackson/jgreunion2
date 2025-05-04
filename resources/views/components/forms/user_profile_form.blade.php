@@ -1,15 +1,12 @@
 <div id="user_profile" class="mt-2 mb-5">
-    <div id="profile_photo">
-        @if($user["upload_photo"] == "")
-            <img id="profile_photo" src="{{ asset('/images/img_placeholder.jpg') }}"/>
-        @else
-            <img id="profile_photo" src="../uploads/{{ $user["upload_photo"] }}"/>
-        @endif
+    <div id="profile_photo_div">
 
-        <input type="file" name="upload_photo" id="change_img_btn"/>
+        <img id="profile_photo" src="{{ $family_member->profile_image != null ? asset('storage/images/' . $family_member->profile_image) : '' }}" class="img-fluid img-thumbnail"/>
+
+        <input type="file" name="profile_image" id="change_img_btn"/>
     </div>
 
-    <div id="general_information" class="profile_info_div">
+    <div id="general_information" class="profile_info_div mt-3">
         <div class="header_div">
             <h3 id="general_header">Personal Information</h3>
         </div>
@@ -23,7 +20,7 @@
                            value="{{ $user->username  }}"
                            disabled/>
 
-                    <label class="form-label" for="username">Userame</label>
+                    <label class="form-label" for="username">Username</label>
                 </div>
             </div>
 

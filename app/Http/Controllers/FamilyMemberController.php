@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class FamilyMemberController extends Controller
 {
@@ -177,42 +178,92 @@ class FamilyMemberController extends Controller
         $new_children = isset($request->new_children) ? $request->new_children : array();
         $current_siblings = isset($request->siblings) ? $request->siblings : array();
         $current_children = isset($request->children) ? $request->children : array();
-        $current_siblings = $new_siblings != null ? array_merge($new_siblings, $current_siblings) : $current_siblings;
-        $current_children = $new_children != null ? array_merge($new_children, $current_children) : $current_children;
-        $member->siblings = str_ireplace('; blank', '', implode('; ', $current_siblings)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $current_siblings)) : null;
-        $member->children = str_ireplace('; blank', '', implode('; ', $current_children)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $current_children)) : null;
-        dd($member->siblings);
-        $houseMembers = str_ireplace('; blank', '', implode('; ', $request->houseMember)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $request->houseMember)) : null;
+        $all_siblings = array_merge($new_siblings, $current_siblings);
+        $all_children = array_merge($new_children, $current_children);
+        $member->siblings = implode('; ', $member->remove_blanks($all_siblings));
+        $member->children = implode('; ', $member->remove_blanks($all_children));
+//        $houseMembers = str_ireplace('; blank', '', implode('; ', $request->houseMember)) != 'blank' ? str_ireplace('; blank', '', implode('; ', $request->houseMember)) : null;
 		$member->phone = $request->phone;
 		$member->age_group = $request->age_group;
 		$member->mail_preference = $request->mail_preference;
+		$member->instagram = $request->instagram;
+		$member->facebook = $request->facebook;
+		$member->twitter = $request->twitter;
+        $error = '';
 
 		// If household members isn't empty then add a family ID
 		// to all the parties
-		if($houseMembers != null) {
-			$maxFamilyID = FamilyMember::max('family_id');
-			$hhMembers = explode('; ', $houseMembers);
+//		if($houseMembers != null) {
+//			$maxFamilyID = FamilyMember::max('family_id');
+//			$hhMembers = explode('; ', $houseMembers);
+//
+//			if($member->family_id == null) {
+//				$newFamilyID = $maxFamilyID + 1;
+//				$member->family_id = $newFamilyID;
+//
+//				foreach($hhMembers as $hhID) {
+//					$hhMember = FamilyMember::find($hhID);
+//					$hhMember->family_id = $newFamilyID;
+//					$hhMember->save();
+//				}
+//			} else {
+//				foreach($hhMembers as $hhID) {
+//					$hhMember = FamilyMember::find($hhID);
+//
+//					if($hhMember->family_id != $member->family_id) {
+//						$hhMember->family_id = $member->family_id;
+//						$hhMember->save();
+//					}
+//				}
+//			}
+//		}
 
-			if($member->family_id == null) {
-				$newFamilyID = $maxFamilyID + 1;
-				$member->family_id = $newFamilyID;
+        if($request->hasFile('profile_image')) {
+            $newImage = $request->file('profile_image');
+            $fileName = $newImage->getClientOriginalName();
 
-				foreach($hhMembers as $hhID) {
-					$hhMember = FamilyMember::find($hhID);
-					$hhMember->family_id = $newFamilyID;
-					$hhMember->save();
-				}
-			} else {
-				foreach($hhMembers as $hhID) {
-					$hhMember = FamilyMember::find($hhID);
+            // Check to see if images is too large
+                if($newImage->getError() == 1) {
+                    $error .= "The file " . $fileName . " is too large and could not be uploaded";
+                } elseif($newImage->getError() == 0) {
+                    // Check to see if images is about 25MB
+                    // If it is then resize it
+                    if($newImage->getSize() < 25000000) {
+                        if($newImage->guessExtension() == 'jpeg' || $newImage->guessExtension() == 'png' || $newImage->guessExtension() == 'gif' || $newImage->guessExtension() == 'webp' || $newImage->guessExtension() == 'jpg') {
+                            $image = Image::make($newImage->getRealPath())->orientate();
+                            $path = $newImage->store('public/images');
 
-					if($hhMember->family_id != $member->family_id) {
-						$hhMember->family_id = $member->family_id;
-						$hhMember->save();
-					}
-				}
-			}
-		}
+                            if($image->save(storage_path('app/'. $path))) {
+                                // prevent possible upsizing
+                                // Create a larger version of the image
+                                // and save to large image folder
+                                $image->resize(1800, null, function ($constraint) {
+                                    $constraint->aspectRatio();
+                                    // $constraint->upsize();
+                                });
+                            }
+
+                            $member->profile_image = str_ireplace('public/images/', '', $path);
+
+                        } else {
+                            $error .= "The file " . $fileName . " could not be added bcause it is the wrong image type.";
+                        }
+                    } else {
+                        // Resize the image before storing. Will need to hash the filename first
+                        $path = $newImage->store('public/images');
+                        $image = Image::make($newImage)->orientate()->resize(1500, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                            $constraint->upsize();
+                        });
+                        $image->save(storage_path('app/'. $path));
+
+                        $member->profile_image = str_ireplace('public/images/', '', $path);
+
+                    }
+                } else {
+                    $error .= "The file " . $fileName . " may be corrupt and could not be uploaded.";
+                }
+        }
 
 		if($member->save()) {
 			return redirect()->back()->with('status', 'Member Updated Successfully');

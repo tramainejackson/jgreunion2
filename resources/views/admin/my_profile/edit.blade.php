@@ -4,9 +4,11 @@
         <script type="module">
             import {addNewRowFromBtn} from '/js/myjs_functions.js';
             import {btnToggle} from '/js/myjs_functions.js';
+            import {filePreview} from '/js/myjs_functions.js';
 
             document.getElementById('addSiblingRow').addEventListener("click", (event) => addNewRowFromBtn('sibling'));
             document.getElementById('addChildrenRow').addEventListener("click", (event) => addNewRowFromBtn('child'));
+            document.getElementById('change_img_btn').addEventListener("change", (event) => filePreview(event.target));
 
             for (let i = 0; i < document.getElementsByClassName('descentInput').length; i++) {
                 document.getElementsByClassName('descentInput')[i].addEventListener("click", (event) => btnToggle(event.target));

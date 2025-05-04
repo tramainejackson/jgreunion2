@@ -10,9 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FamilyMember extends Model
 {
-	use SoftDeletes;
+    use SoftDeletes;
 
-	/**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -37,7 +37,7 @@ class FamilyMember extends Model
      */
     protected $dates = ['deleted_at'];
 
-	/**
+    /**
      * Get the registrations for the family member.
      */
     public function registrations(): HasMany
@@ -45,7 +45,7 @@ class FamilyMember extends Model
         return $this->hasMany(Registration::class);
     }
 
-	/**
+    /**
      * Get the committees that the member is a part of.
      */
     public function committees(): HasMany
@@ -53,96 +53,114 @@ class FamilyMember extends Model
         return $this->hasMany(ReunionCommittee::class);
     }
 
-	/**
-	* Get the user account for the family member account.
-	*/
+    /**
+     * Get the user account for the family member account.
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-	/**
-	* Get the image avatar for the family member account.
-	*/
+    /**
+     * Get the image avatar for the family member account.
+     */
     public function avatar(): HasOne
     {
         return $this->hasOne(ProfileAvatar::class);
     }
 
-	/**
-	* Get the user for the family member account.
-	*/
+    /**
+     * Get the user for the family member account.
+     */
     public function full_name()
     {
         return $this->firstname . ' ' . $this->lastname;
     }
 
-	/**
-	* Get the user for the family member account.
-	*/
+    /**
+     * Get the user for the family member account.
+     */
     public function full_address()
     {
-		return $this->address . ', ' . $this->city . ', ' . $this->state . ' ' . $this->zip;
-	}
+        return $this->address . ', ' . $this->city . ', ' . $this->state . ' ' . $this->zip;
+    }
 
-	/**
-	* Get the user for the family member account.
-	*/
+    /**
+     * Removed the blanks from an array.
+     */
+    public function remove_blanks($array)
+    {
+        $return_array = array();
+
+        if ($array != null && count($array) > 0) {
+            foreach ($array as $name) {
+                if($name != 'blank') {
+                    $return_array[] = $name;
+                }
+            }
+        }
+
+        return $return_array;
+    }
+
+    /**
+     * Get the user for the family member account.
+     */
     public function scopeHousehold($query, $family_id)
     {
         return $query->where([
-			['family_id', $family_id],
-			['family_id', '<>', 'null']
-		])->get();
+            ['family_id', $family_id],
+            ['family_id', '<>', 'null']
+        ])->get();
     }
 
-	/**
-	* Get the user for the family member account.
-	*/
+    /**
+     * Get the user for the family member account.
+     */
     public function scopePotentialHousehold($query, $family_member)
     {
         return $query->where([
-			['address', $family_member->address],
-			['city', $family_member->city],
-			['state', $family_member->state]
-		])->get();
+            ['address', $family_member->address],
+            ['city', $family_member->city],
+            ['state', $family_member->state]
+        ])->get();
     }
 
-	/**
-	* Check for duplicated
-	*/
+    /**
+     * Check for duplicated
+     */
     public function scopeCheckDuplicates($query)
     {
-		return $query->selectRaw('firstname, lastname, city, state')
-			->where('duplicate', null)
-			->groupBy('firstname')
-			->groupBy('lastname')
-			->groupBy('city')
-			->groupBy('state')
-			->havingRaw('COUNT(firstname) > 1 AND COUNT(lastname) > 1 AND COUNT(city) > 1 AND COUNT(state) > 1')
-			->get();
+        return $query->selectRaw('firstname, lastname, city, state')
+            ->where('duplicate', null)
+            ->groupBy('firstname')
+            ->groupBy('lastname')
+            ->groupBy('city')
+            ->groupBy('state')
+            ->havingRaw('COUNT(firstname) > 1 AND COUNT(lastname) > 1 AND COUNT(city) > 1 AND COUNT(state) > 1')
+            ->get();
     }
 
-	/**
-	* Get all the duplicates that were found
-	*/
+    /**
+     * Get all the duplicates that were found
+     */
     public function scopeGetDuplicates($query, $firstname, $lastname, $city, $state)
     {
-		return $query->where([
-				['firstname', 'LIKE', '%' . $firstname . '%'],
-				['lastname', 'LIKE', '%' . $lastname . '%'],
-				['city', 'LIKE', '%' . $city . '%'],
-				['state', 'LIKE', '%' . $state . '%'],
-				['duplicate', null],
-			]);
+        return $query->where([
+            ['firstname', 'LIKE', '%' . $firstname . '%'],
+            ['lastname', 'LIKE', '%' . $lastname . '%'],
+            ['city', 'LIKE', '%' . $city . '%'],
+            ['state', 'LIKE', '%' . $state . '%'],
+            ['duplicate', null],
+        ]);
     }
 
-	/**
-	* Get all the duplicates that were found
-	*/
+    /**
+     * Get all the duplicates that were found
+     */
     public function scopeUsers($query)
     {
-		return $query->where('users_id', '<>', null);
+        return $query->where('users_id', '<>', null);
     }
 
 }

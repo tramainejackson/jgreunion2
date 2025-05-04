@@ -1,6 +1,13 @@
 <x-guest-layout>
 
+    @include('components.psa')
+
     <div id="jgreunion_page" class="container-fluid mb-5">
+        <div class="row" id="">
+            <div class="col" id="">
+            </div>
+        </div>
+
         <div class="col-12">
             <h1 class="text-center">View our future reunions and take a look at where we've been in the past.</h1>
         </div>

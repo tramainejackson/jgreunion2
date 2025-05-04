@@ -83,6 +83,7 @@ function addNewRowFromBtn(taskTitle) {
     //Add new row
     document.getElementById('new_' + taskTitle + '_row_default').insertAdjacentElement('afterend', newRow);
 
+    //Remove disabled form inputs from newly added row
     if(selectForm.length > 0) {
         for (let i = 0; i < selectForm.length; i++) {
             selectForm[i].removeAttribute('disabled');
@@ -152,7 +153,38 @@ function btnToggle(btnElement) {
     }
 }
 
+//Preview images before being uploaded on images page and new location page
+function filePreview(input) {
+
+    if (input.files && input.files[0]) {
+        if(input.files.length > 1) {
+            var imgCount = input.files.length
+            $('.imgPreview').remove();
+
+            for(var x=0; x < imgCount; x++) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('<img class="imgPreview img-thumbnail m-1" src="' + e.target.result + '" width="350" height="200"/>').appendTo('.uploadsView');
+                }
+                reader.readAsDataURL(input.files[x]);
+            }
+        } else {
+            let reader = new FileReader();
+
+            reader.onload = function (e) {
+                const previewImage = document.createElement('img');
+                const imageDiv = document.getElementById('profile_photo');
+
+                imageDiv.setAttribute('src', e.target.result);
+                imageDiv.classList.add('img-thumbnail', 'img-fluid');
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+}
+
 export { addNewRowNumber }
 export { addNewRowFromBtn }
 export { btnToggle }
 export { updateAdultName }
+export { filePreview }

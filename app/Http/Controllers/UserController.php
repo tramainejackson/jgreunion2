@@ -50,8 +50,8 @@ class UserController extends Controller
         $family_member = Auth::user()->member;
         $states = State::all();
         $members = FamilyMember::orderby('firstname', 'asc')->get();
-        $siblings = $family_member->sibling != null ? explode('; ', $family_member->sibling) : null;
-        $children = $family_member->child != null ? explode('; ', $family_member->child) : null;
+        $siblings = $family_member->siblings != null ? explode('; ', $family_member->siblings) : null;
+        $children = $family_member->children != null ? explode('; ', $family_member->children) : null;
         $family_members = FamilyMember::household($family_member->family_id);
         $potential_family_members = FamilyMember::potentialHousehold($family_member);
         $active_reunion = Reunion::active()->first();

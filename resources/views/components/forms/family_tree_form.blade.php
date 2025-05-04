@@ -28,8 +28,8 @@
             <h3 class="text-center">Parents</h3>
         </div>
 
-        <div class="form-group col-6">
-            <select class="form-control w-50 mx-auto" name="mother" data-mdb-select-init>
+        <div class="col-6">
+            <select class="mx-auto" name="mother" data-mdb-select-init>
                 <option value="0">Not Listed</option>
 
                 @foreach($members as $option)
@@ -41,8 +41,8 @@
             <label for="mother" class="form-label select-label">Mother</label>
         </div>
 
-        <div class="form-group col-6">
-            <select class="form-control w-50 mx-auto" name="father" data-mdb-select-init>
+        <div class="col-6">
+            <select class="mx-auto" name="father" data-mdb-select-init>
                 <option value="0">Not Listed</option>
 
                 @foreach($members as $option)
@@ -56,12 +56,12 @@
     </div>
 
     <div class="row" id="">
-        <div class="form-group col-12">
+        <div class="col-12 mt-3">
             <h3 class="text-center">Spouse</h3>
         </div>
 
-        <div class="form-outline text-center col-12">
-            <select class="form-control w-50 mx-auto" name="spouse" data-mdb-select-init>
+        <div class="text-center col-12">
+            <select class="mx-auto" name="spouse" data-mdb-select-init>
                 <option value="0">None</option>
 
                 @foreach($members as $option)
@@ -75,34 +75,36 @@
     </div>
 
     <div class="row" id="">
-        <div class="form-group col-12">
+        <div class="col-12 mt-3">
             <h3 class="text-center">Siblings</h3>
 
-            <div class="form-group text-center col-12">
-                <button type="button" class="w-50 mx-auto btn btn-outline-success" id="addSiblingRow">
-                    Add A
-                    Sibling
+            <div class="text-center col-12">
+                <button type="button" class="w-50 mx-auto btn btn-outline-success" id="addSiblingRow">Add A Sibling
                 </button>
             </div>
         </div>
 
         @if($siblings != null)
-            <div class="form-outline col-12 mt-1 mb-2">
-                @foreach($siblings as $sibling)
-                    @php $sibling = \App\Models\FamilyMember::find($sibling) @endphp
+            @foreach($siblings as $sibling)
+                @php $sibling = \App\Models\FamilyMember::find($sibling) @endphp
 
+                <div class="col-12 mt-2">
                     <select class="mx-auto" name="siblings[]" data-mdb-select-init>
-                        <option
-                            value="{{ $option->id }}" {{ $option->id == $sibling->id ? 'selected' : '' }}>{{ $sibling->full_name() }}</option>
-                    </select>
-                @endforeach
+                        <option value="blank">--- Select/Remove A Sibling ---</option>
 
-                <label for="siblings" class="form-label select-label">Siblings</label>
-            </div>
+                        @foreach($members as $option)
+                            <option
+                                value="{{ $option->id }}" {{ $option->id == $sibling->id ? 'selected' : '' }}>{{ $option->full_name() }}</option>
+                        @endforeach
+                    </select>
+
+                    <label for="siblings" class="form-label select-label">Siblings</label>
+                </div>
+            @endforeach
         @endif
 
         <!-- Blank row for adding a sibling member -->
-        <div class="form-outline siblingRow mt-1 mb-2 d-none" id="new_sibling_row_default">
+        <div class="siblingRow mt-1 mb-2 d-none" id="new_sibling_row_default">
             <select class="mx-auto" name="new_siblings[]">
 
                 <option value="blank">--- Select A Sibling ---</option>
@@ -117,10 +119,10 @@
     </div>
 
     <div class="row" id="">
-        <div class="form-group col-12">
+        <div class="col-12 mt-3">
             <h3 class="text-center">Children</h3>
 
-            <div class="form-group text-center col-12">
+            <div class="text-center col-12">
                 <button type="button" class="w-50 mx-auto btn btn-outline-success" id="addChildrenRow">
                     Add A Child
                 </button>
@@ -128,23 +130,28 @@
         </div>
 
         @if($children != null)
-            <div class="form-group text-center col-12">
-                @foreach($children as $child)
-                    @php $child = \App\Models\FamilyMember::find($child) @endphp
+            @foreach($children as $child)
+                @php $child = \App\Models\FamilyMember::find($child) @endphp
 
-                    <select class="form-control w-50 mx-auto" name="children[]">
-                        <option
-                            value="{{ $option->id }}" {{ $option->id == $child ? 'selected' : '' }}>{{ $option->full_name() }}</option>
+                <div class="col-12 mt-2">
+                    <select class="mx-auto" name="children[]" data-mdb-select-init>
+
+                        <option value="blank">--- Select/Remove A Child ---</option>
+
+                        @foreach($members as $option)
+                            <option
+                                value="{{ $option->id }}" {{ $option->id == $child->id ? 'selected' : '' }}>{{ $option->full_name() }}</option>
+                        @endforeach
                     </select>
-                @endforeach
 
-                <label for="children" class="form-label text-center d-block">Child</label>
-            </div>
+                    <label for="children" class="form-label select-label">Child</label>
+                </div>
+            @endforeach
         @endif
 
         <!-- Blank row for adding a child member -->
         <div class="form-group text-center col-12 childrenRow my-1 d-none" id="new_child_row_default">
-            <select class="form-control w-50 mx-auto" name="new_children[]">
+            <select class="mx-auto" name="new_children[]">
 
                 <option value="blank">--- Select A Child ---</option>
 
@@ -152,7 +159,7 @@
                     <option value="{{ $option->id }}">{{ $option->full_name() }}</option>
                 @endforeach
 
-                <label for="new_children" class="form-label text-center d-block">Child</label>
+                <label for="new_children" class="form-label select-label">Child</label>
             </select>
         </div>
     </div>
