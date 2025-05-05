@@ -21,3 +21,16 @@
         @endforeach
     </div>
 </div>
+
+<script type="text/javascript">
+    let images = document.getElementsByClassName('carousel-item');
+    let createHeight = screen.availHeight * 0.33;
+
+    if (images.length >= 1) {
+        for (let i = 0; i < images.length; i++) {
+            let thisImage = images[i].firstElementChild;
+
+            thisImage.style.minHeight = createHeight + 'px';
+        }
+    }
+</script>

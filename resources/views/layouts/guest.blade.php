@@ -40,7 +40,7 @@
         rel="stylesheet">
 
     <!-- Styles -->
-{{--    <link rel="stylesheet" href="{{ asset('css/jgreunion.css') }}">--}}
+    <link rel="stylesheet" href="{{ asset('css/jgreunion.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom_styles.min.css') }}">
 
