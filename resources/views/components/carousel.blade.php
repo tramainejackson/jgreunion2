@@ -11,7 +11,7 @@
                     <div class="mask text-white" style="background-color: rgba(0, 0, 0, 0.5)">
                         <div class="container d-flex align-items-start justify-content-center h-100">
                             <div class="">
-                                <h1 class="pt-5 mt-5">Jackson & Green Family Reunion</h1>
+                                <h1 class="pt-5 mt-5 text-center">Jackson & Green Family Reunion</h1>
                                 <h3 class="text-center">{{ $image->image_desc }}</h3>
                             </div>
                         </div>
