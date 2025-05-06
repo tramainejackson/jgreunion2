@@ -38,6 +38,7 @@ class ReunionController extends Controller
      */
     public function index()
     {
+
         $reunions = Reunion::orderby('reunion_year', 'desc')->get();
 
         return response()->view('admin.reunions.index', compact('reunions'));
@@ -120,11 +121,30 @@ class ReunionController extends Controller
         $committee_members = $reunion->committee;
         $states = State::all();
         $events = $reunion->events->groupBy('event_date');
+        $registered_user = false;
 
-//        dd($committee_president);
+        if (Auth::check()) {
+            if (Auth::user()->member != null) {
+                if (Auth::user()->member->registrations != null) {
+                    $registrations = Auth::user()->member->registrations;
 
-        return response()->view('upcoming_reunion', compact('registrations', 'committee_members', 'events', 'committee_president', 'reunion', 'states'));
+                    foreach ($registrations as $registration) {
+                        if ($registration->reunion->id == $reunion->id) {
+                            $registered_user = true;
+                            break;
+                        } else {
+                            $registered_user = false;
+                        }
+                    }
+                } else {
+                    $registered_user = false;
+                }
+            } else {
+                $registered_user = false;
+            }
+        }
 
+        return response()->view('upcoming_reunion', compact('registered_user', 'registrations', 'committee_members', 'events', 'committee_president', 'reunion', 'states'));
     }
 
     /**

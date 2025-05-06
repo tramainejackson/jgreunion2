@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Builder;
 
 class FamilyMember extends Model
 {
@@ -101,6 +102,22 @@ class FamilyMember extends Model
         }
 
         return $return_array;
+    }
+
+    /**
+     * Get searched family members
+     * @param  $search
+     * @param  Builder $query
+     */
+    public function scopeGetSearches(Builder $query, $search)
+    {
+        return $query->where('firstname', 'like', '%' . $search . '%')
+            ->orWhere('lastname', 'like', '%' . $search . '%')
+            ->orWhere('email', 'like', '%' . $search . '%')
+            ->orWhere('city', 'like', '%' . $search . '%')
+            ->orWhere('state', 'like', '%' . $search . '%')
+            ->orWhere('zip', 'like', '%' . $search . '%')
+            ->get();
     }
 
     /**

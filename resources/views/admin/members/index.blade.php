@@ -1,141 +1,155 @@
 <x-app-layout>
 
+    @section('add_scripts')
+        {{--        <script type="module">--}}
+        {{--            import {startSearch} from '/js/myjs_functions.js';--}}
+
+        {{--            for (let i = 0; i < document.getElementsByClassName('memberFilter').length; i++) {--}}
+        {{--                document.getElementsByClassName('memberFilter')[i].addEventListener("keyup", (event) => startSearch(event.target));--}}
+
+        {{--                console.log(document.getElementsByClassName('memberFilter')[i]);--}}
+        {{--            }--}}
+        {{--        </script>--}}
+    @endsection
+
     <div class="container-fluid" id="profilePage">
+
+        <div class="row">
+            <div class="col-12 py-5 text-center font7"
+                 style="background: radial-gradient(darkgreen, green, #303a30); color: whitesmoke;">
+                <h1 class="mt-5 pb-3">Jackson/Green Family
+                    Reunion</h1>
+
+                <h2 class="my-3">Family Members Name List</h2>
+            </div>
+        </div>
 
         @include('components.nav')
 
-        <div class="row white" id="distribution_list">
+        <div class="row" id="distribution_list">
 
-            <div class="col-12 d-flex align-items-center justify-content-center justify-content-md-start">
+            <div class="col-11 mx-auto py-4">
 
-                <div class="my-4">
-                    <div class="">
-                        <a href="/members/create" class="btn btn-info btn-lg">Create New Member</a>
+                @if($family_member->user->is_admin())
+                    <div class="pe-2">
+                        <div class="">
+                            <a href="{{ route('members.create') }}" class="btn btn-warning">Create New Member</a>
+                        </div>
                     </div>
-                </div>
 
-                @if($duplicates !== null)
-                    <div class="my-4">
-                        <div class="ml-3">
-                            <a href="{{ route('duplicate_members') }}" class="btn btn-lg blue darken-2">Check
+                    @if($duplicates !== null)
+                        <div class="pe-2">
+                            <a href="{{ route('duplicate_members') }}" class="btn btn-dark">Check
                                 Duplicates</a>
                         </div>
-                    </div>
+                    @endif
                 @endif
 
-                <div class="my-4">
-                    <div class="ml-5">
-                        <div class="input-group input-group-lg">
+                <form action="{{ route('members.index') }}" method="GET">
 
-                            <input type="text" name="" class="memberFilter form-control" value=""
-                                   placeholder="Filter By Name"/>
-
-                            <div class="input-group-prepend">
-                                <i class="fa fa-search input-group-text" aria-hidden="true"></i>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-4" id="">
+                                <input type="text" name="search" class="memberFilter form-control shadow-2-strong" value="{{ request('search') ? request('search') : '' }}"
+                                       placeholder="Filter By Name"/>
                             </div>
+
+                            <div class="col-4">
+                                <button class="btn btn-secondary" type="submit">Start Filter</button>
+                                <a class="btn btn-outline-secondary" href="{{ route('members.index') }}">Clear
+                                    Search</a>
+                            </div>
+
                         </div>
                     </div>
-                </div>
-
+                </form>
             </div>
+        </div>
 
-            <div class="col-12">
+        <div class="col-11 mx-auto py-4">
 
-                <div data-mdb-datatable-init class="datatable">
+            <div class="datatable" data-mdb-datatable-init>
 
-                    <table id="family_members_table" class="table table-striped table-hover" cellspacing="0"
-                           width="100%">
+                <table id="family_members_table" class="table table-striped table-hover" cellspacing="0"
+                       width="100%">
 
-                        <thead>
-                        <tr>
+                    <thead>
+                    <tr>
+                        @if($family_member->user->is_admin())
                             <th class="text-center">Edit</th>
-                            <th class="th-sm">
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span>Firstname</span>
-                                    <i class="fa fa-sort" aria-hidden="true"></i>
-                                </div>
-                            </th>
+                        @else
+                            <th class="text-center">Edit</th>
+                        @endif
 
-                            <th>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span>Lastname</span>
-                                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                                </div>
-                            </th>
+                        <th class="text-center">First Name</th>
+                        <th class="text-center">Last Name</th>
 
-                            <th>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span>Address</span>
-                                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                                </div>
-                            </th>
+                        @if($family_member->user->is_admin())
+                            <th class="text-center">Address</th>
+                        @endif
 
-                            <th>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span>City</span>
-                                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                                </div>
-                            </th>
+                        <th class="text-center">City</th>
+                        <th class="text-center">State</th>
+                        <th class="text-center">Zip</th>
 
-                            <th>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span>State</span>
-                                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                                </div>
-                            </th>
+                        @if($family_member->user->is_admin())
+                            <th class="text-center">Phone</th>
+                        @endif
 
-                            <th>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span>Zip</span>
-                                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                                </div>
-                            </th>
-                            <th>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span>Phone</span>
-                                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                                </div>
-                            </th>
+                        <th class="text-center">Email</th>
 
-                            <th>
-                                <div class="d-flex align-items-center justify-content-between">
-                                    <span>Email</span>
-                                    <i class="fa fa-sort float-right" aria-hidden="true"></i>
-                                </div>
-                            </th>
+                        @if($family_member->user->is_admin())
                             <th class="text-center">Preference</th>
                             <th class="text-center">Notes</th>
-                        </tr>
-                        </thead>
+                        @endif
+                    </tr>
+                    </thead>
 
-                        <tbody>
+                    <tbody>
 
-                        @foreach($distribution_list as $member)
-                            <tr>
+                    @foreach($distribution_list as $member)
+                        <tr>
+                            @if($family_member->user->is_admin())
                                 <td class="text-truncate"><a href="{{ route('members.edit', $member->id) }}"
                                                              class="btn btn-warning">Edit</a></td>
-                                <td class="text-truncate nameSearch">{{ $member->firstname }}</td>
-                                <td class="text-truncate nameSearch">{{ $member->lastname }}</td>
+                            @else
+                                <td class="text-truncate"><a href="{{ route('members.show', $member->id) }}"
+                                                             class="btn btn-info">View</a></td>
+                            @endif
+
+                            <td class="text-truncate nameSearch">{{ $member->firstname }}</td>
+                            <td class="text-truncate nameSearch">{{ $member->lastname }}</td>
+
+                            @if($family_member->user->is_admin())
                                 <td class="text-truncate">{{ $member->address }}</td>
-                                <td class="text-truncate">{{ $member->city }}</td>
-                                <td class="text-truncate">{{ $member->state }}</td>
-                                <td class="text-truncate">{{ $member->zip }}</td>
+                            @endif
+
+                            <td class="text-truncate">{{ $member->city }}</td>
+                            <td class="text-truncate">{{ $member->state }}</td>
+                            <td class="text-truncate">{{ $member->zip }}</td>
+
+                            @if($family_member->user->is_admin())
                                 <td class="text-truncate">{{ $member->phone }}</td>
-                                <td class="text-truncate">{{ $member->email }}</td>
+                            @endif
+
+                            <td class="text-truncate">{{ $member->email }}</td>
+
+                            @if($family_member->user->is_admin())
                                 <td class="text-truncate text-center" data-toggle="tooltip" data-placement="left"
                                     title="{{ $member->mail_preference == 'M' ? 'Mail' : 'Email' }}">{{ $member->mail_preference }}</td>
                                 <td class="text-truncate" data-toggle="tooltip" data-placement="left"
                                     title="{{ $member->notes }}">{{ $member->notes != null ? 'Y' : 'N' }}</td>
-                            </tr>
-                        @endforeach
+                            @endif
+                        </tr>
+                    @endforeach
 
-                        </tbody>
+                    </tbody>
 
-                    </table>
-
-                </div>
+                </table>
 
             </div>
+
         </div>
+    </div>
     </div>
 </x-app-layout>

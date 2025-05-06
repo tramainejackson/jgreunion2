@@ -349,8 +349,15 @@ class RegistrationController extends Controller
      */
     public function guest_registration(Reunion $reunion)
     {
+        if(Auth::guest()) {
+            $member = new FamilyMember();
+        } else {
+            $member = Auth::user()->member;
+        }
+
         $states = State::all();
-        return view('guest_registration', compact('reunion', 'states'));
+
+        return view('guest_registration', compact('reunion', 'states', 'member'));
     }
 
     /**

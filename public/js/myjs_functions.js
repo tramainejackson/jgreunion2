@@ -1,4 +1,4 @@
-import { Input, Select, Datepicker, initMDB } from './mdb.es.min.js';
+import {Input, Select, Datepicker, initMDB} from './mdb.es.min.js';
 // import colors from "tailwindcss/colors";
 
 //Common Variables
@@ -16,8 +16,8 @@ function updateAdultName() {
 }
 
 function addNewRowNumber(attending) {
-    initMDB({ Input });
-    initMDB({ Select });
+    initMDB({Input});
+    initMDB({Select});
 
     let count = document.getElementById("attending_" + attending).value;
     let currentRows = document.getElementById('registration_form_table').querySelectorAll('.attending_' + attending + '_row:not(#attending_' + attending + '_row_default)');
@@ -31,7 +31,7 @@ function addNewRowNumber(attending) {
     }
 
     // Add new rows
-    if(attending === 'adult') {
+    if (attending === 'adult') {
         count--;
     }
 
@@ -55,7 +55,7 @@ function addNewRowNumber(attending) {
     }
 
     //Update total price per person
-    if(attending === 'adult') {
+    if (attending === 'adult') {
         count++;
     }
     currentTotalPrice.value = count * Number(currentPrice.value);
@@ -65,9 +65,9 @@ function addNewRowNumber(attending) {
 }
 
 function addNewRowFromBtn(taskTitle) {
-    initMDB({ Input });
-    initMDB({ Select });
-    initMDB({ Datepicker });
+    initMDB({Input});
+    initMDB({Select});
+    initMDB({Datepicker});
 
     let newRow = document.getElementById('new_' + taskTitle + '_row_default').cloneNode(true);
     let selectForm, inputForm, textareaForm, datePickerForm;
@@ -84,21 +84,21 @@ function addNewRowFromBtn(taskTitle) {
     document.getElementById('new_' + taskTitle + '_row_default').insertAdjacentElement('afterend', newRow);
 
     //Remove disabled form inputs from newly added row
-    if(selectForm.length > 0) {
+    if (selectForm.length > 0) {
         for (let i = 0; i < selectForm.length; i++) {
             selectForm[i].removeAttribute('disabled');
             new Select(selectForm[i]);
         }
     }
 
-    if(inputForm.length > 0) {
+    if (inputForm.length > 0) {
         for (let i = 0; i < inputForm.length; i++) {
             inputForm[i].removeAttribute('disabled');
             new Input(inputForm[i].parentElement).init();
         }
     }
 
-    if(textareaForm.length > 0) {
+    if (textareaForm.length > 0) {
         for (let i = 0; i < textareaForm.length; i++) {
             textareaForm[i].removeAttribute('disabled');
             textareaForm[i].parentElement.setAttribute('data-mdb-input-init', '');
@@ -106,7 +106,7 @@ function addNewRowFromBtn(taskTitle) {
         }
     }
 
-    if(datePickerForm.length > 0) {
+    if (datePickerForm.length > 0) {
         for (let i = 0; i < datePickerForm.length; i++) {
             datePickerForm[i].removeAttribute('disabled');
             datePickerForm[i].parentElement.setAttribute('data-mdb-datepicker-init', '');
@@ -120,26 +120,26 @@ function addNewRowFromBtn(taskTitle) {
 function btnToggle(btnElement) {
     let otherBtn;
 
-    if(btnElement.previousElementSibling != null) {
+    if (btnElement.previousElementSibling != null) {
         otherBtn = btnElement.previousElementSibling;
     } else {
         otherBtn = btnElement.nextElementSibling;
     }
 
-    if(!btnElement.classList.contains('active') && !otherBtn.classList.contains('active')) {
+    if (!btnElement.classList.contains('active') && !otherBtn.classList.contains('active')) {
         btnElement.classList.toggle('btn-success');
         btnElement.classList.toggle('btn-outline-success');
         btnElement.classList.toggle('active');
 
-        if(btnElement.querySelector('input') != null) {
+        if (btnElement.querySelector('input') != null) {
             btnElement.querySelector('input').setAttribute('checked', true);
         }
-    } else if(!btnElement.classList.contains('active')) {
+    } else if (!btnElement.classList.contains('active')) {
         btnElement.classList.toggle('btn-success');
         btnElement.classList.toggle('btn-outline-success');
         btnElement.classList.toggle('active');
 
-        if(btnElement.querySelector('input') != null) {
+        if (btnElement.querySelector('input') != null) {
             btnElement.querySelector('input').setAttribute('checked', true);
         }
 
@@ -147,7 +147,7 @@ function btnToggle(btnElement) {
         otherBtn.classList.toggle('btn-outline-success');
         otherBtn.classList.toggle('active');
 
-        if(otherBtn.querySelector('input') != null) {
+        if (otherBtn.querySelector('input') != null) {
             otherBtn.querySelector('input').removeAttribute('checked');
         }
     }
@@ -157,11 +157,11 @@ function btnToggle(btnElement) {
 function filePreview(input) {
 
     if (input.files && input.files[0]) {
-        if(input.files.length > 1) {
+        if (input.files.length > 1) {
             var imgCount = input.files.length
             $('.imgPreview').remove();
 
-            for(var x=0; x < imgCount; x++) {
+            for (var x = 0; x < imgCount; x++) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
                     $('<img class="imgPreview img-thumbnail m-1" src="' + e.target.result + '" width="350" height="200"/>').appendTo('.uploadsView');
@@ -183,8 +183,44 @@ function filePreview(input) {
     }
 }
 
-export { addNewRowNumber }
-export { addNewRowFromBtn }
-export { btnToggle }
-export { updateAdultName }
-export { filePreview }
+// Filter members with search input
+// Check text to see if it matches the search criteria being entered
+function startSearch(searchVal) {
+    let membersTable = document.getElementById('family_members_table');
+    // let membersTable = $('table.table tbody tr');
+    let searchCriteria = searchVal.value.toLowerCase();
+    let foundResults = 0;
+    // $(membersTable).removeClass("matches");
+    // $('.noSearchResults').remove();
+
+    if (searchCriteria != "") {
+        let rows = membersTable.querySelectorAll('tbody tr');
+        console.log(rows.length);
+        if (rows.length >= 1) {
+            for (let i = 0; i < rows.length; i++) {
+                console.log(rows[i]);
+                var dataString = $(this).find('.nameSearch').text().toLowerCase();
+
+                if (dataString.includes(searchCriteria)) {
+                    $(this).addClass("matches");
+                    $(this).show();
+                    foundResults++;
+                } else if (!dataString.includes(searchCriteria)) {
+                    $(this).hide();
+                }
+            }
+        }
+
+        // If all rows are hidden, then add a row saying no results found
+        if (foundResults == 0) {
+            $('<tr class="noSearchResults"><td>No Results Found</td></tr>').appendTo($('table.table tbody'));
+        }
+    }
+}
+
+export {addNewRowNumber}
+export {addNewRowFromBtn}
+export {btnToggle}
+export {updateAdultName}
+export {filePreview}
+export {startSearch}

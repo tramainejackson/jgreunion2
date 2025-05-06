@@ -14,44 +14,41 @@
         <!-- Registration Form -->
         <div class="row reunion_content my-5" id="registration_information">
             <div class="col">
-                <h2 id="" class="text-center">Registration Forms</h2>
+                <h1 id="" class="text-center">Registration Forms</h1>
 
-                <div class="col-12" id="registrationReminderMsg">
-                    <p class="text-center">Please do not send any payment without completing the registration form
-                        first. You can click
-                        {{--                        <span id="registrationLink"--}}
-                        {{--                                    class="d-none d-sm-inline"--}}
-                        {{--                                    data-toggle="modal"--}}
-                        {{--                                    data-target="#registration_modal">here</span>--}}
-                        <a href="/reunion/{{$reunion->id}}/guest_registration_form" target="_blank"
-                           id="registrationLink"
-                           class="">here</a> to complete your registration for the upcoming reunion.
-                    </p>
-                </div>
-
-                {{--                @if(Auth::check())--}}
-
-                {{--                    <div class="col-12" id="registrationReminderMsg">--}}
-                {{--                        <p class="text-center">You are currently logged in as an admin. Please select <a--}}
-                {{--                                href="/registrations/create/{{$reunion->id}}" id="registrationLink"--}}
-                {{--                                class="d-inline">here</a> to complete the registration for someone else.</p>--}}
-                {{--                    </div>--}}
-
-                {{--                @endif--}}
-
-                {{--                @if(!Auth::check())--}}
-                {{--                    <div class="row">--}}
-                {{--                        <div class="col-12">--}}
-                {{--                            <button data-mdb-modal-init--}}
-                {{--                                    data-mdb-ripple-init--}}
-                {{--                                    type="button"--}}
-                {{--                                    class="btn btn-info btn-lg d-block"--}}
-                {{--                                    id="registrationFormBtn"--}}
-                {{--                                    data-mdb-target="#registration_modal">Registration Form--}}
-                {{--                            </button>--}}
-                {{--                        </div>--}}
-                {{--                    </div>--}}
-                {{--                @endif--}}
+                @if(Auth::check())
+                    @if($registered_user)
+                        <div class="col12">
+                            <h3 id="" class="text-center">You are registered for this reunion. Click here to see your registration.</h3>
+                        </div>
+                    @else
+                        <div class="col-12" id="registrationReminderMsg">
+                            <p class="text-center">Please do not send any payment without completing the registration form
+                                first. You can click
+                                {{--                        <span id="registrationLink"--}}
+                                {{--                                    class="d-none d-sm-inline"--}}
+                                {{--                                    data-toggle="modal"--}}
+                                {{--                                    data-target="#registration_modal">here</span>--}}
+                                <a href="{{ route('member_registration', ['reunion' => $reunion->id, 'member' => Auth::user()->member->id]) }}" target="_blank"
+                                   id="registrationLink"
+                                   class="">here</a> to complete your registration for the upcoming reunion.
+                            </p>
+                        </div>
+                    @endif
+                @else
+                    <div class="col-12" id="registrationReminderMsg">
+                        <p class="text-center">Please do not send any payment without completing the registration form
+                            first. You can click
+                            {{--                        <span id="registrationLink"--}}
+                            {{--                                    class="d-none d-sm-inline"--}}
+                            {{--                                    data-toggle="modal"--}}
+                            {{--                                    data-target="#registration_modal">here</span>--}}
+                            <a href="/reunion/{{$reunion->id}}/guest_registration_form" target="_blank"
+                               id="registrationLink"
+                               class="">here</a> to complete your registration for the upcoming reunion.
+                        </p>
+                    </div>
+                @endif
             </div>
         </div>
         <!-- Registration Form -->
@@ -250,24 +247,29 @@
                                 </p>
                             @endif
 
-{{--                            @if($reunion->registration_form != null)--}}
-{{--                                <p>Click--}}
-{{--                                    <a href="{{ asset('storage/' . str_ireplace('public/', '', $reunion->registration_form)) }}"--}}
-{{--                                       download="{{ $reunion->reunion_year }}_Registration_Form">here</a> to download--}}
-{{--                                    the registration form.--}}
-{{--                                </p>--}}
-{{--                            @else--}}
-{{--                                <p class="">Paper Registration Form Has Not Been Uploaded Yet</p>--}}
-{{--                            @endif--}}
+                            {{--                            @if($reunion->registration_form != null)--}}
+                            {{--                                <p>Click--}}
+                            {{--                                    <a href="{{ asset('storage/' . str_ireplace('public/', '', $reunion->registration_form)) }}"--}}
+                            {{--                                       download="{{ $reunion->reunion_year }}_Registration_Form">here</a> to download--}}
+                            {{--                                    the registration form.--}}
+                            {{--                                </p>--}}
+                            {{--                            @else--}}
+                            {{--                                <p class="">Paper Registration Form Has Not Been Uploaded Yet</p>--}}
+                            {{--                            @endif--}}
                         @else
-                            <p class="text-danger" id="checks_address">Committee Members Not Completed Yet. Once Committee is Finalized, The Information To Fill Out A Check Will Be Added For You</p>
+                            <p class="text-danger" id="checks_address">Committee Members Not Completed Yet. Once
+                                Committee is Finalized, The Information To Fill Out A Check Will Be Added For You</p>
                         @endif
                     </div>
 
                     <div class="card-footer">
                         <div class="d-flex justify-content-around py-2">
-                            <button type="button" class="paymentsFinePrint btn btn-outline-success"><i class="fas fa-square-check"></i>&nbsp;Partial payments accepted&nbsp;<i class="fas fa-square-check"></i></button>
-                            <button type="button" class="paymentsFinePrint btn btn-outline-warning"><i class="fas fa-triangle-exclamation"></i>&nbsp;Any return checks will incur a $30 penalty fee&nbsp;<i class="fas fa-triangle-exclamation"></i></button>
+                            <button type="button" class="paymentsFinePrint btn btn-outline-success"><i
+                                    class="fas fa-square-check"></i>&nbsp;Partial payments accepted&nbsp;<i
+                                    class="fas fa-square-check"></i></button>
+                            <button type="button" class="paymentsFinePrint btn btn-outline-warning"><i
+                                    class="fas fa-triangle-exclamation"></i>&nbsp;Any return checks will incur a $30
+                                penalty fee&nbsp;<i class="fas fa-triangle-exclamation"></i></button>
                         </div>
                     </div>
                 </div>
@@ -435,7 +437,7 @@
                     </div>
 
                     <div class="modal-body">
-                        @include('components.forms.reunion_registration_form')
+                        {{--                        @include('components.forms.reunion_registration_form')--}}
                     </div>
                 </div>
 

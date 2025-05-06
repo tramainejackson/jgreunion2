@@ -23,45 +23,11 @@
 
         <div class="row">
 
-            @if(Auth::user()->is_admin())
-
-                <div class="col-12 col-xl-2 my-2">
-                    <div class="">
-                        <a href="{{ route('members.index') }}" class="btn btn-info btn-lg btn-block">All Members</a>
-
-                        <a href="{{ route('members.create') }}" class="btn btn-info btn-lg my-2 btn-block">Add New
-                            Member</a>
-
-                        <a href="#" type="button" data-toggle="modal" data-target="#modalConfirmDelete"
-                           class="btn btn-danger btn-lg mb-2 btn-block">Delete Member</a>
-
-                        @if($active_reunion != null)
-
-                            <a href="{{ route('registrations.index') }}"
-                               class="btn btn-success btn-block btn-lg{{ $registered_for_reunion != null ? ' disabled' : '' }}"
-                               style="white-space: initial;"
-                               onclick="event.preventDefault(); document.getElementById('one_click_registration').submit();">{{ $registered_for_reunion != null ? 'Member Already Registered For ' . $active_reunion->reunion_city . ' Reunion'  : 'Add Member To ' . $active_reunion->reunion_city . ' Reunion' }}</a>
-
-                            <form action="{{ route('registrations.store') }}" method="POST" class="d-none">
-                                @csrf
-
-                                <input type="text" name="reg_member" class="" value="{{ $family_member->id }}" hidden/>
-
-                                <input type="text" name="reunion_id" class="" value="{{ $active_reunion->id }}" hidden/>
-                            </form>
-                        @endif
-                    </div>
-                </div>
-
-            @else
-
-                <div class="col-12 pt-5 text-center font7"
-                     style="background: radial-gradient(darkgreen, green, #303a30); color: whitesmoke;">
-                    <h1 class="pt-5">Jackson/Green Family Reunion</h1>
-                    <h3 class="pb-5 text-decoration-underline">My Profile</h3>
-                </div>
-
-            @endif
+            <div class="col-12 pt-5 text-center font7"
+                 style="background: radial-gradient(darkgreen, green, #303a30); color: whitesmoke;">
+                <h1 class="pt-5">Jackson/Green Family Reunion</h1>
+                <h3 class="pb-5 text-decoration-underline">My Profile</h3>
+            </div>
 
             <div class="col-11 col-xl-8 mt-2 membersForm mx-auto">
 

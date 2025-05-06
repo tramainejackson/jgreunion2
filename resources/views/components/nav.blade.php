@@ -46,7 +46,7 @@
                 @if(Auth::check())
                     @if(Auth::user()->is_admin())
                         <li class="nav-item">
-                            <a href="{{ route('my_profile.edit', ['my_profile' => Auth::user()->member->id]) }}"
+                            <a href="{{ route('members.index') }}"
                                class="nav-link{{ Str::contains(url()->current(), ['index']) ? ' active' : '' }}">All
                                 Family
                                 Members</a>
@@ -67,6 +67,12 @@
                     <li class="nav-item">
                         <a href="{{ route('members.edit', Auth::user()->member->id) }}" class='nav-link pe-2'>My Profile</a>
                     </li>
+
+                    @if(Auth::user()->is_admin())
+                        <li class="nav-item">
+                            <a href="{{ route('reunions.index') }}" class='nav-link pe-2'>Reunions</a>
+                        </li>
+                    @endif
 
                     <li class="nav-item">
                         <a href="{{ route('logout') }}" class="profileLink nav-link"

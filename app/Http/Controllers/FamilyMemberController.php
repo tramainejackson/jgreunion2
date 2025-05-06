@@ -31,11 +31,20 @@ class FamilyMemberController extends Controller
      */
     public function index()
     {
-        $distribution_list = FamilyMember::orderby('lastname', 'asc')->orderby('address', 'asc')->get();
+        $search = false;
+        $search_results = null;
+
+        if(\request('search')) {
+            $search_results = FamilyMember::getSearches(\request('search'));
+            $search = true;
+        }
+
+        $family_member = Auth::check() ? Auth::user()->member : null;
+        $distribution_list = $search == true ? $search_results : FamilyMember::orderby('lastname', 'asc')->orderby('address', 'asc')->get();
 		$duplicates_check = FamilyMember::checkDuplicates();
 		$duplicates = $duplicates_check->isNotEmpty() ? $duplicates_check : null;
 
-		return response()->view('admin.members.index', compact('distribution_list', 'duplicates'));
+		return response()->view('admin.members.index', compact('distribution_list', 'duplicates', 'family_member'));
     }
 
     /**
@@ -53,7 +62,7 @@ class FamilyMemberController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return Response
      */
     public function store(Request $request)
@@ -124,23 +133,22 @@ class FamilyMemberController extends Controller
         $newReunionCheck->count() > 0 ? $newReunionCheck = $newReunionCheck->first() : $newReunionCheck = null;
         $newReunionCheck = Reunion::where('reunion_complete', 'N')->get()->last();
 
-        $user = $member->user;
+        $user = Auth::user();
         $userPhone1 = substr($user["phone"], 0, 3);
         $userPhone2 = substr($user["phone"], 3, 3);
         $userPhone3 = substr($user["phone"], 6, 4);
 
-        $family_member = $member;
+        $family_member = Auth::user()->member;
         $states = State::all();
         $members = FamilyMember::orderby('firstname', 'asc')->get();
         $siblings = $family_member->siblings != null ? explode('; ', $family_member->siblings) : null;
         $children = $family_member->children != null ? explode('; ', $family_member->children) : null;
-//        dd($siblings);
         $family_members = FamilyMember::household($family_member->family_id);
         $potential_family_members = FamilyMember::potentialHousehold($family_member);
         $active_reunion = Reunion::active()->first();
         $registered_for_reunion = $active_reunion !== null ? Registration::memberRegistered($family_member->id, $active_reunion->id)->first() : null;
 
-        return response()->view('admin.my_profile.edit', compact('user', 'userPhone1', 'userPhone2', 'userPhone3', 'states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
+        return response()->view('admin.members.edit', compact('user', 'userPhone1', 'userPhone2', 'userPhone3', 'states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
     }
 
     /**
@@ -273,7 +281,7 @@ class FamilyMemberController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  FamilyMember $member
      * @return Response
      */
     public function destroy(FamilyMember $member)
