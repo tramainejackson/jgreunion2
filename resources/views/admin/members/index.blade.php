@@ -1,17 +1,5 @@
 <x-app-layout>
 
-    @section('add_scripts')
-        {{--        <script type="module">--}}
-        {{--            import {startSearch} from '/js/myjs_functions.js';--}}
-
-        {{--            for (let i = 0; i < document.getElementsByClassName('memberFilter').length; i++) {--}}
-        {{--                document.getElementsByClassName('memberFilter')[i].addEventListener("keyup", (event) => startSearch(event.target));--}}
-
-        {{--                console.log(document.getElementsByClassName('memberFilter')[i]);--}}
-        {{--            }--}}
-        {{--        </script>--}}
-    @endsection
-
     <div class="container-fluid" id="profilePage">
 
         <div class="row">
@@ -26,11 +14,10 @@
 
         @include('components.nav')
 
-        <div class="row" id="distribution_list">
+        <div class="row py-4" id="distribution_list">
 
-            <div class="col-11 mx-auto py-4">
-
-                @if($family_member->user->is_admin())
+            @if($family_member->user->is_admin())
+                <div class="align-items-center col-11 d-flex mx-auto pb-4 ps-4" id="">
                     <div class="pe-2">
                         <div class="">
                             <a href="{{ route('members.create') }}" class="btn btn-warning">Create New Member</a>
@@ -43,7 +30,10 @@
                                 Duplicates</a>
                         </div>
                     @endif
-                @endif
+                </div>
+            @endif
+
+            <div class="col-11 mx-auto">
 
                 <form action="{{ route('members.index') }}" method="GET">
 

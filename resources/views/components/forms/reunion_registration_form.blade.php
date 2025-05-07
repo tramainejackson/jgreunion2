@@ -1,11 +1,13 @@
-<script type="module">
-    import {addNewRowNumber, updateAdultName} from '/js/myjs_functions.js';
+@section('add_scripts')
+    <script type="module">
+        import {addNewRowNumber, updateAdultName} from '/js/myjs_functions.js';
 
-    document.getElementById('attending_adult').addEventListener("change", (event) => addNewRowNumber('adult'));
-    document.getElementById('attending_youth').addEventListener("change", (event) => addNewRowNumber('youth'));
-    document.getElementById('attending_children').addEventListener("change", (event) => addNewRowNumber('children'));
-    document.getElementById('firstname').addEventListener("change", (event) => updateAdultName());
-</script>
+        document.getElementById('attending_adult').addEventListener("change", (event) => addNewRowNumber('adult'));
+        document.getElementById('attending_youth').addEventListener("change", (event) => addNewRowNumber('youth'));
+        document.getElementById('attending_children').addEventListener("change", (event) => addNewRowNumber('children'));
+        document.getElementById('firstname').addEventListener("change", (event) => updateAdultName());
+    </script>
+@endsection
 
 <div id="reunion_registration_form">
 

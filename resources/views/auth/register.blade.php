@@ -7,7 +7,7 @@
                 <h2 id="reg_form_header">Register</h2>
 
                 <div id="reg_form_input">
-                    <form action="{{ route('register_user') }}" method="POST">
+                    <form action="{{ route('register') }}" method="POST">
                         @csrf
 
                         <div class="row">
@@ -16,32 +16,32 @@
                                 <div class="form-outline" data-mdb-input-init>
                                     <input type="text"
                                            class="form-control"
-                                           name="first_name"
-                                           value="{{ old('first_name') ? old('first_name') : '' }}"
-                                           placeholder="Enter Firstname" autofocus>
+                                           name="firstname"
+                                           value="{{ old('firstname') ? old('firstname') : '' }}"
+                                           placeholder="Enter First Name" autofocus>
 
-                                    <label class="form-label" for="first_name">First Name</label>
-
-                                    @if ($errors->has('first_name'))
-                                        <span class="text-danger">{{ $errors->first('first_name') }}</span>
-                                    @endif
+                                    <label class="form-label" for="firstname">First Name</label>
                                 </div>
+
+                                @if ($errors->has('firstname'))
+                                    <span class="text-danger">{{ $errors->first('firstname') }}</span>
+                                @endif
                             </div>
 
                             <div class="col-12 col-md-6">
                                 <div class="form-outline" data-mdb-input-init>
                                     <input type="text"
                                            class="form-control"
-                                           name="last_name"
-                                           value="{{ old('last_name') ? old('last_name') : '' }}"
-                                           placeholder="Enter Firstname">
+                                           name="lastname"
+                                           value="{{ old('lastname') ? old('lastname') : '' }}"
+                                           placeholder="Enter Last Name">
 
-                                    <label class="form-label"  for="last_name">Last Name</label>
-
-                                    @if ($errors->has('last_name'))
-                                        <span class="text-danger">{{ $errors->first('last_name') }}</span>
-                                    @endif
+                                    <label class="form-label"  for="lastname">Last Name</label>
                                 </div>
+
+                                @if ($errors->has('lastname'))
+                                    <span class="text-danger">{{ $errors->first('lastname') }}</span>
+                                @endif
                             </div>
 
                             <div class="col-12 col-md-6 mb-2">
@@ -53,11 +53,11 @@
                                            placeholder="Enter Email Address">
 
                                     <label class="form-label" for="email">Email Address</label>
-
-                                    @if ($errors->has('email'))
-                                        <span class="text-danger">{{ $errors->first('email') }}</span>
-                                    @endif
                                 </div>
+
+                                @if ($errors->has('email'))
+                                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                                @endif
                             </div>
 
                             <div class="col-12 col-md-6">
@@ -68,12 +68,12 @@
                                            value="{{ old('username') ? old('username') : '' }}"
                                            placeholder="Enter Username">
 
-                                    <label class="form-label" for="last_name">Username</label>
-
-                                    @if ($errors->has('username'))
-                                        <span class="text-danger">{{ $errors->first('username') }}</span>
-                                    @endif
+                                    <label class="form-label" for="username">Username</label>
                                 </div>
+
+                                @if ($errors->has('username'))
+                                    <span class="text-danger">{{ $errors->first('username') }}</span>
+                                @endif
                             </div>
 
                             <div class="col-12 col-md-6 mb-2">
@@ -84,11 +84,11 @@
                                            placeholder="Enter Password"/>
 
                                     <label class="form-label" for="password">Password</label>
-
-                                    @if ($errors->has('password'))
-                                        <span class="text-danger">{{ $errors->first('password') }}</span>
-                                    @endif
                                 </div>
+
+                                @if ($errors->has('password'))
+                                    <span class="text-danger">{{ $errors->first('password') }}</span>
+                                @endif
                             </div>
 
                             <div class="col-12 col-md-6 mb-2">

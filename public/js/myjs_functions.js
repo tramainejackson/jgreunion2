@@ -183,44 +183,8 @@ function filePreview(input) {
     }
 }
 
-// Filter members with search input
-// Check text to see if it matches the search criteria being entered
-function startSearch(searchVal) {
-    let membersTable = document.getElementById('family_members_table');
-    // let membersTable = $('table.table tbody tr');
-    let searchCriteria = searchVal.value.toLowerCase();
-    let foundResults = 0;
-    // $(membersTable).removeClass("matches");
-    // $('.noSearchResults').remove();
-
-    if (searchCriteria != "") {
-        let rows = membersTable.querySelectorAll('tbody tr');
-        console.log(rows.length);
-        if (rows.length >= 1) {
-            for (let i = 0; i < rows.length; i++) {
-                console.log(rows[i]);
-                var dataString = $(this).find('.nameSearch').text().toLowerCase();
-
-                if (dataString.includes(searchCriteria)) {
-                    $(this).addClass("matches");
-                    $(this).show();
-                    foundResults++;
-                } else if (!dataString.includes(searchCriteria)) {
-                    $(this).hide();
-                }
-            }
-        }
-
-        // If all rows are hidden, then add a row saying no results found
-        if (foundResults == 0) {
-            $('<tr class="noSearchResults"><td>No Results Found</td></tr>').appendTo($('table.table tbody'));
-        }
-    }
-}
-
 export {addNewRowNumber}
 export {addNewRowFromBtn}
 export {btnToggle}
 export {updateAdultName}
 export {filePreview}
-export {startSearch}

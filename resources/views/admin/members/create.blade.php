@@ -2,19 +2,25 @@
 
     <div class="container-fluid" id="">
 
+        <div class="row">
+            <div class="col-12 py-5 text-center font7"
+                 style="background: radial-gradient(darkgreen, green, #303a30); color: whitesmoke;">
+                <h1 class="mt-5 pb-3">Jackson/Green Family
+                    Reunion</h1>
+
+                <h2 class="my-3">Create New Member</h2>
+            </div>
+        </div>
+
         @include('components.nav')
 
         <div class="row">
 
-            <div class="col-12 col-lg-2 my-2">
-                <div class="">
-                    <a href="{{ route('members.index') }}" class="btn btn-info btn-lg">All Members</a>
-                </div>
-            </div>
+            <div class="col-11 col-lg-8 membersForm mx-auto mt-lg-1">
 
-            <div class="col-11 col-lg-8 membersForm mx-auto">
+                <a href="{{ route('members.index') }}" class="btn btn-info btn-lg ms-4 ms-lg-3 mt-2 mt-lg-4 position-absolute start-0">All Members</a>
 
-                <h1 class="mt-2 mb-4">Create New Member</h1>
+                <h1 class="mb-4 mt-3 pt-5 pt-lg-0">Create New Member</h1>
 
                 <form action="{{ route('members.store') }}" method="POST">
                     @csrf
@@ -147,7 +153,7 @@
                         <label class="form-label select-label" for="mail_preference">Mail Preference</label>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group mt-3">
                         <button class="btn btn-primary form-control" type="submit">Create New Member</button>
                     </div>
 

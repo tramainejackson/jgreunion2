@@ -1,39 +1,32 @@
-<x-guest-layout>
-    <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+<x-app-layout>
 
-        <div class="mb-4 text-sm text-gray-600">
-            {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-        </div>
+    @section('add_scripts')
+        <script type="text/javascript">
+            document.getElementsByTagName('footer')[0].classList.add('fixed-bottom');
+        </script>
+    @endsection
 
-        @if (session('status') == 'verification-link-sent')
-            <div class="mb-4 font-medium text-sm text-green-600">
-                {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+    <div id="" class="container-fluid">
+        <div class="row">
+            <div class="col-12 py-5 text-center font7"
+                 style="background: radial-gradient(darkgreen, green, #303a30); color: whitesmoke;">
+                <h1 class="my-3">Jackson/Green Family
+                    Reunion</h1>
             </div>
-        @endif
 
-        <div class="mt-4 flex items-center justify-between">
-            <form method="POST" action="{{ route('verification.send') }}">
-                @csrf
+            <div class="col-8 col-md-8 mx-auto mt-4 text-center">
+                <div class="mb-4">
+                    <h1 class="mb-3">Almost There!</h1>
 
-                <div>
-                    <x-button>
-                        {{ __('Resend Verification Email') }}
-                    </x-button>
+                    <p class="">Thanks for registering an account! Before getting started, we need verify your account.
+                        We are working to get every account verified as soon as possible. If more than a week has passed
+                        and you still don't have access, please reach to one of the contacts. You can view all the
+                        contacts by clicking the link below.</p>
+
+                    <a href="{{ route('contact') }}" class="btn btn-lg btn-primary">Contacts</a>
                 </div>
-            </form>
-
-            <form method="POST" action="{{ route('logout') }}">
-                @csrf
-
-                <button type="submit" class="underline text-sm text-gray-600 hover:text-gray-900">
-                    {{ __('Log Out') }}
-                </button>
-            </form>
+            </div>
         </div>
-    </x-auth-card>
-</x-guest-layout>
+    </div>
+
+</x-app-layout>

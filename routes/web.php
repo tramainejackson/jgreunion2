@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('guest_home');
 Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
-Route::post('/register_user', [RegisterController::class, 'register'])->name('register_user');
 
 /*RESOURCE ROUTE*/
 Route::resource('settings', SettingController::class);

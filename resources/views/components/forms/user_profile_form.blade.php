@@ -1,7 +1,7 @@
 <div id="user_profile" class="mt-2 mb-5">
     <div id="profile_photo_div">
 
-        <img id="profile_photo" src="{{ $family_member->profile_image != null ? asset('storage/images/' . $family_member->profile_image) : '' }}" class="img-fluid img-thumbnail"/>
+        <img id="profile_photo" src="{{ $family_member->profile_image != null ? asset('storage/images/' . $family_member->profile_image) : asset('/images/img_placeholder.jpg') }}" class="img-fluid img-thumbnail"/>
 
         <input type="file" name="profile_image" id="change_img_btn"/>
     </div>
@@ -17,7 +17,7 @@
                     <input type="text"
                            name="username"
                            class="form-control"
-                           value="{{ $user->username  }}"
+                           value="{{ $family_member->user ? $family_member->user->username : 'No User Account' }}"
                            disabled/>
 
                     <label class="form-label" for="username">Username</label>
