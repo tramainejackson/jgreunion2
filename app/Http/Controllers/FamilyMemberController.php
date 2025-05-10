@@ -122,22 +122,16 @@ class FamilyMemberController extends Controller
         $newReunionCheck->count() > 0 ? $newReunionCheck = $newReunionCheck->first() : $newReunionCheck = null;
         $newReunionCheck = Reunion::where('reunion_complete', 'N')->get()->last();
 
-        $user = Auth::user();
-        $userPhone1 = substr($user["phone"], 0, 3);
-        $userPhone2 = substr($user["phone"], 3, 3);
-        $userPhone3 = substr($user["phone"], 6, 4);
-
         $family_member = $member;
-        $states = State::all();
-        $members = FamilyMember::orderby('firstname', 'asc')->get();
-        $siblings = $family_member->siblings != null ? explode('; ', $family_member->siblings) : null;
-        $children = $family_member->children != null ? explode('; ', $family_member->children) : null;
-        $family_members = FamilyMember::household($family_member->family_id);
-        $potential_family_members = FamilyMember::potentialHousehold($family_member);
+        $father = $family_member->father != null ? FamilyMember::find($family_member->father) : null;
+        $mother = $family_member->mother != null ? FamilyMember::find($family_member->mother) : null;
+        $spouse = $family_member->spouse != null ? FamilyMember::find($family_member->spouse) : null;
+        $siblings = $family_member->siblings != null ? $family_member->getSiblings(explode('; ', $family_member->siblings)) : null;
+        $children = $family_member->children != null ? $family_member->getChildren(explode('; ', $family_member->children)) : null;
         $active_reunion = Reunion::active()->first();
         $registered_for_reunion = $active_reunion !== null ? Registration::memberRegistered($family_member->id, $active_reunion->id)->first() : null;
 
-        return response()->view('admin.members.show', compact('user', 'userPhone1', 'userPhone2', 'userPhone3', 'states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
+        return response()->view('admin.members.show', compact('spouse', 'family_member', 'active_reunion', 'father', 'mother', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
     }
 
     /**
@@ -199,6 +193,7 @@ class FamilyMemberController extends Controller
         $member->firstname = $request->firstname;
         $member->lastname = $request->lastname;
         $member->email = $request->email;
+        $member->date_of_birth = new Carbon($request->date_of_birth);
         $member->address = $request->address;
         $member->city = $request->city;
         $member->state = $request->state;

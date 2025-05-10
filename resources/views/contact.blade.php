@@ -30,7 +30,7 @@
                                     <p><i class="fas fa-home me-3"></i> Philadelphia, PA, US</p>
                                     <p>
                                         <i class="fas fa-envelope me-3"></i>
-                                        jackson521961@gmail.com
+                                        jackson521961@yahoo.com
                                     </p>
                                     <p><i class="fas fa-phone me-3"></i> +1 267-251-6159</p>
                                 </div>

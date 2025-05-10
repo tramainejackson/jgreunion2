@@ -8,7 +8,7 @@
                 <h1 class="mt-5 pb-3">Jackson/Green Family
                     Reunion</h1>
 
-                <h2 class="my-3">Create New Member</h2>
+                <h2 class="my-3">{{ ucwords($family_member->full_name()) }} Profile</h2>
             </div>
         </div>
 
@@ -16,148 +16,162 @@
 
         <div class="row">
 
-            <div class="col-11 col-lg-8 membersForm mx-auto mt-lg-1">
+            <div class="col-11 col-sm-7 col-md-6 col-lg-5 col-xl-4 col-xxl-3 membersForm mx-auto mt-2">
+                <div class="card">
+                    <img
+                        src="{{ $family_member->get_profile_image() }}"
+                        class="card-img-top" alt="Family Member Image"/>
+                    <div class="card-body">
+                        <h1 class="card-title text-center font1 pb-3 display-4">{{ $family_member->full_name() }}</h1>
 
-                <a href="{{ route('members.index') }}" class="btn btn-info btn-lg ms-4 ms-lg-3 mt-2 mt-lg-4 position-absolute start-0">All Members</a>
-
-                <h1 class="mb-4 mt-3 pt-5 pt-lg-0">Create New Member</h1>
-
-                <form action="{{ route('members.store') }}" method="POST">
-                    @csrf
-
-                    <div class="form-outline mb-2" data-mdb-input-init>
-                        <input type="text"
-                               name="firstname"
-                               class="form-control"
-                               value="{{ old('firstname') ? old('firstname') : '' }}"
-                               placeholder="Enter First Name"/>
-
-                        <label class="form-label" for="firstname">Firstname</label>
-
-                        @if($errors->has('firstname'))
-                            <span class="text-danger">First Name cannot be empty</span>
-                        @endif
-                    </div>
-
-                    <div class="form-outline mb-2" data-mdb-input-init>
-                        <input type="text"
-                               name="lastname"
-                               class="form-control"
-                               value="{{ old('lastname') ? old('lastname') : '' }}"
-                               placeholder="Enter Last Name"/>
-
-                        <label class="form-label" for="lastname">Lastname</label>
-
-                        @if($errors->has('lastname'))
-                            <span class="text-danger">Last Name cannot be empty</span>
-                        @endif
-                    </div>
-
-                    <div class="form-outline mb-2" data-mdb-input-init>
-                        <input type="text"
-                               name="email"
-                               class="form-control"
-                               value="{{ old('email') ? old('email') : '' }}"
-                               placeholder="Enter Email Address"/>
-
-                        <label class="form-label" for="email">Email Address</label>
-                    </div>
-
-                    <div class="form-outline mb-2" data-mdb-input-init>
-                        <input type="text"
-                               name="address"
-                               class="form-control"
-                               value="{{ old('address') ? old('address') : '' }}"
-                               placeholder="Enter Address"/>
-                        <label class="form-label" for="address">Address</label>
-                    </div>
-
-                    <div class="row">
-                        <div class="mb-2 col-4">
-                            <div class="form-outline" data-mdb-input-init>
-                                <input type="text"
-                                       name="city"
-                                       class="form-control"
-                                       value="{{ old('city') ? old('city') : '' }}"
-                                       placeholder="Enter City"/>
-
-                                <label class="form-label" for="city">City</label>
+                        @if($family_member->descent != null)
+                            <div class="text-center mb-4">
+                                <button class="btn btn-lg btn-secondary"><span
+                                        class="text-decoration-underline font2">Origin of Descent</span><br/><span
+                                        class="fs-4 font1">{{ ucfirst($family_member->descent) }}</span>
+                                </button>
                             </div>
-                        </div>
+                        @endif
 
-                        <div class="mb-2 col-4">
-                            <div class="form-outline">
-                                <select class="form-control" name="state" data-mdb-select-init>
-                                    @foreach($states as $state)
-                                        <option
-                                            value="{{ $state->state_abb }}" {{ old('reunion_state') && old('state') == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
+                        @if($father != null)
+                            <div class="container-fluid" id="show_parents">
+                                <div class="row" id="">
+                                    <div class="col-6 text-center" id="">
+                                        <img src="{{ asset('/images/img_placeholder.jpg') }}"
+                                             class="img-fluid rounded-circle img-thumbnail border-primary"
+                                             alt="Father Image">
+
+                                        <div class="m-n4">
+                                            <span
+                                                class="mw-100 border border-2 p-1 rounded rounded-5 bg-white border-primary"><a
+                                                    href="{{ route('members.show', $father->id) }}"
+                                                    class="text-primary">{{ $father->full_name() }}</a></span>
+                                        </div>
+
+
+                                        <span class="d-block mt-4">Father</span>
+                                    </div>
+
+                                    <div class="col-6 text-center" id="">
+                                        <img src="{{ asset('/images/img_placeholder.jpg') }}"
+                                             class="img-fluid rounded-circle img-thumbnail border-primary"
+                                             alt="Mother Image">
+
+                                        <div class="m-n4">
+                                            <span
+                                                class="mw-100 border border-2 p-1 rounded rounded-5 bg-white border-primary"><a
+                                                    href="{{ route('members.show', $mother->id) }}"
+                                                    class="text-primary">{{ $mother->full_name() }}</a></span>
+                                        </div>
+
+
+                                        <span class="d-block mt-4">Mother</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($spouse != null)
+                            <div class="container-fluid" id="show_spouse">
+                                <div class="row" id="">
+                                    <div class="col-6 mx-auto text-center" id="">
+                                        <img src="{{ asset('/images/img_placeholder.jpg') }}"
+                                             class="img-fluid rounded-circle img-thumbnail border-secondary"
+                                             alt="Spouse Image">
+
+                                        <div class="m-n4">
+                                            <span
+                                                class="mw-100 border border-2 p-1 rounded rounded-5 bg-white border-secondary hover-shadow"><a
+                                                    href="{{ route('members.show', $spouse->id) }}"
+                                                    class="text-secondary">{{ $spouse->full_name() }}</a></span>
+                                        </div>
+
+                                        <span class="d-block mt-4">Spouse</span>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
+                        @if($siblings != null)
+                            <div class="container-fluid" id="show_siblings">
+                                <div class="row" id="">
+
+                                    @foreach($siblings as $sibling)
+
+                                        <div class="col-6 mx-auto text-center" id="">
+                                            <img src="{{ asset('/images/img_placeholder.jpg') }}"
+                                                 class="img-fluid rounded-circle img-thumbnail border-warning"
+                                                 alt="Sibling Image">
+
+                                            <div class="m-n4">
+                                                <span
+                                                    class="mw-100 border border-2 p-1 rounded rounded-5 bg-white border-warning"><a
+                                                        href="{{ route('members.show', $sibling->id) }}"
+                                                        class="text-warning">{{ $sibling->full_name() }}</a></span>
+                                            </div>
+
+                                            <span class="d-block mt-4">Sibling</span>
+                                        </div>
                                     @endforeach
-                                </select>
 
-                                <label class="form-label select-label" for="state">State</label>
+                                </div>
                             </div>
-                        </div>
+                        @endif
 
-                        <div class="mb-2 col-4">
-                            <div class="form-outline" data-mdb-input-init>
-                                <input type="number"
-                                       name="zip"
-                                       class="form-control"
-                                       max="99999"
-                                       value="{{ old('zip') ? old('zip') : '' }}"
-                                       placeholder="Enter Zip Code"/>
+                        @if($children != null)
+                            <div class="container-fluid" id="show_children">
+                                <div class="row" id="">
 
-                                <label class="form-label" for="zip">Zip Code</label>
+                                    @foreach($children as $child)
+
+                                        <div class="col-6 mx-auto text-center" id="">
+                                            <img src="{{ asset('/images/img_placeholder.jpg') }}"
+                                                 class="img-fluid rounded-circle img-thumbnail border-success"
+                                                 alt="Sibling Image">
+
+                                            <div class="m-n4">
+                                                <span
+                                                    class="mw-100 border border-2 p-1 rounded rounded-5 bg-white border-success"><a
+                                                        href="{{ route('members.show', $child->id) }}"
+                                                        class="text-success">{{ $child->full_name() }}</a></span>
+                                            </div>
+
+                                            <span class="d-block mt-4">Child</span>
+                                        </div>
+                                    @endforeach
+
+                                </div>
                             </div>
+                        @endif
+
+                        <div class="mt-2">
+                            <p class="mb-1"><span
+                                    class="fw-bold">Location</span>:&nbsp;{{ $family_member->city . ', ' . $family_member->state }}
+                            </p>
+
+                            @if($family_member->descent != null)
+                                <p class="mb-1"><span
+                                        class="fw-bold">DOB</span>:&nbsp;{{ $family_member->date_of_birth }}</p>
+                            @endif
+
+                            @if($family_member->instagram != null)
+                                <p class="mb-1"><i class="fab fa-instagram"></i>&nbsp;{{ $family_member->instagram }}
+                                    &nbsp;<i class="fab fa-instagram"></i></p>
+                            @endif
+
+                            @if($family_member->facebook != null)
+                                <p class="mb-1"><i
+                                        class="fab fa-facebook-square"></i>&nbsp;{{ $family_member->facebook }}&nbsp;<i
+                                        class="fab fa-facebook-square"></i></p>
+                            @endif
+
+                            @if($family_member->twitter != null)
+                                <p class="mb-1"><i class="fab fa-twitter-square"></i>&nbsp;{{ $family_member->twitter }}
+                                    &nbsp;<i class="fab fa-twitter-square"></i></p>
+                            @endif
                         </div>
                     </div>
-
-                    <div class="form-outline mb-2" data-mdb-input-init>
-                        <input type="tel"
-                               name="phone"
-                               class="form-control"
-                               value="{{ old('phone') ? old('phone') : '' }}"
-                               placeholder="Enter Phone Numer"/>
-
-                        <label class="form-label" for="city">Phone</label>
-                    </div>
-
-                    <div class="form-outline mb-2">
-                        <select class="form-control" name="age_group" data-mdb-select-init>
-                            <option value="adult" {{ old('age_group') && old('age_group') == 'M' ? 'selected' : '' }}>
-                                Adult
-                            </option>
-                            <option value="youth" {{ old('age_group') && old('age_group') == 'E' ? 'selected' : '' }}>
-                                Youth
-                            </option>
-                            <option value="child" {{ old('age_group') && old('age_group') == 'E' ? 'selected' : '' }}>
-                                Child
-                            </option>
-                        </select>
-
-                        <label class="form-label select-label" for="age_group">Age Group</label>
-                    </div>
-
-                    <div class="form-outline mb-2">
-                        <select class="form-control" name="mail_preference" data-mdb-select-init>
-                            <option
-                                value="M" {{ old('mail_preference') && old('mail_preference') == 'M' ? 'selected' : '' }}>
-                                Mail
-                            </option>
-                            <option
-                                value="E" {{ old('mail_preference') && old('mail_preference') == 'E' ? 'selected' : '' }}>
-                                Email
-                            </option>
-                        </select>
-
-                        <label class="form-label select-label" for="mail_preference">Mail Preference</label>
-                    </div>
-
-                    <div class="form-group mt-3">
-                        <button class="btn btn-primary form-control" type="submit">Create New Member</button>
-                    </div>
-
-                </form>
+                </div>
             </div>
         </div>
     </div>

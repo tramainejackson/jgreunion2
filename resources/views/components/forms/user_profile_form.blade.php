@@ -1,7 +1,7 @@
 <div id="user_profile" class="mt-2 mb-5">
     <div id="profile_photo_div">
 
-        <img id="profile_photo" src="{{ $family_member->profile_image != null ? asset('storage/images/' . $family_member->profile_image) : asset('/images/img_placeholder.jpg') }}" class="img-fluid img-thumbnail"/>
+        <img id="profile_photo" src="{{ $family_member->get_profile_image() }}" class="img-fluid img-thumbnail"/>
 
         <input type="file" name="profile_image" id="change_img_btn"/>
     </div>
@@ -66,9 +66,10 @@
         </div>
 
         <div class="col-12 col-md-4">
-            <div class="form-outline" data-mdb-datepicker-init data-mdb-input-init>
+            <div class="form-outline" data-mdb-datepicker-init data-mdb-input-init data-mdb-disable-future="true">
                 <input type="text"
                        name="date_of_birth"
+                       id="datetimepicker-dateOptions"
                        class="form-control"
                        value="{{ old('date_of_birth') ? old('date_of_birth') : $family_member->date_of_birth }}"/>
 

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 
 class FamilyMember extends Model
 {
@@ -63,14 +64,6 @@ class FamilyMember extends Model
     }
 
     /**
-     * Get the image avatar for the family member account.
-     */
-    public function avatar(): HasOne
-    {
-        return $this->hasOne(ProfileAvatar::class);
-    }
-
-    /**
      * Get the user for the family member account.
      */
     public function full_name()
@@ -80,6 +73,26 @@ class FamilyMember extends Model
 
     /**
      * Get the user for the family member account.
+     * @return string
+     */
+    public function get_profile_image()
+    {
+        if ($this->profile_image != null) {
+            if (Storage::disk('local')->exists('public/images/' . $this->profile_image)) {
+                $this->profile_image = asset('storage/images/' . $this->profile_image);
+            } else {
+                $this->profile_image = asset('/images/img_placeholder.jpg');
+            }
+        } else {
+            $this->profile_image = asset('/images/img_placeholder.jpg');
+        }
+
+        return $this->profile_image;
+    }
+
+    /**
+     * Get the user for the family member account.
+     * * @return string
      */
     public function full_address()
     {
@@ -88,6 +101,7 @@ class FamilyMember extends Model
 
     /**
      * Removed the blanks from an array.
+     * * @return array
      */
     public function remove_blanks($array)
     {
@@ -95,7 +109,7 @@ class FamilyMember extends Model
 
         if ($array != null && count($array) > 0) {
             foreach ($array as $name) {
-                if($name != 'blank') {
+                if ($name != 'blank') {
                     $return_array[] = $name;
                 }
             }
@@ -105,9 +119,45 @@ class FamilyMember extends Model
     }
 
     /**
+     * Get family member siblings
+     * @param  $siblings_array
+     * @param Builder $query
+     */
+    public function scopeGetSiblings(Builder $query, $siblings_array)
+    {
+        $return_siblings = array();
+
+        if (count($siblings_array) > 0) {
+            foreach ($siblings_array as $index => $sibling) {
+                $return_siblings[] = $this->where('id', '=', $sibling)->get()->first();
+            }
+        }
+
+        return $return_siblings;
+    }
+
+    /**
+     * Get family member siblings
+     * @param  $children_array
+     * @param Builder $query
+     */
+    public function scopeGetChildren(Builder $query, $children_array)
+    {
+        $return_children = array();
+
+        if (count($children_array) > 0) {
+            foreach ($children_array as $index => $child) {
+                $return_children[] = $this->where('id', '=', $child)->get()->first();
+            }
+        }
+
+        return $return_children;
+    }
+
+    /**
      * Get searched family members
      * @param  $search
-     * @param  Builder $query
+     * @param Builder $query
      */
     public function scopeGetSearches(Builder $query, $search)
     {
