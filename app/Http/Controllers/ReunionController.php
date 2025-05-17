@@ -55,7 +55,11 @@ class ReunionController extends Controller
         $members = FamilyMember::orderby('firstname', 'asc')->get();
         $carbonDate = Carbon::now()->subYear();
 
-        return response()->view('admin.reunions.create', compact('states', 'carbonDate', 'members'));
+        if (Auth::user()->is_admin()) {
+            return response()->view('admin.reunions.create', compact('states', 'carbonDate', 'members'));
+        } else {
+            return redirect()->action([HomeController::class, 'index']);
+        }
     }
 
     /**
@@ -104,7 +108,11 @@ class ReunionController extends Controller
                 }
             }
 
-            return redirect()->action('ReunionController@edit', $reunion)->with('status', 'Reunion Created Succssfully');
+            if (Auth::user()->is_admin()) {
+                return redirect()->action('ReunionController@edit', $reunion)->with('status', 'Reunion Stored Succssfully');
+            } else {
+                return redirect()->action([HomeController::class, 'index']);
+            }
         }
     }
 
@@ -174,15 +182,14 @@ class ReunionController extends Controller
         $states = State::all();
         $carbonDate = Carbon::now()->subYear();
         $members = FamilyMember::orderby('firstname', 'asc')->get();
-        $titles = CommitteeTitle::all();
         $reunion_events = $reunion->events()->orderBy('event_date')->get();
-        $totalRegistrations = $reunion->registrations()->where('parent_reg', null)->count();
-        $adults = $reunion->registrations()->where('parent_reg', null)->pluck('adult_names');
-        $youths = $reunion->registrations()->where('parent_reg', null)->pluck('youth_names');
-        $children = $reunion->registrations()->where('parent_reg', null)->pluck('children_names');
-        $adultShirts = $reunion->registrations()->where('parent_reg', null)->pluck('adult_shirts');
-        $youthShirts = $reunion->registrations()->where('parent_reg', null)->pluck('youth_shirts');
-        $childrenShirts = $reunion->registrations()->where('parent_reg', null)->pluck('children_shirts');
+        $totalRegistrations = $reunion->registrations()->where('parent_registration_id', null)->count();
+        $adults = $reunion->registrations()->where('parent_registration_id', null)->pluck('adult_names');
+        $youths = $reunion->registrations()->where('parent_registration_id', null)->pluck('youth_names');
+        $children = $reunion->registrations()->where('parent_registration_id', null)->pluck('children_names');
+        $adultShirts = $reunion->registrations()->where('parent_registration_id', null)->pluck('adult_shirts');
+        $youthShirts = $reunion->registrations()->where('parent_registration_id', null)->pluck('youth_shirts');
+        $childrenShirts = $reunion->registrations()->where('parent_registration_id', null)->pluck('children_shirts');
 
         $totalAdults = count(array_filter(explode(';', $adults->implode(';'))));
         $totalYouths = count(array_filter(explode(';', $youths->implode(';'))));
@@ -249,7 +256,11 @@ class ReunionController extends Controller
             }
         }
 
-        return view('admin.reunions.edit', compact('reunion', 'reunion_events', 'states', 'carbonDate', 'members', 'titles', 'totalRegistrations', 'totalAdults', 'totalYouths', 'totalChildren', 'totalFees', 'totalRegFeesPaid', 'totalRegFeesDue', 'totalShirts', 'aSm', 'aMd', 'aLg', 'aXl', 'aXXl', 'aXXXl', 'yXSm', 'ySm', 'yMd', 'yLg', 'c5T', 'c4T', 'c3T', 'c2T', 'c12M', 'c6'));
+        if (Auth::user()->is_admin()) {
+            return view('admin.reunions.edit', compact('reunion', 'reunion_events', 'states', 'carbonDate', 'members', 'totalRegistrations', 'totalAdults', 'totalYouths', 'totalChildren', 'totalFees', 'totalRegFeesPaid', 'totalRegFeesDue', 'totalShirts', 'aSm', 'aMd', 'aLg', 'aXl', 'aXXl', 'aXXXl', 'yXSm', 'ySm', 'yMd', 'yLg', 'c5T', 'c4T', 'c3T', 'c2T', 'c12M', 'c6'));
+        } else {
+            return redirect()->action([HomeController::class, 'index']);
+        }
     }
 
     /**
@@ -261,6 +272,11 @@ class ReunionController extends Controller
      */
     public function update(Request $request, Reunion $reunion)
     {
+        dd($request);
+        if (!Auth::user()->is_admin()) {
+            return redirect()->action([HomeController::class, 'index']);
+        }
+
         if (isset($request->completed_reunion)) {
             $reunion->reunion_complete = $request->completed_reunion;
 

@@ -79,7 +79,7 @@
                                         <tr>
                                             <td>{{ explode('; ', $registered_for_reunion->children_names)[$i] }}</td>
                                             <td>${{ $active_reunion->child_price }}</td>
-                                            <td>{{ isset($children_shirts_arr[$i]) ? $registered_for_reunion->childre_shirts_formatted($children_shirts_arr[$i]) : 'Missing Shirt Size' }}</td>
+                                            <td>{{ isset($children_shirts_arr[$i]) ? $registered_for_reunion->children_shirts_formatted($children_shirts_arr[$i]) : 'Missing Shirt Size' }}</td>
                                         </tr>
                                     @endfor
                                 @endif

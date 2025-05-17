@@ -22,9 +22,9 @@ class Registration extends Model
     /**
      * Get the activities for the trip.
      */
-    public function reunion_dl(): BelongsTo
+    public function family_member(): BelongsTo
     {
-        return $this->belongsTo(FamilyMember::class, 'family_id');
+        return $this->belongsTo(FamilyMember::class);
     }
 
 	/**
@@ -68,7 +68,7 @@ class Registration extends Model
     /**
      * Format the shirt sized for the youth shirts.
      */
-    public function childre_shirts_formatted($size_to_format)
+    public function children_shirts_formatted($size_to_format)
     {
         if($size_to_format == 'S') {
             $size_to_format = '12 Months';

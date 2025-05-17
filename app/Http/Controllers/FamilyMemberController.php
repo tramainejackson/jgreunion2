@@ -166,7 +166,7 @@ class FamilyMemberController extends Controller
         if (Auth::user()->is_admin()) {
             return response()->view('admin.members.edit', compact('user', 'userPhone1', 'userPhone2', 'userPhone3', 'states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
         } else {
-            redirect()->action([FamilyMemberController::class, 'show'], $family_member);
+            return redirect()->action([FamilyMemberController::class, 'show'], $family_member);
 //            return response()->view('admin.members.show', compact('user', 'userPhone1', 'userPhone2', 'userPhone3', 'states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
         }
     }

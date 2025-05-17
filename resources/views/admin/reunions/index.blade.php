@@ -1,6 +1,8 @@
 <x-app-layout>
 
-    <div class="container-fluid" id="profilePage">
+    <div class="container-fluid" id="">
+
+        <x-admin-jumbotron>Reunions</x-admin-jumbotron>
 
         @include('components.nav')
 
@@ -14,53 +16,39 @@
 
             <div class="col-12 col-md-10 col-lg-9 my-3 mx-auto">
 
-                <ul class="list-group accordion md-accordion" id="accordionEx" role="tablist"
-                    aria-multiselectable="true">
+                <ul class="list-group accordion md-accordion" id="accordionEx" aria-multiselectable="true">
 
                     <li class="list-group-item list-group-item-info">All Reunions</li>
 
                     @foreach($reunions as $reunion)
 
-                        <li class="list-group-item list-group-item-action reunionItem{{ $reunion->reunion_complete == 'N' ? ' activeReunionItem' : '' }}">
+                        <li class="list-group-item list-group-item-action accordion-item reunionItem{{ $reunion->reunion_complete == 'N' ? ' activeReunionItem' : '' }}">
 
-                            <h2 class="" role="tab" id="headingOne{{$loop->iteration}}" data-toggle="collapse"
-                                data-parent="#accordionEx" href="#reunionAccordion{{$loop->iteration}}"
-                                aria-expanded="true"
-                                aria-controls="reunionAccordion{{$loop->iteration}}">{{ $reunion->reunion_city . ' ' . $reunion->reunion_year }}</h2>
+                            <h2 class="accordion-header">
+                                <button class="accordion-button collapsed"
+                                        type="button"
+                                        data-mdb-collapse-init
+                                        id="headingOne{{$loop->iteration}}"
+                                        data-mdb-target="#reunionAccordion{{$loop->iteration}}"
+                                        aria-expanded="true"
+                                        aria-controls="reunionAccordion{{$loop->iteration}}">{{ $reunion->reunion_city . ' ' . $reunion->reunion_year }}</button>
+                            </h2>
 
                             @if($reunion->has_site == 'Y')
 
-                                <div class="container-fluid collapse{{ $loop->iteration == 1 ? ' show' : '' }}"
-                                     role="tabpanel" id="reunionAccordion{{$loop->iteration}}"
-                                     data-parent="#accordionEx">
+                                <div class="container-fluid accordion-collapse collapse"
+                                     aria-labelledby="flush-headingOne"
+                                     id="reunionAccordion{{$loop->iteration}}"
+                                     data-mdb-parent="#accordionEx">
 
-                                    <div class="form-row my-3">
-                                        <div class="form-group col-12 col-md-4">
-                                            <label class="form-label" for="reunion_city">City</label>
-                                            <input type="text" class="form-control" value="{{ $reunion->reunion_city }}"
-                                                   disabled/>
-                                        </div>
-                                        <div class="form-group col-6 col-md-4">
-                                            <label class="form-label" for="reunion_state">State</label>
-
-                                            <select class="form-control browser-default" disabled>
-                                                <option
-                                                        value="{{ $reunion->reunion_state }}">{{ $reunion->reunion_state }}</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-group col-6 col-md-4">
-                                            <label class="form-label" for="reunion_state">Year</label>
-
-                                            <select class="form-control browser-default" disabled>
-                                                <option
-                                                        value="{{ $reunion->reunion_year }}">{{ $reunion->reunion_year }}</option>
-                                            </select>
-
+                                    <div class="row ps-2 my-3">
+                                        <div class="col-4">
+                                            <p class="m-0">{{ $reunion->reunion_city . ', ' . $reunion->reunion_state . ' ' . $reunion->reunion_year}}</p>
                                         </div>
                                     </div>
 
-                                    <div class="form-row my-3">
-                                        <div class="form-group col-12 col-md-4">
+                                    <div class="row ps-2 my-3">
+                                        <div class="col-4">
 
                                             <label class="form-label" for="adult_price">Adult Price</label>
 
@@ -77,7 +65,7 @@
 
                                         </div>
 
-                                        <div class="form-group col-12 col-md-4">
+                                        <div class="col-4">
 
                                             <label class="form-label" for="youth_price">Youth Price</label>
 
@@ -94,7 +82,7 @@
 
                                         </div>
 
-                                        <div class="form-group col-12 col-md-4">
+                                        <div class="col-4">
 
                                             <label class="form-label" for="child_price">Child Price</label>
 
@@ -117,7 +105,7 @@
                                     <div class="form-row justify-content-around mb-3">
                                         <button type="button" class="btn btn-primary col-12 col-md-4">Registrations
                                             <span
-                                                    class="badge badge-light">{{ $reunion->registrations->count() }}</span>
+                                                class="badge badge-light">{{ $reunion->registrations->count() }}</span>
                                             <span class="sr-only">total registrations</span>
                                         </button>
 
@@ -134,13 +122,6 @@
                                                 Reunion</a>
                                         </div>
 
-                                    @else
-
-                                        <div class="form-group">
-                                            <a href="{{ route('create_reunion_pictures', ['reunion' => $reunion->id]) }}"
-                                               class="btn btn-lg btn-outline-light-green">Add Reunion Photos</a>
-                                        </div>
-
                                     @endif
 
                                 </div>
@@ -148,7 +129,7 @@
                             @else
 
                                 <div class="container-fluid collapse" id="reunionAccordion{{$loop->iteration}}">
-                                    <h3 class="text-center">No Additional Information For This Reunion</h3>
+                                    <h3 class="text-center my-3">No Additional Information For This Reunion</h3>
                                 </div>
 
                             @endif

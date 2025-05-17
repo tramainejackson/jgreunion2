@@ -49,7 +49,7 @@
 
                     @else
 
-                        @include('components.completed_registration')
+                        @include('components.member_completed_registration')
 
                     @endif
 
