@@ -69,7 +69,7 @@
         <select class="form-control" name="reunion_state" data-mdb-select-init>
             @foreach($states as $state)
                 <option
-                    value="{{ $state->state_abb }}" {{ (old('reunion_state') == $state->state_abb ? 'selected' : $reunion->reunion_state == $state->state_abb) ? 'selected' : '' }}>{{ $state->state_name }}</option>
+                    value="{{ $state->state_abb }}" {{ old('reunion_state') == $state->state_abb ? 'selected' : ($reunion->reunion_state == $state->state_abb ? 'selected' : '') }}>{{ $state->state_name }}</option>
             @endforeach
         </select>
 
