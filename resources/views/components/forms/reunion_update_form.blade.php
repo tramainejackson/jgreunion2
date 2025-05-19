@@ -80,7 +80,7 @@
         <select class="form-control" name="reunion_year" data-mdb-select-init>
             @for($i=0; $i <= 10; $i++)
                 <option
-                    value="{{ $carbonDate->addYear()->year }}" {{ old('reunion_year') == $carbonDate->year ? 'selected' : $reunion->reunion_year == $carbonDate->year ? 'selected' : '' }}>{{ $carbonDate->year }}</option>
+                    value="{{ $carbonDate->addYear()->year }}" {{ old('reunion_year') == $carbonDate->year ? 'selected' : ($reunion->reunion_year == $carbonDate->year ? 'selected' : '') }}>{{ $carbonDate->year }}</option>
             @endfor
         </select>
 
