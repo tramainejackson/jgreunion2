@@ -46,7 +46,7 @@
 
                             @foreach($members as $member)
                                 <option
-                                    value="{{ $member->id }}" {{ old('family_member_id') && old('family_member_id') == $member->id ? 'selected' : $committee_member->family_member_id == $member->id ? 'selected' : '' }}>{{ $member->firstname . ' ' . $member->lastname }}</option>
+                                    value="{{ $member->id }}" {{ old('family_member_id') && old('family_member_id') == $member->id ? 'selected' : ($committee_member->family_member_id == $member->id ? 'selected' : '') }}>{{ $member->firstname . ' ' . $member->lastname }}</option>
                             @endforeach
 
                         </select>
