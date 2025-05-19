@@ -115,6 +115,15 @@ function addNewRowFromBtn(taskTitle) {
             new Datepicker(datePickerForm[i].parentElement);
         }
     }
+
+    //Add an addEventListener to the remove buttons of the new rows
+    newRow.querySelectorAll('button[class*="remove"]')[0].addEventListener("click", (event) => removeNewRow(event.target));
+}
+
+//Switch to edit/create view for the admin when registering another family member
+function removeNewRow(removeBtn) {
+    removeBtn.parentElement.parentElement.remove();
+    console.log('New Row Was Removed');
 }
 
 function btnToggle(btnElement) {
@@ -183,8 +192,66 @@ function filePreview(input) {
     }
 }
 
+//Switch to edit/create view for the admin when registering another family member
+function createNewRegistration(id) {
+    document.getElementById('create_reg_select_link').setAttribute('href', 'http://127.0.0.1:8000/my_registration/9/' + id.value);
+}
+
+//Update modal with selected model information to remove
+function updateModalToRemoveModel(deleteBtn) {
+    let forModalInfo = deleteBtn.parentElement.parentElement.parentElement.parentElement.querySelectorAll('[class*="forModalInfo"]')[0].cloneNode(true);
+    let deleteModal = document.getElementById('delete_registration');
+    let deleteModalBody = deleteModal.querySelectorAll('.modal-body')[0];
+    let deleteModalForm = deleteModal.querySelectorAll('form')[0];
+
+    if(deleteModalBody.hasChildNodes()) {
+        if(deleteModalBody.childElementCount > 0) {
+            let elementCount = deleteModalBody.childElementCount;
+
+            for (let i=0; i < elementCount; i++) {
+                deleteModalBody.firstElementChild.remove();
+            }
+        }
+    }
+
+    //Update the action string for sending the form
+    let newStr = deleteModalForm.action.slice(0, deleteModalForm.action.lastIndexOf('/')+1);
+    let regID = forModalInfo.classList.item(2).replace('forModalInfo', '');
+    newStr += regID;
+    deleteModalForm.action = newStr;
+
+    //Remove d-none before appending to modal
+    forModalInfo.classList.remove('d-none');
+
+    //Append node to modal
+    deleteModalBody.appendChild(forModalInfo);
+}
+
+
+//Toggle input value and button color when deleting a committee member
+function deleteCommitteeMemberBtn(deleteBtn) {
+    let inputValue = deleteBtn.firstElementChild;
+
+    if(deleteBtn.classList.contains('btn-outline-danger')) {
+        deleteBtn.classList.remove('btn-outline-danger');
+        deleteBtn.classList.add('btn-danger');
+        inputValue.value = 'Y';
+    } else {
+        deleteBtn.classList.add('btn-outline-danger');
+        deleteBtn.classList.remove('btn-danger');
+        inputValue.value = 'N';
+    }
+    console.log(deleteBtn);
+    console.log(inputValue);
+}
+
+
 export {addNewRowNumber}
 export {addNewRowFromBtn}
 export {btnToggle}
 export {updateAdultName}
 export {filePreview}
+export {removeNewRow}
+export {createNewRegistration}
+export {updateModalToRemoveModel}
+export {deleteCommitteeMemberBtn}

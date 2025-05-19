@@ -3,9 +3,29 @@
     @section('add_scripts')
         <script type="module">
             import {addNewRowFromBtn} from '/js/myjs_functions.js';
+            import {updateModalToRemoveModel} from '/js/myjs_functions.js';
+            import {deleteCommitteeMemberBtn} from '/js/myjs_functions.js';
+            import {btnToggle} from '/js/myjs_functions.js';
 
             document.getElementById('addCommitteeMember').addEventListener("click", (event) => addNewRowFromBtn('committee'));
             document.getElementById('addReunionEvent').addEventListener("click", (event) => addNewRowFromBtn('reunion_event'));
+
+            const deleteRegistrationBtns = document.getElementById('reunion_registration_completed').querySelectorAll('button.deleteRegistration');
+            const deleteCommitteeMembersBtns = document.getElementById('committee_members_form').querySelectorAll('button.deleteCommitteeMemberBtn');
+            const completeReunionBtns = document.getElementById('complete_reunion_btns').querySelectorAll('button.completeReunionBtn');
+
+            deleteRegistrationBtns.forEach(function (deleteBtn) {
+                deleteBtn.addEventListener("click", (event) => updateModalToRemoveModel(event.target));
+            });
+
+            deleteCommitteeMembersBtns.forEach(function (deleteBtn) {
+                deleteBtn.addEventListener("click", (event) => deleteCommitteeMemberBtn(event.target));
+            });
+
+            completeReunionBtns.forEach(function (completeBtn) {
+                completeBtn.addEventListener("click", (event) => btnToggle(event.target));
+            });
+
         </script>
     @endsection
 
@@ -31,10 +51,6 @@
                     @csrf
                     @method('PUT')
 
-                    <div class="">
-                        <h2 class="text-left">Edit {{ ucwords($reunion->reunion_city) }} Reunion</h2>
-                    </div>
-
                     @include('components.forms.reunion_update_form')
 
                     <hr class="hr hr-blurry">
@@ -43,16 +59,7 @@
 
                     <hr class="hr hr-blurry">
 
-                    @include('components.forms.reunion_events_upodate_form')
-
-                    @if($reunion->reunion_complete == 'N')
-                        <button class="btn btn-warning btn-lg btn-block my-2"
-                                type="button"
-                                data-mdb-ripple-init
-                                data-mdb-modal-init
-                                data-mdb-target="#completeReunionModal">Complete Reunion
-                        </button>
-                    @endif
+                    @include('components.forms.reunion_events_update_form')
 
                     <div class="form-group mb-5">
                         <button class="btn btn-primary form-control" type="submit">Update Reunion</button>
@@ -67,46 +74,5 @@
 
         @include('components.forms.reunion_registrations_completed')
 
-        <!--Modal: modalConfirmDelete-->
-        <div class="modal fade"
-             id="completeReunionModal"
-             tabindex="-1"
-             role="dialog"
-             aria-labelledby="completeReunionModal"
-             aria-hidden="true">
-
-            <div class="modal-dialog modal-sm modal-notify modal-warning" role="document">
-
-                <form action="{{ route('reunions.update', $reunion->id) }}">
-                    @csrf
-                    @method('PUT')
-
-                    <!--Content-->
-                    <div class="modal-content text-center">
-                        <!--Header-->
-                        <div class="modal-header align-content-center justify-content-center bg-danger-subtle">
-                            <p class="m-0 display-6 fw-bolder text-primary-emphasis">Are you sure?</p>
-                        </div>
-
-                        <!--Body-->
-                        <div class="modal-body">
-                            <h2 class="">Completing this reunion will make it inactive and disable any update to it.
-                                Continue?</h2>
-
-                            <input type="text" name="completed_reunion" class="hidden" value="Y" hidden/>
-                        </div>
-
-                        <!--Footer-->
-                        <div class="modal-footer flex-center">
-                            <button type="submit" class="btn btn-outline-warning">Yes</button>
-
-                            <button type="button" class="btn btn-warning waves-effect" data-mdb-dismiss="modal">No</button>
-                        </div>
-                    </div>
-                    <!--/.Content-->
-                </form>
-            </div>
-        </div>
-        <!--Modal: modalConfirmDelete-->
     </div>
 </x-app-layout>

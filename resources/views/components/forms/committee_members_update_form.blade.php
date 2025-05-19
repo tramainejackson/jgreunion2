@@ -42,11 +42,11 @@
 
                     <div class="col-6 col-md-4 col-lg-4 mb-0 mb-md-2">
 
-                        <select class="form-control browser-default" name="dl_id[]" data-mdb-select-init>
+                        <select class="form-control browser-default" name="family_member_id[]" data-mdb-select-init>
 
                             @foreach($members as $member)
                                 <option
-                                    value="{{ $member->id }}" {{ old('dl_id') && old('dl_id') == $member->id ? 'selected' : $committee_member->family_member_id == $member->id ? 'selected' : '' }}>{{ $member->firstname . ' ' . $member->lastname }}</option>
+                                    value="{{ $member->id }}" {{ old('family_member_id') && old('family_member_id') == $member->id ? 'selected' : $committee_member->family_member_id == $member->id ? 'selected' : '' }}>{{ $member->firstname . ' ' . $member->lastname }}</option>
                             @endforeach
 
                         </select>
@@ -55,9 +55,8 @@
                     </div>
 
                     <div class="col-12 col-md-4 col-lg-4 mb-5 mb-md-2">
-                        <button type="button" class="btn btn-danger w-100 m-0"
-                                onclick="event.preventDefault(); removeCommitteeMember({{ $committee_member->id }});">
-                            Delete Member
+                        <button type="button" class="btn btn-outline-danger w-100 m-0 deleteCommitteeMemberBtn">Delete Member
+                            <input type="text" name="remove_committee_member[]" value="N" hidden>
                         </button>
                     </div>
                 </div>
@@ -93,10 +92,10 @@
 
                 <div class="col-5 col-md-6">
                     <div class="form-outline">
-                        <select class="form-control" name="dl_id[]" disabled>
+                        <select class="form-control" name="family_member_id[]" disabled>
                             @foreach($members as $member)
                                 <option
-                                    value="{{ $member->id }}" {{ old('dl_id') && old('dl_id') == $member->id ? 'selected' : '' }}>{{ $member->firstname . ' ' . $member->lastname }}</option>
+                                    value="{{ $member->id }}" {{ old('family_member_id') && old('family_member_id') == $member->id ? 'selected' : '' }}>{{ $member->firstname . ' ' . $member->lastname }}</option>
                             @endforeach
                         </select>
 

@@ -3,7 +3,7 @@
     <div class="form-block-header">
         <h3 class="text-left">Registered Members
             <a href="{{ route('registrations.create') }}"
-               class="btn btn-outline-success mb-2" target="_blank">Add Registration</a>
+               class="btn btn-outline-success mb-2" target="_blank">Add New Registration</a>
 
             <button type="button" class="btn btn-primary mb-2">Registrations <span
                     class="badge badge-light">{{ $totalRegistrations }}</span>
@@ -21,7 +21,7 @@
 
     <div class="row row-cols-3 my-2">
 
-        @foreach($reunion->registrations as $registration)
+        @foreach($reunion->registrations()->parents() as $registration)
 
             @php
                 $adults = $registration->adult_names != null || $registration->adult_names != '' ? explode('; ', $registration->adult_names) : array();
@@ -29,45 +29,54 @@
                 $childs = $registration->children_names != null || $registration->children_names != '' ? explode('; ', $registration->children_names) : array();
             @endphp
 
-            @if($registration->parent_registration_id == null)
+            <div class="col">
+                <div class="card h-100">
+                    <img
+                        src="{{ $registration->family_member->get_profile_image() }}"
+                        class="card-img-top align-self-center" alt="Family Member Image"/>
 
-                <div class="col">
-                    <div class="card">
-                        <img
-                            src="{{ $registration->family_member->get_profile_image() }}"
-                            class="card-img-top align-self-center" style="max-height: 300px; width: fit-content !important;" alt="Family Member Image"/>
+                    <div class="card-body">
+                        <h1 class="card-title text-center font1 pb-3">{{ $registration->family_member->full_name() }}</h1>
 
-                        <div class="card-body">
-                            <h1 class="card-title text-center font1 pb-3">{{ $registration->family_member->full_name() }}</h1>
+                        <div class="col-12 col-md mb-1 justify-content-center d-flex align-items-center">
+                            <button type="button" class="btn btn-primary btn-lg btn-block mb-1 mb-md-2">Registration
+                                Total
+                                <span
+                                    class="badge badge-light">{{ (count($adults) + count($youths) + count($childs)) }}</span>
+                                <span class="sr-only">total household members</span>
+                            </button>
+                        </div>
 
-                            <div class="col-12 col-md mb-1 justify-content-center d-flex align-items-center">
-                                <button type="button" class="btn btn-primary btn-lg btn-block mb-1 mb-md-2">Registration
-                                    Total
-                                    <span
-                                        class="badge badge-light">{{ (count($adults) + count($youths) + count($childs)) }}</span>
-                                    <span class="sr-only">total household members</span>
-                                </button>
-                            </div>
+                        <div class="col-12 col-md-auto justify-content-center d-flex align-items-center mb-1">
+                            <a href="{{ route('registrations.edit', $registration->id) }}"
+                               class="btn btn-warning btn-block">Edit</a>
+                        </div>
 
-                            <div class="col-12 col-md-auto justify-content-center d-flex align-items-center mb-1">
-                                <a href="/registrations/{{ $registration->id }}/edit"
-                                   class="btn btn-warning btn-block">Edit</a>
-                            </div>
-
-                            <div
-                                class="col-12 col-md mb-4 mb-md-1 justify-content-center d-flex align-items-center">
-                                <button type="button" data-toggle="modal"
-                                        data-target=".delete_registration{{ $loop->iteration }}"
-                                        class="btn btn-danger btn-block text-truncate deleteRegistration"
-                                        onclick="removeRegistrationModal({{ $registration->id }});">Delete
-                                    Registration
-                                </button>
-                            </div>
+                        <div
+                            class="col-12 col-md mb-4 mb-md-1 justify-content-center d-flex align-items-center">
+                            <button type="button"
+                                    class="btn btn-danger btn-block text-truncate deleteRegistration"
+                                    data-mdb-modal-init
+                                    data-mdb-ripple-init
+                                    data-mdb-target="#delete_registration">Delete Registration
+                            </button>
                         </div>
                     </div>
                 </div>
 
-            @endif
+                {{-- Order of classes is being used by updateModalToRemoveModel() --}}
+                <div class="container-fluid d-none forModalInfo{{ $registration->id }}" id="">
+                    <div class="row" id="">
+                        <div class="col" id="">
+                            <p class="mb-1"><span class="fw-bold">Registree Name</span>:&nbsp;{{ $registration->registree_name }}</p>
+                            <p class="mb-1"><span class="fw-bold">Address</span>:&nbsp;{{ $registration->city . ', ' . $registration->state }}</p>
+                            <p class="mb-1"><span class="fw-bold">Total People on Registration</span>:&nbsp;{{ (count($adults) + count($youths) + count($childs))}}</p>
+                            <p class="mb-1"><span class="fw-bold">Total Amount Due</span>:&nbsp;${{ $registration->total_amount_due }}</p>
+                            <p class="mb-1"><span class="fw-bold">Total Amount Paid</span>:&nbsp;${{ $registration->total_amount_paid }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
         @endforeach
     </div>
@@ -82,8 +91,11 @@
 </div>
 
 <!--Modal: modalConfirmDelete-->
-<div class="modal fade" id="viewRgistrationsModal" tabindex="-1" role="dialog"
-     aria-labelledby="viewRgistrationsModal" aria-hidden="true">
+<div class="modal fade"
+     id="viewRgistrationsModal"
+     tabindex="-1" role="dialog"
+     aria-labelledby="viewRgistrationsModal"
+     aria-hidden="true">
 
     <div class="modal-dialog modal-lg" role="document">
 
@@ -186,3 +198,31 @@
     </div>
 </div>
 <!--Modal: modalConfirmDelete-->
+
+<div class="modal fade" id="delete_registration" tabindex="-1" role="dialog" aria-labelledby="deleteRegistrationModal"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form action="{{ route('registrations.destroy', ['registration' => 0]) }}" method="POST">
+
+            @csrf
+            @method('DELETE')
+
+            <div class="modal-content">
+                <div class="modal-header align-content-center justify-content-center bg-danger text-bg-danger">
+                    <h2 class="text-center">Delete Registration</h2>
+                </div>
+                <div class="modal-body">
+                </div>
+
+                <!--Footer-->
+                <div class="modal-footer align-content-center justify-content-around">
+                    <button type="submit" class="btn btn-danger waves-effect" data-mdb-dismiss="modal">Delete
+                        Registration
+                    </button>
+
+                    <button type="button" class="btn btn-warning waves-effect" data-mdb-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

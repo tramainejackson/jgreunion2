@@ -1,5 +1,38 @@
-<div id="reunion_update_form" class="my-5 container-fluid">
-    <div class="form-row">
+<div id="reunion_update_form" class="my-3 container-fluid">
+    <div class="row">
+
+        <div class="col">
+            <h2 class="text-left">Edit {{ ucwords($reunion->reunion_city) }} Reunion</h2>
+        </div>
+
+        @if($reunion->reunion_complete == 'N')
+            <div class="col-6">
+                <div id="complete_reunion_btns" class="d-flex align-content-center justify-content-around">
+
+                    <div class="">
+                        <h5 class="text-center mb-0">Is Reunion Completed?</h5>
+                    </div>
+
+                    <div class="">
+                        <button type="button"
+                                class="mx-auto btn btn-sm btn-outline-success completeReunionBtn">
+                            <input type="checkbox" name="reunion_complete" value="Y"
+                                   hidden/>Yes
+                        </button>
+
+                        <button type="button"
+                                class="mx-auto btn btn-sm btn-success completeReunionBtn active">
+                            <input type="checkbox" name="reunion_complete" value="N"
+                                   hidden checked/>No
+                        </button>
+                    </div>
+                </div>
+            </div>
+        @endif
+
+    </div>
+
+    <div class="row">
 
         <div class="form-group mr-3 col-4">
             <label for="" class="d-block form-control-label">Paper Registration Form</label>

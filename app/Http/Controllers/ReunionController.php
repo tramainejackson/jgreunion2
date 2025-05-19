@@ -124,7 +124,7 @@ class ReunionController extends Controller
      */
     public function show(Reunion $reunion)
     {
-        $registrations = $reunion->registrations()->parents()->get();
+        $registrations = $reunion->registrations()->parents();
         $committee_president = $reunion->committee()->president();
         $committee_members = $reunion->committee;
         $states = State::all();

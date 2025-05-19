@@ -92,7 +92,8 @@ class Registration extends Model
     */
     public function scopeParents($query)
     {
-        return $query->where('parent_registration_id', null);
+        return $query->where('parent_registration_id', null)
+            ->get();
     }
 
 	/**

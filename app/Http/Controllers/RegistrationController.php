@@ -49,8 +49,20 @@ class RegistrationController extends Controller
     {
         $members = FamilyMember::orderby('firstname', 'asc')->get();
         $states = State::all();
+        $active_reunion = Reunion::active()->isNotEmpty() ? Reunion::active()->first() : null;
+//        dd('Test');
 
-        return response()->view('admin.registrations.create', compact('reunion', 'members', 'states'));
+        if(request()->query('member')) {
+            if(is_numeric(request()->query('member'))) {
+                $member = FamilyMember::find(request()->query('member'));
+
+                if($member != null) {
+                    return response()->view('admin.registrations.create', compact('reunion', 'members', 'active_reunion', 'states'));
+                }
+            }
+        } else {
+            return response()->view('admin.registrations.create', compact('reunion', 'members', 'active_reunion', 'states'));
+        }
     }
 
     /**
@@ -259,6 +271,8 @@ class RegistrationController extends Controller
     public function edit(Registration $registration)
     {
         $all_members = FamilyMember::orderby('firstname', 'asc')->get();
+        $member = $registration->family_member;
+        $reunion = $registration->reunion;
         $states = State::all();
         $family = FamilyMember::where([
             ['family_id', $registration->family_id],
@@ -279,7 +293,7 @@ class RegistrationController extends Controller
         $youthSizes = explode('; ', $registration->youth_shirts);
         $childrenSizes = explode('; ', $registration->children_shirts);
 
-        return view('admin.registrations.edit', compact('registration', 'states', 'family', 'adultSizes', 'youthSizes', 'childrenSizes', 'adults', 'youths', 'childs', 'all_members'));
+        return view('admin.registrations.edit', compact('registration', 'member', 'reunion', 'states', 'family', 'adultSizes', 'youthSizes', 'childrenSizes', 'adults', 'youths', 'childs', 'all_members'));
     }
 
     /**
@@ -336,6 +350,8 @@ class RegistrationController extends Controller
      */
     public function destroy(Registration $registration)
     {
+
+        dd($registration);
         if ($registration->delete()) {
             return redirect()->back()->with('status', 'Registration Deleted Successfully');
         }
