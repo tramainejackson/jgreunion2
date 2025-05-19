@@ -69,7 +69,7 @@
         <select class="form-control" name="reunion_state" data-mdb-select-init>
             @foreach($states as $state)
                 <option
-                    value="{{ $state->state_abb }}" {{ old('reunion_state') && old('reunion_state') == $state->state_abb ? 'selected' : $reunion->reunion_state == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
+                    value="{{ $state->state_abb }}" {{ old('reunion_state') == $state->state_abb ? 'selected' : $reunion->reunion_state == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
             @endforeach
         </select>
 
@@ -80,7 +80,7 @@
         <select class="form-control" name="reunion_year" data-mdb-select-init>
             @for($i=0; $i <= 10; $i++)
                 <option
-                    value="{{ $carbonDate->addYear()->year }}" {{ old('reunion_year') && old('reunion_year') == $carbonDate->year ? 'selected' : $reunion->reunion_year == $carbonDate->year ? 'selected' : '' }}>{{ $carbonDate->year }}</option>
+                    value="{{ $carbonDate->addYear()->year }}" {{ old('reunion_year') == $carbonDate->year ? 'selected' : $reunion->reunion_year == $carbonDate->year ? 'selected' : '' }}>{{ $carbonDate->year }}</option>
             @endfor
         </select>
 
