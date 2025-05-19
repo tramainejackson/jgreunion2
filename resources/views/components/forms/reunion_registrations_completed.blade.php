@@ -81,7 +81,7 @@
         @endforeach
     </div>
 
-    @if($reunion->registrations()->isEmpty())
+    @if($reunion->registrations != null)
 
         <div class="form-row emptyRegistrations">
             <h2 class="text-left col-10">No Members Registered Yet</h2>
