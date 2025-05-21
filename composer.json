@@ -13,8 +13,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "intervention/image": "^2.4",
-        "jenssegers/agent": "^2.6",
-        "ext-gd": "*"
+        "jenssegers/agent": "^2.6"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

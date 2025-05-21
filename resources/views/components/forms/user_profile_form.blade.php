@@ -1,10 +1,10 @@
 <div id="user_profile" class="mt-2 mb-5">
-    <div id="profile_photo_div">
+{{--    <div id="profile_photo_div">--}}
 
-        <img id="profile_photo" src="{{ $family_member->get_profile_image() }}" class="img-fluid img-thumbnail"/>
+{{--        <img id="profile_photo" src="{{ $family_member->get_profile_image() }}" class="img-fluid img-thumbnail"/>--}}
 
-        <input type="file" name="profile_image" id="change_img_btn"/>
-    </div>
+{{--        <input type="file" name="profile_image" id="change_img_btn"/>--}}
+{{--    </div>--}}
 
     <div id="general_information" class="profile_info_div mt-3">
         <div class="header_div">
