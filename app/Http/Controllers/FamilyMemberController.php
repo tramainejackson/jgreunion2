@@ -180,6 +180,7 @@ class FamilyMemberController extends Controller
      */
     public function update(Request $request, FamilyMember $member)
     {
+
         $this->validate($request, [
             'firstname' => 'required|max:30',
             'lastname' => 'required|max:30',

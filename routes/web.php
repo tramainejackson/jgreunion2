@@ -54,4 +54,8 @@ Route::resource('reunions', ReunionController::class);
 Route::get('/my_registration/{reunion}/{member}', [UserController::class, 'member_reunion_registration'])->name('member_registration');
 Route::post('/my_registration/{reunion}/{member}', [UserController::class, 'store_registration']);
 
+Route::get('/test', function (){
+  return phpinfo();
+});
+
 require __DIR__.'/auth.php';
