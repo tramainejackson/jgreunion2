@@ -25,10 +25,7 @@
                         <div class="col-12" id="registrationReminderMsg">
                             <p class="text-center">Please do not send any payment without completing the registration form
                                 first. You can click
-                                {{--                        <span id="registrationLink"--}}
-                                {{--                                    class="d-none d-sm-inline"--}}
-                                {{--                                    data-toggle="modal"--}}
-                                {{--                                    data-target="#registration_modal">here</span>--}}
+
                                 <a href="{{ route('member_registration', ['reunion' => $reunion->id, 'member' => Auth::user()->member->id]) }}" target="_blank"
                                    id="registrationLink"
                                    class="">here</a> to complete your registration for the upcoming reunion.
@@ -39,10 +36,7 @@
                     <div class="col-12" id="registrationReminderMsg">
                         <p class="text-center">Please do not send any payment without completing the registration form
                             first. You can click
-                            {{--                        <span id="registrationLink"--}}
-                            {{--                                    class="d-none d-sm-inline"--}}
-                            {{--                                    data-toggle="modal"--}}
-                            {{--                                    data-target="#registration_modal">here</span>--}}
+
                             <a href="/reunion/{{$reunion->id}}/guest_registration_form" target="_blank"
                                id="registrationLink"
                                class="">here</a> to complete your registration for the upcoming reunion.
@@ -275,22 +269,22 @@
                 </div>
             </div>
 
-            <div id="electronic_payment_option" class="payment_option col-12 col-xl-5 mx-auto my-2">
-                <div class="card border border-2 border-light-subtle">
+{{--            <div id="electronic_payment_option" class="payment_option col-12 col-xl-5 mx-auto my-2">--}}
+{{--                <div class="card border border-2 border-light-subtle">--}}
 
-                    <div class="card-header">
-                        <h2 class="text-center">Electronic Payment</h2>
-                    </div>
+{{--                    <div class="card-header">--}}
+{{--                        <h2 class="text-center">Electronic Payment</h2>--}}
+{{--                    </div>--}}
 
-                    <div class="card-body">
-                        <p class="">All electronic payments can be sent to administrator@jgreunion.com for anyone who
-                            already has a paypal account.</p>
-                        <p class="">Click <a href=" https://www.paypal.com/pools/c/85OCIIUoUB" target="_blank">here</a>
-                            to go to
-                            paypal.</p>
-                    </div>
-                </div>
-            </div>
+{{--                    <div class="card-body">--}}
+{{--                        <p class="">All electronic payments can be sent to jacksongreenreunion@gmail.com for anyone who--}}
+{{--                            already has a paypal account.</p>--}}
+{{--                        <p class="">Click <a href=" https://www.paypal.com/pools/c/85OCIIUoUB" target="_blank">here</a>--}}
+{{--                            to go to--}}
+{{--                            paypal.</p>--}}
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
         </div>
 
         <hr class="hr hr-blurry"/>
@@ -330,123 +324,5 @@
             </div>
         </div>
 
-        <!-- Registered Members For This Reunion -->
-        <div class="row reunion_content my-5" id="registered_members_information">
-            <div class="col-12 reunionInformationHeader py-1">
-                <h2 class="text-center">Registered Family Members</h2>
-            </div>
-
-            @if($registrations->count() < 1)
-                <div class="col-12">
-                    <p class="text-center emptyInfo mt-3">No Family Member Have Registered Yet</p>
-                </div>
-            @else
-                @php
-                    function ucname($string) {
-                        $string =ucwords(strtolower($string));
-
-                        foreach (array('-', '\'') as $delimiter) {
-                          if (strpos($string, $delimiter)!==false) {
-                            $string =implode($delimiter, array_map('ucfirst', explode($delimiter, $string)));
-                          }
-                        }
-                        return $string;
-                    }
-                @endphp
-
-                <div class="row row-cols-1 row-cols-md-3 g-4">
-
-                    @foreach($registrations->chunk(10) as $chunck)
-
-                        <div class="col">
-
-                            @foreach($chunck as $registration)
-
-                                <div class="card h-100">
-                                    <div class="card-header text-center border-success">
-                                        <h2 class=""><span
-                                                class="">{{ $loop->iteration }}.</span>{{ ucname($registration->registree_name) }}
-                                        </h2>
-                                        <h4 class="">{{ $registration->city }},</span>{{ $registration->state }}</h4>
-                                    </div>
-
-                                    <div class="card-body">
-                                        @if($registration->adult_names != null)
-                                            <div class="">
-                                                <h4 class="text-decoration-underline fw-bold mb-1">Adults</h4>
-
-                                                @foreach(explode(';', $registration->adult_names) as $adult)
-                                                    <p class="mb-0">{{ $adult }}</p>
-                                                @endforeach
-                                            </div>
-                                        @endif
-
-                                        @if($registration->youth_names != null)
-                                            <div class="mt-2">
-                                                <h4 class="text-decoration-underline fw-bold mb-1">Youth</h4>
-
-                                                @foreach(explode(';', $registration->youth_names) as $youth)
-                                                    <p class="mb-0">{{ $youth }}</p>
-                                                @endforeach
-                                            </div>
-                                        @endif
-
-                                        @if($registration->children_names != null)
-                                            <div class="mt-2">
-                                                <h4 class="text-decoration-underline fw-bold mb-1">Children</h4>
-
-                                                @foreach(explode(';', $registration->children_names) as $child)
-                                                    <p class="mb-0">{{ $child }}</p>
-                                                @endforeach
-                                            </div>
-                                        @endif
-
-
-                                        {{--                                        @if($registration->children_reg)--}}
-
-                                        {{--                                            @foreach($registration->children_reg as $reg_member)--}}
-                                        {{--                                                @php $firstname = explode(" ", $reg_member->registree_name); @endphp--}}
-
-                                        {{--                                                <h3 class="h3-responsive pl-5 my-1">{{ ucwords(strtolower($firstname[0])) }}</h3>--}}
-
-                                        {{--                                            @endforeach--}}
-                                        {{--                                        @endif--}}
-
-                                    </div>
-
-                                    <div class="card-footer text-center border-success">Registration
-                                        Date: {{ $registration->reg_date }}</div>
-                                </div>
-                            @endforeach
-                        </div>
-                    @endforeach
-                </div>
-            @endif
-        </div>
-
-
-        <div id="registration_modal" class="modal fade">
-            <div class="modal-dialog modal-dialog-scrollable modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header align-content-center justify-content-center bg-primary font1">
-                        <h1 class="text-white">{{ $reunion->reunion_year . ' ' . $reunion->reunion_city }} Registration
-                            Form
-                        </h1>
-                        <button type="button" class="btn-close" data-mdb-dismiss="modal"
-                                aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        {{--                        @include('components.forms.reunion_registration_form')--}}
-                    </div>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-mdb-ripple-init data-mdb-dismiss="modal">
-                        Close
-                    </button>
-                </div>
-            </div>
-        </div>
     </div>
 </x-guest-layout>
