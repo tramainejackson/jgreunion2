@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
@@ -33,6 +34,9 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        //Track registration attempts
+        Log::info('There was an attempt to register a new user');
+
         $this->validate($request, [
             'firstname' => 'required|max:30',
             'lastname' => 'required|max:30',
@@ -58,6 +62,9 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        //Track successful registration attempts
+        Log::info('There was a successful registration by ' . $request->username);
 
         return redirect('members/' . $user->member->id);
     }
