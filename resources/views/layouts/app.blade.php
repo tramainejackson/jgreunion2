@@ -62,24 +62,39 @@
     {{--MAIN CONTENT--}}
     {{ $slot }}
 
-    <!-- Progress Bar Modal -->
-    <div class="modal fade" id="progress_modal" tabindex="-1" role="dialog" aria-labelledby="" aria-hidden="true" data-backdrop="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header justify-content-around align-items-center">
-                    <h2 class="">Uploading....</h2>
-                </div>
-                <div class="modal-body">
-                    <div class="progress" style="height: 20px">
-                        <div class="progress-bar" id="pro" role="progressbar" style="width: 0%; height: 20px" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 
 @include('components.footer')
+
+<div
+    class="alert fade"
+    id="return-data-alert"
+    role="alert"
+    data-mdb-color="success"
+    data-mdb-position="top-right"
+    data-mdb-stacking="true"
+    data-mdb-width="300px"
+    data-mdb-append-to-body="true"
+    data-mdb-hidden="true"
+    data-mdb-autohide="true"
+    data-mdb-delay="4000">
+    <p class="alertBody m-0 p-0 text-center"></p>
+</div>
+
+<div
+    class="alert fade"
+    id="return-data-alert-bad"
+    role="alert"
+    data-mdb-color="danger"
+    data-mdb-position="top-right"
+    data-mdb-stacking="true"
+    data-mdb-width="300px"
+    data-mdb-append-to-body="true"
+    data-mdb-hidden="true"
+    data-mdb-autohide="true"
+    data-mdb-delay="4000">
+    <p class="alertBody m-0 p-0 text-center"></p>
+</div>
 
 <!-- Scripts -->
 <!-- Core -->

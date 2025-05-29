@@ -326,129 +326,10 @@ class FamilyMemberController extends Controller
         $duplicates_check = FamilyMember::checkDuplicates();
         $duplicates_check = $duplicates_check->isNotEmpty() ? $duplicates_check : null;
 
-        return response()->view('admin.members.duplicates', compact('duplicates_check'));
-
-    }
-
-    /**
-     * Delete the duplicate account.
-     *
-     * @return Response
-     */
-    public function delete_duplicates(FamilyMember $member)
-    {
-        $duplicates = FamilyMember::getDuplicates($member->firstname, $member->lastname, $member->city, $member->state)->get();
-        $userAccount = $duplicates->first();
-        $committee_member = $member->committees;
-        $reunion_registrations = $member->registrations;
-        $profile_post = $member->posts;
-
-        $returnData = [];
-
-        if ($userAccount->user && $member->user) {
-            if ($userAccount->user->email === null) {
-                $userAccount->user->email = $member->user->email;
-            }
-        } elseif (!$userAccount->user && $member->user) {
-            $userAccount->user_id = $member->user->id;
-        }
-
-        $userAccount->family_id = $userAccount->family_id !== null ? $userAccount->family_id : $member->family_id;
-        $userAccount->email = $userAccount->email !== null ? $userAccount->email : $member->email;
-        $userAccount->address = $userAccount->address !== null ? $userAccount->address : $member->address;
-        $userAccount->city = $userAccount->city !== null ? $userAccount->city : $member->city;
-        $userAccount->state = $userAccount->state !== null ? $userAccount->state : $member->state;
-        $userAccount->zip = $userAccount->zip !== null ? $userAccount->zip : $member->zip;
-        $userAccount->phone = $userAccount->phone !== null ? $userAccount->phone : $member->phone;
-        $userAccount->descent = $userAccount->descent !== null ? $userAccount->descent : $member->descent;
-        $userAccount->mother = $userAccount->mother !== null ? $userAccount->mother : $member->mother;
-        $userAccount->father = $userAccount->father !== null ? $userAccount->father : $member->father;
-        $userAccount->spouse = $userAccount->spouse !== null ? $userAccount->spouse : $member->spouse;
-        $userAccount->sibling = $userAccount->sibling !== null ? $userAccount->sibling : $member->sibling;
-        $userAccount->child = $userAccount->child !== null ? $userAccount->child : $member->child;
-        $userAccount->notes = $userAccount->notes !== null ? $userAccount->notes : $member->notes;
-        $userAccount->age_group = $userAccount->age_group !== null ? $userAccount->age_group : $member->age_group;
-        $userAccount->mail_preference = $userAccount->mail_preference !== null ? $userAccount->mail_preference : $member->mail_preference;
-        $userAccount->instagram = $userAccount->instagram !== null ? $userAccount->instagram : $member->instagram;
-        $userAccount->facebook = $userAccount->facebook !== null ? $userAccount->facebook : $member->facebook;
-        $userAccount->twitter = $userAccount->twitter !== null ? $userAccount->twitter : $member->twitter;
-        $userAccount->show_contact = $userAccount->show_contact !== null ? $userAccount->show_contact : $member->show_contact;
-        $userAccount->show_socail = $userAccount->show_socail !== null ? $userAccount->show_socail : $member->show_socail;
-
-        if ($userAccount->save()) {
-        }
-
-        // If the account being deleted has a registration
-        // Change the registration to the account with a profile
-        if ($member->registrations->isNotEmpty()) {
-
-            foreach ($member->registrations as $dupeReg) {
-                // Check if there is a registration for
-                // the parent account already
-                if (Registration::memberRegistered($userAccount->id, $dupeReg->reunion_id)->get()->isNotEmpty()) {
-                    $parentReg = Registration::memberRegistered($userAccount->id, $dupeReg->reunion_id)->first();
-
-                    $parentReg->youth_names = $parentReg->youth_names !== null ? $parentReg->youth_names : $dupeReg->youth_names;
-                    $parentReg->children_names = $parentReg->children_names !== null ? $parentReg->children_names : $dupeReg->children_names;
-                    $parentReg->adult_shirts = $parentReg->adult_shirts !== null ? $parentReg->adult_shirts : $dupeReg->adult_shirts;
-                    $parentReg->youth_shirts = $parentReg->youth_shirts !== null ? $parentReg->youth_shirts : $dupeReg->youth_shirts;
-                    $parentReg->children_shirts = $parentReg->children_shirts !== null ? $parentReg->children_shirts : $dupeReg->children_shirts;
-                    $parentReg->email = $parentReg->email !== null ? $parentReg->email : $dupeReg->email;
-                    $parentReg->address = $parentReg->address !== null ? $parentReg->address : $dupeReg->address;
-                    $parentReg->city = $parentReg->city !== null ? $parentReg->city : $dupeReg->city;
-                    $parentReg->city = $parentReg->city !== null ? $parentReg->city : $dupeReg->city;
-                    $parentReg->state = $parentReg->state !== null ? $parentReg->state : $dupeReg->state;
-                    $parentReg->zip = $parentReg->zip !== null ? $parentReg->zip : $dupeReg->zip;
-                    $parentReg->phone = $parentReg->phone !== null ? $parentReg->phone : $dupeReg->phone;
-                    $parentReg->due_at_reg = $parentReg->due_at_reg !== null ? $parentReg->due_at_reg : $dupeReg->due_at_reg;
-                    $parentReg->total_amount_due = $parentReg->total_amount_due !== null ? $parentReg->total_amount_due : $dupeReg->total_amount_due;
-                    $parentReg->total_amount_paid = $parentReg->total_amount_paid !== null ? $parentReg->total_amount_paid : $dupeReg->total_amount_paid;
-                    $parentReg->reg_notes = $parentReg->reg_notes !== null ? $parentReg->reg_notes : $dupeReg->reg_notes;
-                    $parentReg->parent_reg = $parentReg->parent_reg !== null ? $parentReg->parent_reg : $dupeReg->parent_reg;
-                    $parentReg->additional_tees = $parentReg->additional_tees !== null ? $parentReg->additional_tees : $dupeReg->additional_tees;
-                    $parentReg->addt_sizes = $parentReg->addt_sizes !== null ? $parentReg->addt_sizes : $dupeReg->addt_sizes;
-
-                    if ($parentReg->save()) {
-
-                        if ($dupeReg->delete()) {
-                        }
-                    }
-
-                } else {
-
-                    $dupeReg->family_member_id = $userAccount->id;
-
-                    if ($dupeReg->save()) {
-                    }
-                }
-
-            }
-
-        }
-
-        // If the account being deleted is a part of
-        // a reunion committee. Update with parent account id
-        if ($member->committees->isNotEmpty()) {
-            foreach ($member->committees as $committee_member) {
-
-                $committee_member->family_member_id = $userAccount->id;
-
-                if ($committee_member->save()) {
-                }
-
-            }
-        }
-
-        // Delete the member account
-        if ($member->delete()) {
-
-            $duplicates_check = FamilyMember::checkDuplicates();
-            $duplicates_check = $duplicates_check->isNotEmpty() ? $duplicates_check : null;
-
-            array_push($returnData, 'Removed Account', view('admin.members.duplicates', compact('duplicates_check'))->render());
-
-            return $returnData;
-
+        if (Auth::user()->is_admin()) {
+            return response()->view('admin.members.duplicates', compact('duplicates_check'));
+        } else {
+            return redirect()->action([FamilyMemberController::class, 'index']);
         }
 
     }
@@ -458,20 +339,48 @@ class FamilyMemberController extends Controller
      *
      * @return Response
      */
-    public function keep_duplicate(FamilyMember $member)
+    public function update_duplicate(Request $request)
     {
-        $duplicates = FamilyMember::getDuplicates($member->firstname, $member->lastname, $member->city, $member->state)->get();
-        $returnData = [];
+        $keep = isset($request->keep_duplicate_member) && $request->keep_duplicate_member_form == 'Y';
+        $delete = isset($request->delete_duplicate_member) && $request->delete_duplicate_member_form == 'Y';
 
-        $member->duplicate = 'N';
+        if($keep) {
+            $member = FamilyMember::find($request->keep_duplicate_member);
+            $member->duplicate = 0;
 
-        if ($member->save()) {
+            if ($member->save()) {
+                return redirect()->back();
+            }
+        } elseif ($delete) {
+            $accounts = explode('.', $request->delete_duplicate_member);
+            $parent_account = FamilyMember::find($accounts[0]);
+            $delete_account = FamilyMember::find($accounts[1]);
+            $delete_account_registrations = $delete_account->registrations;
+            $delete_account_committees = $delete_account->committees;
 
-            array_push($returnData, 'Account Saved', $duplicates->count() - 1 == 1 ? 'Remove Card' : null);
-            return $returnData;
+            //Update reunion committees with parent account
+            if($delete_account_committees->isNotEmpty()) {
+                foreach ($delete_account_committees as $updated_committee) {
+                    $updated_committee->family_member_id = $parent_account->id;
+                    $updated_committee->save();
+                }
+            }
+
+            //Update reunion registrations with parent account
+            if($delete_account_registrations->isNotEmpty()) {
+                foreach ($delete_account_registrations as $update_registration) {
+                    $update_registration->family_member_id = $parent_account->id;
+                    $update_registration->save();
+                }
+            }
+
+            // Delete the member account
+            if ($delete_account->delete()) {
+                return redirect()->back();
+            }
+        } else {
 
         }
-
     }
 
     /**

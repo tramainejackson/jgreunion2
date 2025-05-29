@@ -1,12 +1,4 @@
 import {Input, Select, Datepicker, initMDB} from './mdb.es.min.js';
-// import colors from "tailwindcss/colors";
-
-//Common Variables
-let windowHeight = window.innerHeight;
-let documentHeight = document.body.clientHeight;
-let screenHeight = screen.height;
-let scrolledPx = document.getElementById('app').scrollTop;
-let navBar = document.getElementsByClassName('navbar')[0];
 
 function updateAdultName() {
     let registree_input = document.getElementById('attending_adult_row_duplicate').querySelectorAll('input')[0];

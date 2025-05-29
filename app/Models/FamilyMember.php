@@ -198,28 +198,26 @@ class FamilyMember extends Model
      */
     public function scopeCheckDuplicates($query)
     {
-        return $query->selectRaw('firstname, lastname, city, state')
+        return $query->selectRaw('firstname, city, state')
             ->where('duplicate', null)
             ->groupBy('firstname')
-            ->groupBy('lastname')
             ->groupBy('city')
             ->groupBy('state')
-            ->havingRaw('COUNT(firstname) > 1 AND COUNT(lastname) > 1 AND COUNT(city) > 1 AND COUNT(state) > 1')
+            ->havingRaw('COUNT(firstname) > 1 AND COUNT(city) > 1 AND COUNT(state) > 1')
             ->get();
     }
 
     /**
      * Get all the duplicates that were found
      */
-    public function scopeGetDuplicates($query, $firstname, $lastname, $city, $state)
+    public function scopeGetDuplicates($query, $firstname, $city, $state)
     {
         return $query->where([
             ['firstname', 'LIKE', '%' . $firstname . '%'],
-            ['lastname', 'LIKE', '%' . $lastname . '%'],
             ['city', 'LIKE', '%' . $city . '%'],
             ['state', 'LIKE', '%' . $state . '%'],
             ['duplicate', null],
-        ]);
+        ])->orderBy('user_id', 'desc');
     }
 
     /**
