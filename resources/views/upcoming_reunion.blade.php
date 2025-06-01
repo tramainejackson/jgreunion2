@@ -269,22 +269,49 @@
                 </div>
             </div>
 
-{{--            <div id="electronic_payment_option" class="payment_option col-12 col-xl-5 mx-auto my-2">--}}
-{{--                <div class="card border border-2 border-light-subtle">--}}
+            <div id="electronic_payment_option" class="payment_option col-12 col-xl-5 mx-auto my-2">
+                <div class="card border border-2 border-light-subtle">
 
-{{--                    <div class="card-header">--}}
-{{--                        <h2 class="text-center">Electronic Payment</h2>--}}
-{{--                    </div>--}}
+                    <div class="card-header">
+                        <h2 class="text-center">Electronic Payment</h2>
+                    </div>
 
-{{--                    <div class="card-body">--}}
-{{--                        <p class="">All electronic payments can be sent to jacksongreenreunion@gmail.com for anyone who--}}
-{{--                            already has a paypal account.</p>--}}
-{{--                        <p class="">Click <a href=" https://www.paypal.com/pools/c/85OCIIUoUB" target="_blank">here</a>--}}
-{{--                            to go to--}}
-{{--                            paypal.</p>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
-{{--            </div>--}}
+                    <div class="card-body">
+                        <div class="d-flex align-items-center justify-content-center">
+
+                            <div class="electronic_payment_div m-2" id="paypal_div">
+                                <img src="{{ asset('images/paypal_icon.png') }}" class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
+
+                                <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Paypal</p>
+
+                                <p class="text-center"><a href="https://paypal.me/LoJackreunion" target="_blank">paypal.me/LoJackreunion</a></p>
+                            </div>
+                            <div class="electronic_payment_div m-2" id="cashapp_div">
+                                <img src="{{ asset('images/cashapp_icon.png') }}" class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
+
+                                <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Cash App</p>
+
+                                <p class="text-center"><a href="https://cash.app/$lojackreunion" target="_blank">$lojackreunion</a></p>
+                            </div>
+                            <div class="electronic_payment_div m-2" id="venmo_div">
+                                <img src="{{ asset('images/venmo_icon.png') }}" class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
+
+                                <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Venmo</p>
+
+{{--                                <p class="text-center">paypal.me/LoJackreunion</p>--}}
+                            </div>
+                            <div class="electronic_payment_div m-2" id="zelle_div">
+                                <img src="{{ asset('images/zelle_icon.png') }}" class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
+
+                                <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Zelle</p>
+
+                                <p class="text-center">267-252-9481</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <hr class="hr hr-blurry"/>

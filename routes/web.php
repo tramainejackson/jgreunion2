@@ -24,10 +24,6 @@ Route::get('/contact', [HomeController::class, 'contact'])->name('contact');
 /*RESOURCE ROUTE*/
 Route::get('/members/duplicates', [FamilyMemberController::class, 'duplicates'])->name('duplicate_members');
 Route::post('/members/duplicates', [FamilyMemberController::class, 'update_duplicate']);
-//Route::post('/members_keep/duplicate/{member}', [FamilyMemberController::class, 'keep_duplicate']);
-//Route::delete('/members_remove/duplicate/{member}', [FamilyMemberController::class, 'delete_duplicates']);
-//Route::put('/members/{reunion_dl}/add_house_hold', [FamilyMemberController::class, 'add_house_hold'])->name('add_house_hold');
-//Route::delete('/members/{reunion_dl}/remove_house_hold', [FamilyMemberController::class, 'remove_house_hold'])->name('remove_house_hold');
 Route::resource('members', FamilyMemberController::class);
 
 /*RESOURCE ROUTE*/
