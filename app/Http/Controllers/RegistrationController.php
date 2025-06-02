@@ -129,7 +129,7 @@ class RegistrationController extends Controller
 
 //             dd($registration->children_names);
             if ($member->save()) {
-                $registration->family_members_id = $member->id;
+                $registration->family_member_id = $member->id;
 
                 if ($registration->save()) {
 //					\Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
@@ -247,7 +247,7 @@ class RegistrationController extends Controller
             $youth = '';
             $children = '';
 
-            $registration->family_members_id = $member->id;
+            $registration->family_member_id = $member->id;
             $registration->reunion_id = $reunion->id;
             $registration->registree_name = $member->firstname . ' ' . $member->lastname;
             $registration->total_amount_due = $registration->due_at_reg = $totalPrice;
@@ -327,10 +327,10 @@ class RegistrationController extends Controller
         $registration->children_shirts = implode('; ', isset($request->children_sizes) ? $request->children_sizes : array());
         $registration->reg_notes = $request->reg_notes;
 
-        if ($registration->family_members_id != null) {
+        if ($registration->family_member_id != null) {
 
             $registration->registree_name = $registration->reunion_dl->firstname . ' ' . $registration->reunion_dl->lastname;
-            $registration->family_members_id = $registration->reunion_dl->id;
+            $registration->family_member_id = $registration->reunion_dl->id;
 
         }
 
@@ -390,7 +390,7 @@ class RegistrationController extends Controller
             // Create a new registration
             $newRegistration = new Registration();
             $newRegistration->reunion_id = $registration->reunion_id;
-            $newRegistration->family_members_id = $member->id;
+            $newRegistration->family_member_id = $member->id;
             $newRegistration->reg_date = $registration->reg_date;
             $newRegistration->registree_name = $member->firstname . ' ' . $member->lastname;
             $newRegistration->parent_registration_id = $registration->id;
@@ -584,7 +584,7 @@ class RegistrationController extends Controller
             $registration->total_amount_due = $registration->due_at_reg - $registration->total_amount_paid;
 
             if ($member->save()) {
-                $newRegistration->family_members_id = $member->id;
+                $newRegistration->family_member_id = $member->id;
 
                 if ($newRegistration->save()) {
                     if ($registration->save()) {
