@@ -19,14 +19,17 @@
                 @if(Auth::check())
                     @if($registered_user)
                         <div class="col12">
-                            <h3 id="" class="text-center">You are registered for this reunion. Click here to see your registration.</h3>
+                            <h3 id="" class="text-center">You are registered for this reunion. Click here to see your
+                                registration.</h3>
                         </div>
                     @else
                         <div class="col-12" id="registrationReminderMsg">
-                            <p class="text-center">Please do not send any payment without completing the registration form
+                            <p class="text-center">Please do not send any payment without completing the registration
+                                form
                                 first. You can click
 
-                                <a href="{{ route('member_registration', ['reunion' => $reunion->id, 'member' => Auth::user()->member->id]) }}" target="_blank"
+                                <a href="{{ route('member_registration', ['reunion' => $reunion->id, 'member' => Auth::user()->member->id]) }}"
+                                   target="_blank"
                                    id="registrationLink"
                                    class="">here</a> to complete your registration for the upcoming reunion.
                             </p>
@@ -223,7 +226,7 @@
                 <h1 class="text-center display-5 fw-bold">Payment Information</h1>
             </div>
 
-            <div id="paper_payment_option" class="payment_option col-12 col-xl-5 mx-auto my-2">
+            <div id="paper_payment_option" class="payment_option col-12 col-xl-6 mx-auto my-2">
                 <div class="card border border-2 border-light-subtle">
 
                     <div class="card-header">
@@ -269,7 +272,7 @@
                 </div>
             </div>
 
-            <div id="electronic_payment_option" class="payment_option col-12 col-xl-5 mx-auto my-2">
+            <div id="electronic_payment_option" class="payment_option col-12 col-xl-6 mx-auto my-2">
                 <div class="card border border-2 border-light-subtle">
 
                     <div class="card-header">
@@ -278,36 +281,46 @@
 
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-center">
+                            <div class="row row-cols-2 row-cols-md-4">
 
-                            <div class="electronic_payment_div m-2" id="paypal_div">
-                                <img src="{{ asset('images/paypal_icon.png') }}" class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
+                                <div class="electronic_payment_div" id="paypal_div">
+                                    <img src="{{ asset('images/paypal_icon.png') }}"
+                                         class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
 
-                                <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Paypal</p>
+                                    <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Paypal</p>
 
-                                <p class="text-center"><a href="https://paypal.me/LoJackreunion" target="_blank">paypal.me/LoJackreunion</a></p>
+                                    <p class="text-center"><a href="https://paypal.me/LoJackreunion" target="_blank">paypal.me/LoJackreunion</a>
+                                    </p>
+                                </div>
+
+                                <div class="electronic_payment_div" id="cashapp_div">
+                                    <img src="{{ asset('images/cashapp_icon.png') }}"
+                                         class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
+
+                                    <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Cash App</p>
+
+                                    <p class="text-center"><a href="https://cash.app/$lojackreunion" target="_blank">$lojackreunion</a>
+                                    </p>
+                                </div>
+
+                                <div class="electronic_payment_div" id="venmo_div">
+                                    <img src="{{ asset('images/venmo_icon.png') }}"
+                                         class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
+
+                                    <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Venmo</p>
+
+                                    {{--                                <p class="text-center">paypal.me/LoJackreunion</p>--}}
+                                </div>
+
+                                <div class="electronic_payment_div" id="zelle_div">
+                                    <img src="{{ asset('images/zelle_icon.png') }}"
+                                         class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
+
+                                    <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Zelle</p>
+
+                                    <p class="text-center">267-252-9481</p>
+                                </div>
                             </div>
-                            <div class="electronic_payment_div m-2" id="cashapp_div">
-                                <img src="{{ asset('images/cashapp_icon.png') }}" class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
-
-                                <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Cash App</p>
-
-                                <p class="text-center"><a href="https://cash.app/$lojackreunion" target="_blank">$lojackreunion</a></p>
-                            </div>
-                            <div class="electronic_payment_div m-2" id="venmo_div">
-                                <img src="{{ asset('images/venmo_icon.png') }}" class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
-
-                                <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Venmo</p>
-
-{{--                                <p class="text-center">paypal.me/LoJackreunion</p>--}}
-                            </div>
-                            <div class="electronic_payment_div m-2" id="zelle_div">
-                                <img src="{{ asset('images/zelle_icon.png') }}" class="img-fluid rounded rounded-circle px-5 mb-2" alt="">
-
-                                <p class="fs-4 fw-bold text-center text-decoration-underline display-6">Zelle</p>
-
-                                <p class="text-center">267-252-9481</p>
-                            </div>
-
                         </div>
                     </div>
                 </div>
