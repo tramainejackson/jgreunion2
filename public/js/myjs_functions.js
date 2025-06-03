@@ -117,7 +117,6 @@ function addNewRowFromBtn(taskTitle) {
 //Switch to edit/create view for the admin when registering another family member
 function removeNewRow(removeBtn) {
     removeBtn.parentElement.parentElement.remove();
-    console.log('New Row Was Removed');
 }
 
 function btnToggle(btnElement) {
@@ -188,7 +187,10 @@ function filePreview(input) {
 
 //Switch to edit/create view for the admin when registering another family member
 function createNewRegistration(id) {
-    document.getElementById('create_reg_select_link').setAttribute('href', location.host += '/registrations/create?member=' + id.value);
+    let newHost = location.host;
+    let newProtocol = location.protocol;
+
+    document.getElementById('member_registration_link').href = newProtocol + newHost + '/registrations/create?member=' + id.value;
 }
 
 //Update modal with selected model information to remove

@@ -52,7 +52,8 @@
                         </div>
 
                         <div class="col-3">
-                            <a href="#" target="_blank" class="btn btn-info createRegSelectLink" id="create_reg_select_link">Go</a>
+                            <a href="#" target="_blank" type="button" class="d-none" id="member_registration_link" hidden></a>
+                            <button type="button" class="btn btn-info createRegSelectLink" id="create_reg_select_link" onclick="document.getElementById('member_registration_link').click();">Go</button>
                         </div>
                     </div>
 
