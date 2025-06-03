@@ -187,10 +187,9 @@ function filePreview(input) {
 
 //Switch to edit/create view for the admin when registering another family member
 function createNewRegistration(id) {
-    let newHost = location.host;
-    let newProtocol = location.protocol;
+    let newHost = location.origin;
 
-    document.getElementById('member_registration_link').href = newProtocol + newHost + '/registrations/create?member=' + id.value;
+    document.getElementById('member_registration_link').href = newHost + '/registrations/create?member=' + id.value;
 }
 
 //Update modal with selected model information to remove
