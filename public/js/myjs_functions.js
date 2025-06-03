@@ -108,8 +108,10 @@ function addNewRowFromBtn(taskTitle) {
         }
     }
 
-    //Add an addEventListener to the remove buttons of the new rows
-    newRow.querySelectorAll('button[class*="remove"]')[0].addEventListener("click", (event) => removeNewRow(event.target));
+    if(newRow.querySelectorAll('button[class*="remove"]').length > 0) {
+        //Add an addEventListener to the remove buttons of the new rows
+        newRow.querySelectorAll('button[class*="remove"]')[0].addEventListener("click", (event) => removeNewRow(event.target));
+    }
 }
 
 //Switch to edit/create view for the admin when registering another family member
@@ -186,7 +188,7 @@ function filePreview(input) {
 
 //Switch to edit/create view for the admin when registering another family member
 function createNewRegistration(id) {
-    document.getElementById('create_reg_select_link').setAttribute('href', 'http://127.0.0.1:8000/my_registration/9/' + id.value);
+    document.getElementById('create_reg_select_link').setAttribute('href', location.host += '/registrations/create?member=' + id.value);
 }
 
 //Update modal with selected model information to remove
@@ -233,8 +235,6 @@ function deleteCommitteeMemberBtn(deleteBtn) {
         deleteBtn.classList.remove('btn-danger');
         inputValue.value = 'N';
     }
-    console.log(deleteBtn);
-    console.log(inputValue);
 }
 
 

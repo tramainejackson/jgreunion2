@@ -15,10 +15,10 @@
         @csrf
 
         <div class="container-fluid" id="">
-            <div class="row">
 
-                @if(Auth::check())
+            @if(Auth::check())
 
+                <div class="row">
                     <div class="col-12 col-sm-6 my-2">
                         <div class="form-outline" id="" data-mdb-input-init>
                             <input type="text"
@@ -54,117 +54,128 @@
                             <span class="text-danger">{{ $errors->first('lastname') }}</span>
                         @endif
                     </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="text"
-                               name="address"
-                               id="address"
-                               class="form-control"
-                               placeholder="Enter Home Address"
-                               value="{{ $member->address != '' ? $member->address : '' }}"
-                               required/>
-
-                        <label for="address" class="form-label">Enter Address</label>
-                    </div>
-
-                    @if($errors->has('address'))
-                        <span class="text-danger">{{ $errors->first('address') }}</span>
-                    @endif
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-sm-4 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="text"
-                               name="city"
-                               id="city"
-                               class="form-control"
-                               placeholder="Enter City"
-                               value="{{ $member->city != '' ? $member->city : '' }}"
-                               required/>
-
-                        <label for="city" class="form-label">Enter City</label>
-                    </div>
-
-                    @if($errors->has('city'))
-                        <span class="text-danger">{{ $errors->first('city') }}</span>
-                    @endif
                 </div>
 
-                <div class="col-6 col-sm-4 my-2">
-                    <div class="form-outline" id="">
-                        <select class="" name="state" data-mdb-select-init required>
-                            @foreach($states as $state)
-                                <option
-                                    value="{{ $state->state_abb }}" {{ $member->state == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
-                            @endforeach
-                        </select>
+                <div class="row">
+                    <div class="col-12 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="address"
+                                   id="address"
+                                   class="form-control"
+                                   placeholder="Enter Home Address"
+                                   value="{{ $member->address != '' ? $member->address : '' }}"
+                                   required/>
 
-                        <label for="state" class="form-label select-label">Select State</label>
-                    </div>
-                </div>
+                            <label for="address" class="form-label">Enter Address</label>
+                        </div>
 
-                <div class="col-6 col-sm-4 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="number"
-                               name="zip"
-                               id="zip"
-                               class="form-control"
-                               placeholder="Enter Zip Code"
-                               value="{{ $member->zip != '' ? $member->zip : '' }}"
-                               required/>
-
-                        <label for="zip" class="form-label">Enter Zip Code</label>
-                    </div>
-
-                    @if($errors->has('zip'))
-                        <span class="text-danger">{{ $errors->first('zip') }}</span>
-                    @endif
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-6 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="text"
-                               name="phone"
-                               id="phone"
-                               class="form-control"
-                               placeholder="Enter Phone Number"
-                               value="{{ $member->phone != '' ? $member->phone : '' }}"/>
-
-                        <label for="phone" class="form-label">Enter Phone Number</label>
-
-                        @if($errors->has('phone'))
-                            <span
-                                class="text-danger">{{ $errors->first('phone') }}. No special characters required</span>
+                        @if($errors->has('address'))
+                            <span class="text-danger">{{ $errors->first('address') }}</span>
                         @endif
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="email"
-                               name="email"
-                               id="email"
-                               class="form-control"
-                               placeholder="Email Address"
-                               value="{{ $member->email != '' ? $member->email : '' }}"/>
+                <div class="row">
+                    <div class="col-12 col-sm-4 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="city"
+                                   id="city"
+                                   class="form-control"
+                                   placeholder="Enter City"
+                                   value="{{ $member->city != '' ? $member->city : '' }}"
+                                   required/>
 
-                        <label for="email" class="form-label">Enter Email Address</label>
+                            <label for="city" class="form-label">Enter City</label>
+                        </div>
 
-                        @if($errors->has('email'))
-                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        @if($errors->has('city'))
+                            <span class="text-danger">{{ $errors->first('city') }}</span>
+                        @endif
+                    </div>
+
+                    <div class="col-6 col-sm-4 my-2">
+                        <div class="form-outline" id="">
+                            <select class="" name="state" data-mdb-select-init required>
+                                @foreach($states as $state)
+                                    <option
+                                        value="{{ $state->state_abb }}" {{ $member->state == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
+                                @endforeach
+                            </select>
+
+                            <label for="state" class="form-label select-label">Select State</label>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-sm-4 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="number"
+                                   name="zip"
+                                   id="zip"
+                                   class="form-control"
+                                   placeholder="Enter Zip Code"
+                                   value="{{ $member->zip != '' ? $member->zip : '' }}"
+                                   min="1"
+                                   required/>
+
+                            <label for="zip" class="form-label">Enter Zip Code</label>
+                        </div>
+
+                        @if($errors->has('zip'))
+                            <span class="text-danger">{{ $errors->first('zip') }}</span>
                         @endif
                     </div>
                 </div>
 
-                @else
+                <div class="row">
+                    <div class="col-12 col-md-6 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="phone"
+                                   id="phone"
+                                   class="form-control"
+                                   placeholder="Enter Phone Number"
+                                   value="{{ $member->phone != '' ? $member->phone : '' }}"/>
 
+                            <label for="phone" class="form-label">Enter Phone Number</label>
+
+                            @if($errors->has('phone'))
+                                <span
+                                    class="text-danger">{{ $errors->first('phone') }}. No special characters required</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="email"
+                                   name="email"
+                                   id="email"
+                                   class="form-control"
+                                   placeholder="Email Address"
+                                   value="{{ $member->email != '' ? $member->email : '' }}"/>
+
+                            <label for="email" class="form-label">Enter Email Address</label>
+
+                            @if($errors->has('email'))
+                                <span class="text-danger">{{ $errors->first('email') }}</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 my-2 d-none">
+                        <div class="form-outline" id="">
+                            <input type="number"
+                                   name="member"
+                                   value="{{ $member->id }}" hidden/>
+                        </div>
+                    </div>
+                </div>
+
+            @else
+
+                <div class="row" id="">
                     <div class="col-12 col-sm-6 my-2">
                         <div class="form-outline" id="" data-mdb-input-init>
                             <input type="text"
@@ -200,118 +211,117 @@
                             <span class="text-danger">{{ $errors->first('lastname') }}</span>
                         @endif
                     </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="text"
-                               name="address"
-                               id="address"
-                               class="form-control"
-                               placeholder="Enter Home Address"
-                               value="{{ old('address') ? old('address') : '' }}"
-                               required/>
-
-                        <label for="address" class="form-label">Enter Address</label>
-                    </div>
-
-                    @if($errors->has('address'))
-                        <span class="text-danger">{{ $errors->first('address') }}</span>
-                    @endif
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-sm-4 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="text"
-                               name="city"
-                               id="city"
-                               class="form-control"
-                               placeholder="Enter City"
-                               value="{{ old('city') ? old('city') : '' }}"
-                               required/>
-
-                        <label for="city" class="form-label">Enter City</label>
-                    </div>
-
-                    @if($errors->has('city'))
-                        <span class="text-danger">{{ $errors->first('city') }}</span>
-                    @endif
                 </div>
 
-                <div class="col-6 col-sm-4 my-2">
-                    <div class="form-outline" id="">
-                        <select class="" name="state" data-mdb-select-init required>
-                            @foreach($states as $state)
-                                <option
-                                    value="{{ $state->state_abb }}" {{ old('reunion_state') && old('state') == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
-                            @endforeach
-                        </select>
+                <div class="row">
+                    <div class="col-12 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="address"
+                                   id="address"
+                                   class="form-control"
+                                   placeholder="Enter Home Address"
+                                   value="{{ old('address') ? old('address') : '' }}"
+                                   required/>
 
-                        <label for="state" class="form-label select-label">Select State</label>
-                    </div>
-                </div>
+                            <label for="address" class="form-label">Enter Address</label>
+                        </div>
 
-                <div class="col-6 col-sm-4 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="number"
-                               name="zip"
-                               id="zip"
-                               class="form-control"
-                               placeholder="Enter Zip Code"
-                               value="{{ old('zip') ? old('zip') : '' }}"
-                               required/>
-
-                        <label for="zip" class="form-label">Enter Zip Code</label>
-                    </div>
-
-                    @if($errors->has('zip'))
-                        <span class="text-danger">{{ $errors->first('zip') }}</span>
-                    @endif
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12 col-md-6 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="text"
-                               name="phone"
-                               id="phone"
-                               class="form-control"
-                               placeholder="Enter Phone Number"
-                               value="{{ old('phone') ? old('phone') : '' }}"/>
-
-                        <label for="phone" class="form-label">Enter Phone Number</label>
-
-                        @if($errors->has('phone'))
-                            <span
-                                class="text-danger">{{ $errors->first('phone') }}. No special characters required</span>
+                        @if($errors->has('address'))
+                            <span class="text-danger">{{ $errors->first('address') }}</span>
                         @endif
                     </div>
                 </div>
 
-                <div class="col-12 col-md-6 my-2">
-                    <div class="form-outline" id="" data-mdb-input-init>
-                        <input type="email"
-                               name="email"
-                               id="email"
-                               class="form-control"
-                               placeholder="Email Address"
-                               value="{{ old('email') ? old('email') : '' }}"/>
+                <div class="row">
+                    <div class="col-12 col-sm-4 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="city"
+                                   id="city"
+                                   class="form-control"
+                                   placeholder="Enter City"
+                                   value="{{ old('city') ? old('city') : '' }}"
+                                   required/>
 
-                        <label for="email" class="form-label">Enter Email Address</label>
+                            <label for="city" class="form-label">Enter City</label>
+                        </div>
 
-                        @if($errors->has('email'))
-                            <span class="text-danger">{{ $errors->first('email') }}</span>
+                        @if($errors->has('city'))
+                            <span class="text-danger">{{ $errors->first('city') }}</span>
+                        @endif
+                    </div>
+
+                    <div class="col-6 col-sm-4 my-2">
+                        <div class="form-outline" id="">
+                            <select class="" name="state" data-mdb-select-init required>
+                                @foreach($states as $state)
+                                    <option
+                                        value="{{ $state->state_abb }}" {{ old('reunion_state') && old('state') == $state->state_abb ? 'selected' : '' }}>{{ $state->state_name }}</option>
+                                @endforeach
+                            </select>
+
+                            <label for="state" class="form-label select-label">Select State</label>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-sm-4 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="number"
+                                   name="zip"
+                                   id="zip"
+                                   class="form-control"
+                                   placeholder="Enter Zip Code"
+                                   value="{{ old('zip') ? old('zip') : '' }}"
+                                   required/>
+
+                            <label for="zip" class="form-label">Enter Zip Code</label>
+                        </div>
+
+                        @if($errors->has('zip'))
+                            <span class="text-danger">{{ $errors->first('zip') }}</span>
                         @endif
                     </div>
                 </div>
 
-                @endif
+                <div class="row">
+                    <div class="col-12 col-md-6 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="text"
+                                   name="phone"
+                                   id="phone"
+                                   class="form-control"
+                                   placeholder="Enter Phone Number"
+                                   value="{{ old('phone') ? old('phone') : '' }}"/>
 
-            </div>
+                            <label for="phone" class="form-label">Enter Phone Number</label>
+
+                            @if($errors->has('phone'))
+                                <span
+                                    class="text-danger">{{ $errors->first('phone') }}. No special characters required</span>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-6 my-2">
+                        <div class="form-outline" id="" data-mdb-input-init>
+                            <input type="email"
+                                   name="email"
+                                   id="email"
+                                   class="form-control"
+                                   placeholder="Email Address"
+                                   value="{{ old('email') ? old('email') : '' }}"/>
+
+                            <label for="email" class="form-label">Enter Email Address</label>
+
+                            @if($errors->has('email'))
+                                <span class="text-danger">{{ $errors->first('email') }}</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
+            @endif
 
             <div class="table-responsive">
                 <table class="table" id="registration_form_table">
@@ -357,7 +367,7 @@
                                        name="total_adult"
                                        id="total_adult"
                                        class="form-control"
-                                       value=""
+                                       value="{{ $reunion->adult_price }}"
                                        disabled/>
                             </div>
                         </td>
@@ -449,7 +459,8 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="basic-addon">$</span>
                                 </div>
-                                <input type="number" name="total_youth" id="total_youth" class="form-control" disabled/>
+                                <input type="number" name="total_youth" id="total_youth" class="form-control"
+                                       disabled/>
                             </div>
                         </td>
                     </tr>
@@ -561,7 +572,7 @@
                                        name="total_amount_due"
                                        id="total_amount_due"
                                        class="form-control"
-                                       value=""
+                                       value="{{ $reunion->adult_price }}"
                                        disabled/>
                             </div>
                         </td>

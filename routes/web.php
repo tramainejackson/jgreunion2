@@ -42,10 +42,6 @@ Route::get('/past_reunion/{reunion}', [ReunionController::class, 'show_past_reun
 //Route::delete('/reunion_committee_members/{reunion_committee}', 'ReunionController@remove_committee_member')->name('remove_committee_member');
 Route::resource('reunions', ReunionController::class);
 
-/*RESOURCE ROUTE*/
-Route::get('/my_registration/{reunion}/{member}', [UserController::class, 'member_reunion_registration'])->name('member_registration');
-Route::post('/my_registration/{reunion}/{member}', [UserController::class, 'store_registration']);
-
 //Route::get('/test', function (){
 //  return phpinfo();
 //});

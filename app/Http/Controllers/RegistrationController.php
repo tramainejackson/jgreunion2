@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Settings;
 use App\Models\Registration;
 use App\Models\Reunion;
 use App\Models\FamilyMember;
@@ -50,14 +51,16 @@ class RegistrationController extends Controller
         $members = FamilyMember::orderby('firstname', 'asc')->get();
         $states = State::all();
         $active_reunion = Reunion::active()->isNotEmpty() ? Reunion::active()->first() : null;
-//        dd('Test');
+        $reunion = Reunion::active()->isNotEmpty() ? Reunion::active()->first() : null;
 
         if(request()->query('member')) {
             if(is_numeric(request()->query('member'))) {
                 $member = FamilyMember::find(request()->query('member'));
 
                 if($member != null) {
-                    return response()->view('admin.registrations.create', compact('reunion', 'members', 'active_reunion', 'states'));
+                    $registered_for_reunion = Registration::memberRegistered($member->id, $reunion->id)->first();
+
+                    return response()->view('users.registration', compact('reunion', 'member', 'states', 'registered_for_reunion'));
                 }
             }
         } else {
@@ -90,7 +93,7 @@ class RegistrationController extends Controller
 
             // Create New Registration
             $registration = new Registration();
-            $registration->reunion_id = $request->reunion_id;
+            $registration->reunion_id = Settings::first()->current_reunion;
             $registration->address = $member->address = $request->address;
             $registration->city = $member->city = $request->city;
             $registration->state = $member->state = $request->state;
@@ -127,7 +130,6 @@ class RegistrationController extends Controller
             $registration->children_names = isset($request->attending_children_name) ? join('; ', $request->attending_children_name) : null;
             $registration->total_amount_due = $registration->due_at_reg = $request->total_amount_due;
 
-//             dd($registration->children_names);
             if ($member->save()) {
                 $registration->family_member_id = $member->id;
 
@@ -240,24 +242,142 @@ class RegistrationController extends Controller
         } else {
 
             $registration = new Registration();
-            $reunion = Reunion::find($request->reunion_id);
-            $member = FamilyMember::find($request->reg_member);
-            $totalPrice = $reunion->adult_price;
-            $adults = $member->firstname;
-            $youth = '';
-            $children = '';
-
-            $registration->family_member_id = $member->id;
+            $reunion = Reunion::find(Settings::first()->current_reunion);
+            $member = FamilyMember::find($request->member);
             $registration->reunion_id = $reunion->id;
-            $registration->registree_name = $member->firstname . ' ' . $member->lastname;
-            $registration->total_amount_due = $registration->due_at_reg = $totalPrice;
+            $registration->family_member_id = $member->id;
+            $registration->address = $member->address = $request->address;
+            $registration->city = $member->city = $request->city;
+            $registration->state = $member->state = $request->state;
+            $registration->zip = $member->zip = $request->zip;
+            $registration->email = $member->email = $request->email;
+            $registration->phone = $member->phone = $request->phone != '' ? $request->phone : null;
+            $registration->registree_name = $request->firstname . ' ' . $request->lastname;
             $registration->reg_date = Carbon::now();
-            $registration->adult_names = $adults;
-            $registration->youth_names = $youth == '' ? null : $youth;
-            $registration->children_names = $children == '' ? null : $children;
+            $registration->adult_shirts = isset($request->adult_shirts) ? join('; ', $request->adult_shirts) : null;
+            $registration->youth_shirts = isset($request->youth_shirts) ? join('; ', $request->youth_shirts) : null;
+            $registration->children_shirts = isset($request->children_shirts) ? join('; ', $request->children_shirts) : null;
+
+            // If the adult name isn't entered then use the
+            // registree's first name
+            if ($request->attending_adult <= 1) {
+                $registration->adult_names = $request->firstname;
+            } else {
+                $registration->adult_names = '';
+
+                foreach ($request->attending_adult_name as $index => $adultName) {
+                    if ($index == 0) {
+                        $registration->adult_names .= $adultName;
+                    } else {
+                        $registration->adult_names .= '; ' . $adultName;
+                    }
+                }
+            }
+
+            $registration->youth_names = isset($request->attending_youth_name) ? join('; ', $request->attending_youth_name) : null;
+            $registration->children_names = isset($request->attending_children_name) ? join('; ', $request->attending_children_name) : null;
+            $registration->total_amount_due = $registration->due_at_reg = $request->total_amount_due;
 
             if ($registration->save()) {
-                return redirect()->action([RegistrationController:: class, 'edit'], $registration)->with('status', 'Registration Added Successfully');
+//					\Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
+//
+//					\Mail::to('desmund94@gmail.com')->send(new Registration_User($registration, $registration->reunion));
+
+                $newAdults = explode('; ', $registration->adult_names);
+                if (count($newAdults) > 1) {
+                    foreach ($newAdults as $key => $newAdult) {
+                        // Skip the first adult name
+                        if ($key > 0) {
+                            // Create New Member
+                            $adultMember = new FamilyMember();
+
+                            // Create New Registration
+                            $adultRegistration = new Registration();
+                            $adultRegistration->reunion_id = $registration->reunion_id;
+                            $adultRegistration->address = $adultMember->address = $member->address;
+                            $adultRegistration->city = $adultMember->city = $member->city;
+                            $adultRegistration->state = $adultMember->state = $member->state;
+                            $adultRegistration->zip = $adultMember->zip = $member->zip;
+                            $adultRegistration->email = $adultMember->email = $member->email;
+                            $adultRegistration->phone = $adultMember->phone = $member->phone != '' ? $member->phone : null;
+                            $adultRegistration->registree_name = $newAdult . ' ' . $member->lastname;
+                            $adultRegistration->reg_date = Carbon::now();
+                            $adultRegistration->parent_registration_id = $registration->id;
+                            $adultMember->firstname = $newAdult;
+                            $adultMember->lastname = $member->lastname;
+                            $adultMember->age_group = 'youth';
+
+                            if ($adultMember->save()) {
+                                $adultRegistration->save();
+                            }
+                        }
+                    }
+                }
+
+                // If the youths aren't equal to null then create a child registration
+                // and a member account
+                if ($registration->youth_names != null) {
+                    $newYouths = explode('; ', $registration->youth_names);
+
+                    foreach ($newYouths as $newYouth) {
+                        // Create New Member
+                        $youthMember = new FamilyMember();
+
+                        // Create New Registration
+                        $youthRegistration = new Registration();
+                        $youthRegistration->reunion_id = $registration->reunion_id;
+                        $youthRegistration->address = $youthMember->address = $member->address;
+                        $youthRegistration->city = $youthMember->city = $member->city;
+                        $youthRegistration->state = $youthMember->state = $member->state;
+                        $youthRegistration->zip = $youthMember->zip = $member->zip;
+                        $youthRegistration->email = $youthMember->email = $member->email;
+                        $youthRegistration->phone = $youthMember->phone = $member->phone != '' ? $member->phone : null;
+                        $youthRegistration->registree_name = $newYouth . ' ' . $member->lastname;
+                        $youthRegistration->reg_date = Carbon::now();
+                        $youthRegistration->parent_registration_id = $registration->id;
+                        $youthMember->firstname = $newYouth;
+                        $youthMember->lastname = $member->lastname;
+                        $youthMember->age_group = 'youth';
+
+                        if ($youthMember->save()) {
+                            $youthRegistration->save();
+                        }
+                    }
+                }
+
+                // If the children aren't equal to null then create a child registration
+                // and a member account
+                if ($registration->children_names != null) {
+                    $newChildren = explode('; ', $registration->children_names);
+
+                    foreach ($newChildren as $newChild) {
+                        // Create New Member
+                        $childMember = new FamilyMember();
+
+                        // Create New Registration
+                        $childRegistration = new Registration();
+                        $childRegistration->reunion_id = $registration->reunion_id;
+                        $childRegistration->address = $childMember->address = $member->address;
+                        $childRegistration->city = $childMember->city = $member->city;
+                        $childRegistration->state = $childMember->state = $member->state;
+                        $childRegistration->zip = $childMember->zip = $member->zip;
+                        $childRegistration->email = $childMember->email = $member->email;
+                        $childRegistration->phone = $member->phone;
+                        $childRegistration->reg_date = Carbon::now();
+                        $childRegistration->phone = $childMember->phone = $member->phone != '' ? $member->phone : null;
+                        $childRegistration->registree_name = $newChild . ' ' . $member->lastname;
+                        $childRegistration->parent_registration_id = $registration->id;
+                        $childMember->firstname = $newChild;
+                        $childMember->lastname = $member->lastname;
+                        $childMember->age_group = 'child';
+
+                        if ($childMember->save()) {
+                            $childRegistration->save();
+                        }
+                    }
+                }
+
+                return redirect()->action([FamilyMemberController:: class, 'edit'], $member)->with('status', 'Registration Added Successfully');
             }
         }
     }

@@ -37,7 +37,7 @@
 
                         <div class=" mt-4 mb-5">
                             <a class="btn btn-outline-danger fs-5"
-                               href="{{ route('member_registration', ['reunion' => $active_reunion->id, 'member' => $family_member->id]) }}"><i
+                               href="{{ route('registrations.create', ['reunion' => $active_reunion->id, 'member' => $family_member->id]) }}"><i
                                     class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;There is an upcoming
                                 reunion
                                 to {{ $active_reunion->reunion_city . ', ' . $active_reunion->reunion_state .' for ' . $active_reunion->reunion_year }}

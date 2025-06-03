@@ -227,7 +227,7 @@
             </div>
 
             <div id="paper_payment_option" class="payment_option col-12 col-xl-6 mx-auto my-2">
-                <div class="card border border-2 border-light-subtle">
+                <div class="card border border-2 border-light-subtle h-100">
 
                     <div class="card-header">
                         <h2 class="text-center">Pay By Check</h2>
@@ -273,7 +273,7 @@
             </div>
 
             <div id="electronic_payment_option" class="payment_option col-12 col-xl-6 mx-auto my-2">
-                <div class="card border border-2 border-light-subtle">
+                <div class="card border border-2 border-light-subtle h-100">
 
                     <div class="card-header">
                         <h2 class="text-center">Electronic Payment</h2>

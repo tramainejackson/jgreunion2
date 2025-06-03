@@ -186,22 +186,6 @@ class UserController extends Controller
     }
 
     /**
-     * Get the specified resource from storage.
-     *
-     * @param Reunion $reunion
-     * @param FamilyMember $member
-     * @return Response
-     */
-    public function member_reunion_registration(Reunion $reunion, FamilyMember $member)
-    {
-        $states = State::all();
-        $registered_for_reunion = Registration::memberRegistered($member->id, $reunion->id)->first();
-
-        return response()->view('users.registration', compact('reunion', 'member', 'states', 'registered_for_reunion'));
-
-    }
-
-    /**
      * Post the specified resource from storage.
      *
      * @param Request $request

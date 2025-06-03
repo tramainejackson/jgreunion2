@@ -25,7 +25,7 @@
                                     <h4 class="text-center">
                                         <span class="fw-bold text-decoration-underline">Amount Paid:</span>
                                         <br/>
-                                        <span>${{ $registered_for_reunion->total_amount_due }}</span>
+                                        <span>${{ $registered_for_reunion->total_amount_paid }}</span>
                                     </h4>
                                 </div>
 
@@ -33,7 +33,7 @@
                                     <h4 class="text-center">
                                         <span class="fw-bold text-decoration-underline">Amount Due:</span>
                                         <br/>
-                                        <span>${{ $registered_for_reunion->total_amount_paid }}</span>
+                                        <span>${{ $registered_for_reunion->total_amount_due }}</span>
                                     </h4>
                                 </div>
                             </div>
