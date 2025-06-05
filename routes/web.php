@@ -44,10 +44,10 @@ Route::get('/past_reunion/{reunion}', [ReunionController::class, 'show_past_reun
 //Route::delete('/reunion_committee_members/{reunion_committee}', 'ReunionController@remove_committee_member')->name('remove_committee_member');
 Route::resource('reunions', ReunionController::class);
 
-Route::get('/test', function (){
-
-return view('test');
-//  return phpinfo();
-});
+//Route::get('/test', function (){
+//
+//return view('test');
+////  return phpinfo();
+//});
 
 require __DIR__.'/auth.php';
