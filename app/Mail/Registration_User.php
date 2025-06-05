@@ -2,7 +2,7 @@
 
 namespace App\Mail;
 
-use App\Registration;
+use App\Models\Registration;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -15,11 +15,12 @@ class Registration_User extends Mailable
 	/**
 	* The variable instances
 	*
-	* @var contact
+	* @var $registration
+	* @var $reunion
 	*/
 	public $registration;
 	public $reunion;
-	
+
     /**
      * Create a new message instance.
      *

@@ -99,7 +99,7 @@
 
                     @foreach($distribution_list as $member)
                         <tr>
-                            @if($family_member->user->is_admin())
+                            @if($family_member->user->is_admin() || $family_member->id == $member->id)
                                 <td class="text-truncate"><a href="{{ route('members.edit', $member->id) }}"
                                                              class="btn btn-warning">Edit</a></td>
                             @else

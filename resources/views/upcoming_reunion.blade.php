@@ -28,7 +28,7 @@
                                 form
                                 first. You can click
 
-                                <a href="{{ route('member_registration', ['reunion' => $reunion->id, 'member' => Auth::user()->member->id]) }}"
+                                <a href="{{ route('registrations.create', ['reunion' => $reunion->id, 'member' => Auth::user()->member->id]) }}"
                                    target="_blank"
                                    id="registrationLink"
                                    class="">here</a> to complete your registration for the upcoming reunion.
@@ -331,11 +331,11 @@
 
         <!-- Contact/Committee information -->
         <div class="row reunion_content my-5" id="">
-            <div class="col-12 reunionInformationHeader py-1">
+            <div class="col-12 col-md-10 reunionInformationHeader py-1 mx-auto">
                 <h1 class="text-center display-5 fw-bold">Committee Information</h1>
             </div>
 
-            <div class="col-12">
+            <div class="col-12 col-md-10 mx-auto">
                 <table id="" class="table table-responsive">
                     <thead>
                     <tr>

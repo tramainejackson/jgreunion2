@@ -163,7 +163,7 @@ class FamilyMemberController extends Controller
         $active_reunion = Reunion::active()->first();
         $registered_for_reunion = $active_reunion !== null ? Registration::memberRegistered($family_member->id, $active_reunion->id)->first() : null;
 
-        if (Auth::user()->is_admin()) {
+        if (Auth::user()->is_admin() || Auth::user()->member->id == $member->id) {
             return response()->view('admin.members.edit', compact('user', 'userPhone1', 'userPhone2', 'userPhone3', 'states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
         } else {
             return redirect()->action([FamilyMemberController::class, 'show'], $family_member);

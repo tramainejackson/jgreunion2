@@ -60,7 +60,14 @@ class RegistrationController extends Controller
                 if($member != null) {
                     $registered_for_reunion = Registration::memberRegistered($member->id, $reunion->id)->first();
 
-                    return response()->view('users.registration', compact('reunion', 'member', 'states', 'registered_for_reunion'));
+                    if(Auth::user()->is_admin() != null) {
+                        return response()->view('admin.registrations.member_registration', compact('reunion', 'member', 'states', 'registered_for_reunion'));
+                    } else {
+                        $member = Auth::user()->member;
+
+                        return response()->view('admin.registrations.member_registration', compact('reunion', 'member', 'states', 'registered_for_reunion'));
+                    }
+
                 }
             }
         } else {
@@ -134,7 +141,7 @@ class RegistrationController extends Controller
                 $registration->family_member_id = $member->id;
 
                 if ($registration->save()) {
-//					\Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
+					Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
 //
 //					\Mail::to('desmund94@gmail.com')->send(new Registration_User($registration, $registration->reunion));
 
