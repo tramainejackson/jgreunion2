@@ -5,6 +5,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ReunionController;
+use App\Mail\Registration_Admin;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,8 +44,10 @@ Route::get('/past_reunion/{reunion}', [ReunionController::class, 'show_past_reun
 //Route::delete('/reunion_committee_members/{reunion_committee}', 'ReunionController@remove_committee_member')->name('remove_committee_member');
 Route::resource('reunions', ReunionController::class);
 
-//Route::get('/test', function (){
+Route::get('/test', function (){
+
+return view('test');
 //  return phpinfo();
-//});
+});
 
 require __DIR__.'/auth.php';
