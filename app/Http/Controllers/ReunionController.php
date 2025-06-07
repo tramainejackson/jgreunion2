@@ -420,7 +420,7 @@ class ReunionController extends Controller
                             $committee_member = new ReunionCommittee();
 
                             // Get member from distro list
-                            $member = FamilyMember::find($request->dl_id[$x]);
+                            $member = FamilyMember::find($request->family_member_id[$x]);
 
                             $committee_member->family_member_id = $member->id;
                             $committee_member->reunion_id = $reunion->id;
