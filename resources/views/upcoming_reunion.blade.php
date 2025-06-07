@@ -57,7 +57,7 @@
 
             @if($reunion->hotel)
                 <div class="col-10 mx-auto">
-                    <div class="card">
+                    <div class="card pb-3">
 
                         <img
                             src="{{ asset($reunion->hotel->picture != null ? $reunion->hotel->picture : '/images/hotel_default.jpg' ) }}"
@@ -103,42 +103,14 @@
 
                         </div>
 
-                        {{--                <div class="col-12">--}}
-
-                        {{--                    <div class="form-block-header mb-xl-3">--}}
-                        {{--                        <h2 class="text-center">Hotel Amenities</h2>--}}
-                        {{--                    </div>--}}
-
-                        {{--                    <div class="">--}}
-
-                        {{--                        <ul class="list-unstyled px-1">--}}
-
-                        {{--                            @if($reunion->hotel->features->isNotEmpty())--}}
-
-                        {{--                                @foreach($reunion->hotel->features as $hotel_feature)--}}
-                        {{--                                    <li class="">{{ $hotel_feature->feature_desc }}</li>--}}
-                        {{--                                @endforeach--}}
-
-                        {{--                            @else--}}
-
-                        {{--                                <li class="text-center text-muted">We're still gathering information about the--}}
-                        {{--                                    hotel and its amenities. Check back later for additional information--}}
-                        {{--                                </li>--}}
-
-                        {{--                            @endif--}}
-
-                        {{--                        </ul>--}}
-                        {{--                    </div>--}}
-                        {{--                </div>--}}
-
                         @if($reunion->hotel->book_room_link !== null)
 
                             <div class="col-12 reunionInformationHeader py-1">
-                                <h1 class="text-center display-5 fw-bold">Hotel Information</h1>
+                                <h1 class="text-center display-5 fw-bold">Hotel Booking Link</h1>
                             </div>
 
                             <div class="col-12 text-center">
-                                <a href="{{ $reunion->hotel->book_room_link }}" class="btn btn-warning btn-lg"
+                                <a href="https://{{ $reunion->hotel->book_room_link }}" class="btn btn-warning btn-lg"
                                    target="_blank">Book Hotel Room</a>
                             </div>
 

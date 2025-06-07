@@ -720,7 +720,6 @@ class RegistrationController extends Controller
                 }
             }
         }
-        // dd($registration->adult_names);
     }
 
     /**
