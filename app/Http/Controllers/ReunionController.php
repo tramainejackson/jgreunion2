@@ -272,7 +272,6 @@ class ReunionController extends Controller
      */
     public function update(Request $request, Reunion $reunion)
     {
-        dd($request);
         if (!Auth::user()->is_admin()) {
             return redirect()->action([HomeController::class, 'index']);
         }
