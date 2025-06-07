@@ -94,7 +94,7 @@ class ReunionController extends Controller
                 $committee_member = new ReunionCommittee();
 
                 // Get member from distro list
-                $member = FamilyMember::find($request->dl_id[$x]);
+                $member = FamilyMember::find($request->family_member_id[$x]);
 
                 $committee_member->family_member_id = $member->id;
                 $committee_member->reunion_id = $reunion->id;
@@ -374,8 +374,8 @@ class ReunionController extends Controller
 
                             foreach ($reunion->committee as $key => $committee_member) {
 
-                                $member_dl = FamilyMember::find($request->dl_id[$key]);
-                                $committee_member->family_member_id = $request->dl_id[$key];
+                                $member_dl = FamilyMember::find($request->family_member_id[$key]);
+                                $committee_member->family_member_id = $request->family_member_id[$key];
                                 $committee_member->member_title = $request->member_title[$key];
                                 $committee_member->member_name = $member_dl->firstname . ' ' . $member_dl->lastname;
                                 $committee_member->member_email = $member_dl->email;
@@ -388,7 +388,7 @@ class ReunionController extends Controller
                                 $committee_member = new ReunionCommittee();
 
                                 // Get member from distro list
-                                $member = FamilyMember::find($request->dl_id[$x]);
+                                $member = FamilyMember::find($request->family_member_id[$x]);
 
                                 $committee_member->family_member_id = $member->id;
                                 $committee_member->reunion_id = $reunion->id;
@@ -403,8 +403,8 @@ class ReunionController extends Controller
                             }
                         } else {
                             foreach ($reunion->committee as $key => $committee_member) {
-                                $member_dl = FamilyMember::find($request->dl_id[$key]);
-                                $committee_member->family_member_id = $request->dl_id[$key];
+                                $member_dl = FamilyMember::find($request->family_member_id[$key]);
+                                $committee_member->family_member_id = $request->family_member_id[$key];
                                 $committee_member->member_title = $request->member_title[$key];
                                 $committee_member->member_name = $member_dl->firstname . ' ' . $member_dl->lastname;
                                 $committee_member->member_email = $member_dl->email;
