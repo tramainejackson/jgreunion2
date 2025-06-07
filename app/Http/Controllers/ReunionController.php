@@ -435,7 +435,7 @@ class ReunionController extends Controller
                         }
                     }
 
-                    return redirect()->action('ReunionController@edit', $reunion)->with('status', 'Reunion Updated Succssfully');
+                    return redirect()->action([ReunionController::class, 'edit'], $reunion)->with('status', 'Reunion Updated Succssfully');
                 }
             }
         }
