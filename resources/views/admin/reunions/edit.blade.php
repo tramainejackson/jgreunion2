@@ -12,6 +12,7 @@
 
             const deleteRegistrationBtns = document.getElementById('reunion_registration_completed').querySelectorAll('button.deleteRegistration');
             const deleteCommitteeMembersBtns = document.getElementById('committee_members_form').querySelectorAll('button.deleteCommitteeMemberBtn');
+            const deleteReunionEventsBtns = document.getElementById('reunion_events_form').querySelectorAll('button.deleteCommitteeMemberBtn');
             const completeReunionBtns = document.getElementById('complete_reunion_btns').querySelectorAll('button.completeReunionBtn');
 
             deleteRegistrationBtns.forEach(function (deleteBtn) {
@@ -19,6 +20,10 @@
             });
 
             deleteCommitteeMembersBtns.forEach(function (deleteBtn) {
+                deleteBtn.addEventListener("click", (event) => deleteCommitteeMemberBtn(event.target));
+            });
+
+            deleteReunionEventsBtns.forEach(function (deleteBtn) {
                 deleteBtn.addEventListener("click", (event) => deleteCommitteeMemberBtn(event.target));
             });
 

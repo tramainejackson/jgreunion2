@@ -17,12 +17,25 @@ class ReunionEvent extends Model
      */
     protected $dates = ['deleted_at'];
 
-	/**
+    /**
+     * Set the event date.
+     *
+     * @param string $value
+     * @return void
+     */
+    public function setEventDateAttribute($value)
+    {
+        $formatted_date = Carbon::createFromFormat('m-d-Y', $value);
+
+        $this->attributes['event_date'] = $formatted_date->toDateString();
+    }
+
+    /**
      * Get the formatted date.
      */
     public function formatted_date()
     {
-		$newDate = new Carbon($this->event_date);
+        $newDate = new Carbon($this->event_date);
 
         return $newDate->format('m/d/Y');
     }

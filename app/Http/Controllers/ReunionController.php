@@ -268,7 +268,7 @@ class ReunionController extends Controller
      *
      * @param \Illuminate\Http\Request $request
      * @param int $id
-     * @return \Illuminate\Http\Response
+     * @return mixed
      */
     public function update(Request $request, Reunion $reunion)
     {
@@ -316,23 +316,22 @@ class ReunionController extends Controller
                         if (count($request->event_id) < count($request->event_date)) {
 
                             foreach ($reunion->events as $key => $event) {
-                                $eventDate = new Carbon($request->event_date[$key]);
+
                                 $event->event_location = $request->event_location[$key];
                                 $event->event_description = $request->event_description[$key];
-                                $event->event_date = $eventDate;
+                                $event->event_date = $request->event_date[$key];
 
                                 $event->save();
                             }
 
                             for ($x = count($request->event_id); $x < count($request->event_date); $x++) {
                                 // Create New Reunion Event Object
-                                $event = new Reunion_event();
+                                $event = new ReunionEvent();
 
-                                $eventDate = new Carbon($request->event_date[$x]);
                                 $event->reunion_id = $reunion->id;
                                 $event->event_location = $request->event_location[$x];
                                 $event->event_description = $request->event_description[$x];
-                                $event->event_date = $eventDate;
+                                $event->event_date = $request->event_date[$x];
 
                                 if ($event->save()) {
 
@@ -342,12 +341,20 @@ class ReunionController extends Controller
                         } else {
 
                             foreach ($reunion->events as $key => $event) {
-                                $eventDate = new Carbon($request->event_date[$key]);
                                 $event->event_location = $request->event_location[$key];
                                 $event->event_description = $request->event_description[$key];
-                                $event->event_date = $eventDate;
+                                $event->event_date = $request->event_date[$key];
 
                                 $event->save();
+                            }
+                        }
+
+                        //Check if any events should be removed
+                        if (isset($request->remove_reunion_event)) {
+                            foreach ($request->remove_reunion_event as $key => $remove_event_value) {
+                                if ($remove_event_value == 'Y') {
+                                    ReunionEvent::destroy($request->event_id[$key]);
+                                }
                             }
                         }
 
@@ -355,13 +362,12 @@ class ReunionController extends Controller
 
                         for ($x = 0; $x < count($request->event_date); $x++) {
                             // Create New Reunion Event Object
-                            $event = new Reunion_event();
+                            $event = new ReunionEvent();
 
-                            $eventDate = new Carbon($request->event_date[$x]);
                             $event->reunion_id = $reunion->id;
                             $event->event_location = $request->event_location[$x];
                             $event->event_description = $request->event_description[$x];
-                            $event->event_date = $eventDate->toDateString();
+                            $event->event_date = $request->event_date[$x];
 
                             if ($event->save()) {
                             }
@@ -401,7 +407,9 @@ class ReunionController extends Controller
 
                                 }
                             }
+
                         } else {
+
                             foreach ($reunion->committee as $key => $committee_member) {
                                 $member_dl = FamilyMember::find($request->family_member_id[$key]);
                                 $committee_member->family_member_id = $request->family_member_id[$key];
@@ -410,6 +418,15 @@ class ReunionController extends Controller
                                 $committee_member->member_email = $member_dl->email;
                                 $committee_member->member_phone = $member_dl->phone;
                                 $committee_member->save();
+                            }
+                        }
+
+                        //Check if any events should be removed
+                        if (isset($request->remove_committee_member)) {
+                            foreach ($request->remove_committee_member as $key => $remove_committee_member_value) {
+                                if ($remove_committee_member_value == 'Y') {
+                                    ReunionCommittee::destroy($request->committee_member_id[$key]);
+                                }
                             }
                         }
 

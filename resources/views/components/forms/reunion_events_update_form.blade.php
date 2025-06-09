@@ -26,31 +26,46 @@
             @foreach($reunion_events as $event)
                 @php $eventDate = new Carbon\Carbon($event->event_date); @endphp
 
-                <div class="form-row">
-                    <div class="form-group col-3">
-                        <label class="form-label" for="member_title">Event Date</label>
+                <div class="row mb-2" id="">
+                    <div class="col-3">
+                        <div class="form-outline mb-2" data-mdb-datepicker-init data-mdb-input-init data-mdb-format="mm-dd-yyyy">
+                            <input type="text"
+                                   name="event_date[]"
+                                   class="form-control myDatePicker"
+                                   placeholder="Select a date"
+                                   value="{{ $eventDate->format('m-d-Y') }}"/>
 
-                        <input type="text" name="event_date[]" class="form-control datetimepicker"
-                               value="{{ $eventDate->format('m/d/Y') }}" placeholder="Select A Date"/>
+                            <label class="form-label" for="event_date">Event Date</label>
+                        </div>
                         <input type="text" name="event_id[]" class="hidden" value="{{ $event->id }}" hidden/>
                     </div>
-                    <div class="form-group col-3">
-                        <label class="form-label" for="member_title">Event Location</label>
-                        <input type="text" name="event_location[]" class="form-control"
-                               placeholder="Enter The Event Location" value="{{ $event->event_location }}"/>
-                    </div>
-                    <div class="form-group col-4">
-                        <label class="form-label" for="dl_id">Description</label>
-                        <textarea class="form-control" name="event_description[]"
-                                  placeholder="Enter A Description of The Event"
-                                  rows="1">{{ $event->event_description }}</textarea>
-                    </div>
-                    <div class="form-group col-2">
-                        <label class="form-label m-0" for="">&nbsp;</label>
 
-                        <button type="button" class="btn btn-danger w-100 m-0"
-                                onclick="event.preventDefault(); removeReunionEvent({{ $event->id }});">Delete
-                            Event
+                    <div class="col-3">
+                        <div class="form-outline mb-2" data-mdb-input-init>
+                            <input type="text"
+                                   name="event_location[]"
+                                   class="form-control"
+                                   placeholder="Enter The Event Location"
+                                   value="{{ $event->event_location }}"/>
+
+                            <label class="form-label" for="event_location">Event Location</label>
+                        </div>
+                    </div>
+
+                    <div class="col-4">
+                        <div class="form-outline mb-2" data-mdb-input-init>
+                                <textarea class="form-control"
+                                          name="event_description[]"
+                                          rows="1">{{ $event->event_description }}
+                                </textarea>
+
+                            <label class="form-label" for="event_description">Description</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-2">
+                        <button type="button" class="btn btn-outline-danger w-100 deleteCommitteeMemberBtn">Delete Event
+                            <input type="text" name="remove_reunion_event[]" value="N" hidden>
                         </button>
                     </div>
                 </div>
@@ -58,7 +73,7 @@
 
             <div class="row d-none mb-2" id="new_reunion_event_row_default">
                 <div class="col-3">
-                    <div class="form-outline mb-2">
+                    <div class="form-outline mb-2" data-mdb-format="mm-dd-yyyy">
                         <input type="text"
                                name="event_date[]"
                                class="form-control myDatePicker"
@@ -70,7 +85,7 @@
                 </div>
 
                 <div class="col-3">
-                    <div class="form-outline mb-2" data-mdb-input-init>
+                    <div class="form-outline mb-2">
                         <input type="text"
                                name="event_location[]"
                                class="form-control"
@@ -93,7 +108,7 @@
                 </div>
 
                 <div class="form-group col-2">
-                    <button type="button" class="btn btn-danger w-100 removeReunionEventRow">Remove</button>
+                    <button type="button" class="btn btn-danger w-100 removeReunionEvent">Remove Event</button>
                 </div>
             </div>
         </div>
