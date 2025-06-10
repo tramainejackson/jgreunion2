@@ -128,7 +128,7 @@ class ReunionController extends Controller
         $committee_president = $reunion->committee()->president();
         $committee_members = $reunion->committee;
         $states = State::all();
-        $events = $reunion->events->groupBy('event_date');
+        $events = $reunion->events;
         $registered_user = false;
 
         if (Auth::check()) {

@@ -145,45 +145,36 @@
             @else
 
                 <div class="activities_content col-11 col-md-10 mx-auto my-2 py-2">
-                    @foreach($events as $events)
-                        <div class="activitiesEvent container-fluid">
-                            <div class="row">
-                                @foreach($events as $event)
-                                    @php
-                                        $eventDate = new Carbon\Carbon($event->event_date);
-                                    @endphp
-                                    @if($loop->first)
-                                        <div class="col-12 my-3">
-                                            <h2 class="activitiesEventLocation d-inline">{{ $eventDate->format('m/d/Y') }}</h2>
-                                        </div>
-                                    @endif
+                    <div class="container-fluid">
+                        <div class="row row-cols-md-3 row-cols-xl-4 justify-content-around align-content-center">
 
-                                    @if($loop->first)
-                                        <div class="col-12">
-                                            <ul class="activitiesDescription col-12">
-                                                @endif
-                                                <li class="">
-                                                    <b><em>Location:&nbsp;</em></b>{{ $event->event_location }}
-                                                </li>
-                                                <li class=""><b><em>Event
-                                                            Description:&nbsp;</em></b>{{ $event->event_description }}
-                                                </li>
-                                                @if(!$loop->last)
-                                                    <li class="spacer-sm"></li>
-                                                @endif
-                                                @if($loop->last)
-                                            </ul>
-                                        </div>
-                                    @endif
+                            @foreach($events as $event)
 
-                                @endforeach
+                                <div class="col activitiesEvent">
 
-                            </div>
+                                    @php $eventDate = new Carbon\Carbon($event->event_date); @endphp
+
+                                    <div class="">
+                                        <h2 class="activitiesEventLocation">{{ $eventDate->format('m/d/Y') }}</h2>
+                                    </div>
+
+                                    <div class="">
+                                        <ul class="activitiesDescription col-12">
+                                            <li class="">
+                                                <b><em>Location:&nbsp;</em></b>{{ $event->event_location }}
+                                            </li>
+                                            <li class=""><b><em>Event
+                                                        Description:&nbsp;</em></b>{{ $event->event_description }}
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                </div>
+
+                            @endforeach
 
                         </div>
-
-                    @endforeach
-
+                    </div>
                 </div>
 
             @endif

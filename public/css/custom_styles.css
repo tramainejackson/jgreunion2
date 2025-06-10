@@ -90,6 +90,22 @@ form, .results-form {
     background: linear-gradient(to bottom, rgba(249, 247, 247, 0.5), rgba(171, 197, 236, 0.5) 40%, rgba(249, 247, 247, 0.5))
 }
 
+.activitiesEvent {
+    border-left: solid 1px darkblue;
+    border-top:solid 1px darkblue;
+    margin-top: 15px;
+    margin-right: 10px;
+    padding-right: 0px;
+}
+
+.activitiesEvent .activitiesEventLocation {
+    background: radial-gradient(darkgreen, green, #303a30); color: whitesmoke;
+    margin-left: -12px;
+    padding: 10px;
+    color: aliceblue !important;
+    text-align: center;
+}
+
 .page-item:not(.active):not(.disabled) .page-link {
     color: white;
 }
