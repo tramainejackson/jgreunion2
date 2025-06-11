@@ -21,16 +21,6 @@ class Registration_Admin extends Mailable
 	*/
 	public $registration;
 	public $reunion;
-	public $totalAdults;
-	public $totalYouths;
-	public $totalChildren;
-	public $shirtSizes;
-	public $adultSizes;
-	public $youthSizes;
-	public $childrenSizes;
-	public $adults;
-	public $youth;
-	public $childs;
 
     /**
      * Create a new message instance.

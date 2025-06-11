@@ -138,7 +138,7 @@ class FamilyMemberController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param FamilyMember $member
-     * @return Response
+     * @return mixed
      */
     public function edit(FamilyMember $member)
     {
@@ -167,7 +167,6 @@ class FamilyMemberController extends Controller
             return response()->view('admin.members.edit', compact('user', 'userPhone1', 'userPhone2', 'userPhone3', 'states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
         } else {
             return redirect()->action([FamilyMemberController::class, 'show'], $family_member);
-//            return response()->view('admin.members.show', compact('user', 'userPhone1', 'userPhone2', 'userPhone3', 'states', 'family_members', 'family_member', 'active_reunion', 'potential_family_members', 'members', 'siblings', 'children', 'registered_for_reunion', 'reunions', 'newReunionCheck'));
         }
     }
 

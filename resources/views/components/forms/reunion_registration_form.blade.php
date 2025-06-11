@@ -582,9 +582,9 @@
                 </table>
             </div>
 
-            <div class="row">
+            <div class="row pt-2 mb-5">
                 <div class="mx-auto col-11 col-sm-6 col-lg-4">
-                    <button type="submit" class="btn btn-primary form-control"
+                    <button type="submit" class="btn btn-lg btn-primary form-control"
                             onclick="event.preventDefault(); document.getElementById('total_amount_due').removeAttribute('disabled'); this.closest('form').submit();">
                         Submit Registration
                     </button>

@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Models\Registration;
+use App\Models\Reunion;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -15,8 +16,8 @@ class Registration_User extends Mailable
 	/**
 	* The variable instances
 	*
-	* @var $registration
-	* @var $reunion
+     * @var Registration $registration
+     * @var Reunion $reunion
 	*/
 	public $registration;
 	public $reunion;
@@ -26,7 +27,7 @@ class Registration_User extends Mailable
      *
      * @return void
      */
-    public function __construct(Registration $registration, $reunion)
+    public function __construct($registration, $reunion)
     {
         $this->registration = $registration;
         $this->reunion = $reunion;
@@ -39,6 +40,6 @@ class Registration_User extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->reunion->reunion_year . ' Reunion Registration')->view('emails.new_message', compact('reunion', 'registration'));
+        return $this->subject($this->reunion->reunion_year . ' Reunion Registration')->view('emails.new_message');
     }
 }

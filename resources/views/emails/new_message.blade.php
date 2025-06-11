@@ -396,8 +396,10 @@
                                                             <td align="left"
                                                                 style="padding:0;Margin:0;padding-top:15px;"><p
                                                                     style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;">
-                                                                    For payment options, please visit the website <a style="color: #0d6efd; text-decoration: underline;"
-                                                                        href="https://jgreunion.com/reunions/{{ $reunion->id }}#payment_information">here</a></p></td>
+                                                                    For payment options, please visit the website <a
+                                                                        style="color: #0d6efd; text-decoration: underline;"
+                                                                        href="https://jgreunion.com/reunions/{{ $reunion->id }}#payment_information">here</a>
+                                                                </p></td>
                                                         </tr>
                                                         <tr style="border-collapse:collapse;">
                                                             <td align="left"
@@ -460,17 +462,15 @@
                                                                     </li>
 
                                                                     @php
-
                                                                         $youths = explode('; ', $registration->youth_names);
-
                                                                         $youthSizes = explode('; ', $registration->youth_shirts);
-
+                                                                        $youthsCount = count($youths) == 1 && $youths[0] == '' ? 0 : count($youths);
                                                                     @endphp
 
                                                                     <li style="margin-left:0px;">
                                                                         <span
                                                                             style="text-decoration: underline; font-weight: bold; Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;">Total Youth:</span>
-                                                                        <u>{{ count($youths) }}</u>
+                                                                        <u>{{ $youthsCount }}</u>
 
                                                                         @if(count($youths) == 1 && $youths[0] == '')
 
@@ -490,15 +490,14 @@
                                                                     @php
 
                                                                         $children = explode('; ', $registration->children_names);
-
                                                                         $childrenSizes = explode('; ', $registration->children_shirts);
-
+                                                                        $childrenCount = count($children) == 1 && $children[0] == '' ? 0 : count($children);
                                                                     @endphp
 
                                                                     <li style="margin-left:0px;">
                                                                         <span
                                                                             style="text-decoration: underline; font-weight: bold; Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;">Total Children:</span>
-                                                                        <u>{{ count($children) }}</u>
+                                                                        <u>{{ $childrenCount }}</u>
 
                                                                         @if(count($children) == 1 && $children[0] == '')
 
@@ -521,8 +520,13 @@
                                                             <td align="left"
                                                                 style="padding:0;Margin:0;padding-top:15px;"><p
                                                                     style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;">
-                                                                    Any other questions or concerns, please <span style="font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#a10000;">DO NOT</span> respond to this email because it is an automated email. Please send all follow up questions and concerns to
-                                                                    <a href="mailto:jacksongreenreunion@gmail.com">jacksongreenreunion@gmail.com</a></p></td>
+                                                                    Any other questions or concerns, please <span
+                                                                        style="font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#a10000;">DO NOT</span>
+                                                                    respond to this email because it is an automated
+                                                                    email. Please send all follow up questions and
+                                                                    concerns to
+                                                                    <a href="mailto:jacksongreenreunion@gmail.com">jacksongreenreunion@gmail.com</a>
+                                                                </p></td>
                                                         </tr>
                                                         </tbody>
                                                     </table>

@@ -11,6 +11,7 @@ use App\Mail\Registration_Admin;
 use App\Mail\Registration_User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
@@ -44,7 +45,7 @@ class RegistrationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return mixed
      */
     public function create(Reunion $reunion)
     {
@@ -52,26 +53,32 @@ class RegistrationController extends Controller
         $states = State::all();
         $active_reunion = Reunion::active()->isNotEmpty() ? Reunion::active()->first() : null;
         $reunion = Reunion::active()->isNotEmpty() ? Reunion::active()->first() : null;
+        $events = $reunion->events;
+        $committee_members = $reunion->committee;
+        $committee_president = $reunion->committee()->president();
 
-        if(request()->query('member')) {
-            if(is_numeric(request()->query('member'))) {
+        if (request()->query('member')) {
+            if (is_numeric(request()->query('member'))) {
                 $member = FamilyMember::find(request()->query('member'));
 
-                if($member != null) {
+                if ($member != null) {
                     $registered_for_reunion = Registration::memberRegistered($member->id, $reunion->id)->first();
 
-                    if(Auth::user()->is_admin() != null) {
-                        return response()->view('admin.registrations.member_registration', compact('reunion', 'member', 'states', 'registered_for_reunion'));
+                    if (Auth::user()->is_admin() != null) {
+                        return response()->view('admin.registrations.member_registration', compact('reunion', 'member', 'states', 'events', 'committee_members', 'committee_president', 'registered_for_reunion'));
                     } else {
                         $member = Auth::user()->member;
 
-                        return response()->view('admin.registrations.member_registration', compact('reunion', 'member', 'states', 'registered_for_reunion'));
+                        if($registered_for_reunion) {
+                            return redirect()->action([FamilyMemberController::class, 'edit'], $member);
+                        } else {
+                            return response()->view('admin.registrations.member_registration', compact('reunion', 'member', 'states', 'events', 'committee_members', 'committee_president', 'registered_for_reunion'));
+                        }
                     }
-
                 }
             }
         } else {
-            return response()->view('admin.registrations.create', compact('reunion', 'members', 'active_reunion', 'states'));
+            return response()->view('admin.registrations.create', compact('reunion', 'members', 'active_reunion', 'events', 'committee_members', 'committee_president', 'states'));
         }
     }
 
@@ -141,9 +148,13 @@ class RegistrationController extends Controller
                 $registration->family_member_id = $member->id;
 
                 if ($registration->save()) {
-					Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
-//
-//					\Mail::to('desmund94@gmail.com')->send(new Registration_User($registration, $registration->reunion));
+                    if (App::environment('local')) {
+                        //The environment is local
+                        Mail::to('jackson.tramaine3@gmail.com')->send(new Registration_Admin($registration, $registration->reunion));
+                    } else {
+                        Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
+                        Mail::to('jackson521961@yahoo.com')->send(new Registration_User($registration, $registration->reunion));
+                    }
 
                     $newAdults = explode('; ', $registration->adult_names);
                     if (count($newAdults) > 1) {
@@ -248,22 +259,41 @@ class RegistrationController extends Controller
 
         } else {
 
+            $this->validate($request, [
+                'firstname' => 'required|max:50',
+                'lastname' => 'required|max:50',
+                'address' => 'required|max:100',
+                'city' => 'required|max:100',
+                'zip' => 'required|max:99999|min:0|numeric',
+                'email' => 'nullable|email',
+                'phone' => 'nullable',
+            ]);
+
             $registration = new Registration();
             $reunion = Reunion::find(Settings::first()->current_reunion);
             $member = FamilyMember::find($request->member);
             $registration->reunion_id = $reunion->id;
             $registration->family_member_id = $member->id;
-            $registration->address = $member->address = $request->address;
-            $registration->city = $member->city = $request->city;
-            $registration->state = $member->state = $request->state;
-            $registration->zip = $member->zip = $request->zip;
-            $registration->email = $member->email = $request->email;
-            $registration->phone = $member->phone = $request->phone != '' ? $request->phone : null;
+            $registration->address = $request->address;
+            $member->address = $member->address == null ? $request->address : $member->address;
+            $registration->city = $request->city;
+            $member->city = $member->city == null ? $request->city : $member->city;
+            $registration->zip = $request->zip;
+            $member->zip = $member->zip == null ? $request->zip : $member->zip;
+            $registration->state = $request->state;
+            $member->state = $member->state == null ? $request->state : $member->state;
+            $registration->email = $request->email;
+            $member->email = $member->email == null ? $request->email : $member->email;
+            $registration->phone = $request->phone != '' ? $request->phone : null;
+            $member->phone = $member->phone == null ? $request->phone : $member->phone;
             $registration->registree_name = $request->firstname . ' ' . $request->lastname;
             $registration->reg_date = Carbon::now();
             $registration->adult_shirts = isset($request->adult_shirts) ? join('; ', $request->adult_shirts) : null;
             $registration->youth_shirts = isset($request->youth_shirts) ? join('; ', $request->youth_shirts) : null;
             $registration->children_shirts = isset($request->children_shirts) ? join('; ', $request->children_shirts) : null;
+
+            //Save the new member information
+            $member->save();
 
             // If the adult name isn't entered then use the
             // registree's first name
@@ -286,9 +316,15 @@ class RegistrationController extends Controller
             $registration->total_amount_due = $registration->due_at_reg = $request->total_amount_due;
 
             if ($registration->save()) {
-//					\Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
-//
-//					\Mail::to('desmund94@gmail.com')->send(new Registration_User($registration, $registration->reunion));
+                if (Auth::user()->is_admin() == null || Auth::user()->is_admin() == 'N') {
+                    if (App::environment('local')) {
+                        //The environment is local
+                        Mail::to('jackson.tramaine3@gmail.com')->send(new Registration_Admin($registration, $registration->reunion));
+                    } else {
+                        Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
+                        Mail::to('jackson521961@yahoo.com')->send(new Registration_User($registration, $registration->reunion));
+                    }
+                }
 
                 $newAdults = explode('; ', $registration->adult_names);
                 if (count($newAdults) > 1) {
@@ -392,8 +428,8 @@ class RegistrationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Models\Registration $registration
-     * @return Response
+     * @param Registration $registration
+     * @return mixed
      */
     public function edit(Registration $registration)
     {
@@ -439,9 +475,9 @@ class RegistrationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\Registration $registration
-     * @return Response
+     * @param Request $request
+     * @param Registration $registration
+     * @return mixed
      */
     public function update(Request $request, Registration $registration)
     {
@@ -472,12 +508,11 @@ class RegistrationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Registration $registration
-     * @return Response
+     * @param Registration $registration
+     * @return mixed
      */
     public function destroy(Registration $registration)
     {
-
         dd($registration);
         if ($registration->delete()) {
             return redirect()->back()->with('status', 'Registration Deleted Successfully');
@@ -492,7 +527,7 @@ class RegistrationController extends Controller
      */
     public function guest_registration(Reunion $reunion)
     {
-        if(Auth::guest()) {
+        if (Auth::guest()) {
             $member = new FamilyMember();
         } else {
             $member = Auth::user()->member;
@@ -506,8 +541,8 @@ class RegistrationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Registration $registration
-     * @return Response
+     * @param Registration $registration
+     * @return mixed
      */
     public function add_registration_member(Request $request, Registration $registration)
     {
@@ -725,7 +760,7 @@ class RegistrationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Models\Registration $registration
+     * @param Registration $registration
      * @return Response
      */
     public function remove_ind_member($registration, $remove_ind_member)
