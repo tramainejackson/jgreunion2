@@ -35,7 +35,7 @@
     <div class="row">
 
         <div class="form-group mr-3 col-4">
-            <label for="" class="d-block form-control-label">Paper Registration Form</label>
+            <label for="paper_reg_form" class="d-block form-control-label">Paper Registration Form</label>
 
             <div class="file-upload-wrapper mb-2">
                 <input type="file"
@@ -46,9 +46,7 @@
         </div>
 
         @if($reunion->registration_form != null)
-            <div class="align-items-center col d-flex">
-                <label for="" class="d-block form-control-label"></label>
-
+            <div class="col align-content-end mb-2">
                 <a href="{{ asset('storage/' . str_ireplace('public/', '', $reunion->registration_form)) }}"
                    class="btn btn-link btn-outline-info text-dark"
                    download="{{ $reunion->reunion_year }}_Registration_Form">View Registration Form</a>
@@ -145,8 +143,8 @@
     </div>
 
     <!-- Hotel Information Section -->
-    <div class="form-block-header">
-        <h3 class="">Hotel Information</h3>
+    <div class="form-block-header mt-3">
+        <h3 class="pb-2">Hotel Information</h3>
     </div>
 
     <div class="form-outline mb-2" data-mdb-input-init>

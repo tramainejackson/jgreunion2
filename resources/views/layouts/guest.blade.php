@@ -40,7 +40,7 @@
         rel="stylesheet">
 
     <!-- Styles -->
-{{--    <link rel="stylesheet" href="{{ asset('css/jgreunion.css') }}">--}}
+    {{--    <link rel="stylesheet" href="{{ asset('css/jgreunion.css') }}">--}}
     <link rel="stylesheet" href="{{ asset('css/style.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/custom_styles.min.css') }}">
 
@@ -59,37 +59,39 @@
 
     {{--MAIN CONTENT--}}
     {{ $slot }}
-
-    <div
-        class="alert fade"
-        id="return-data-alert"
-        role="alert"
-        data-mdb-color="success"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="300px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="4000">
-        <p class="alertBody m-0 p-0 text-center"></p>
-    </div>
-
-    <div
-        class="alert fade"
-        id="return-data-alert-bad"
-        role="alert"
-        data-mdb-color="danger"
-        data-mdb-position="top-right"
-        data-mdb-stacking="true"
-        data-mdb-width="300px"
-        data-mdb-append-to-body="true"
-        data-mdb-hidden="true"
-        data-mdb-autohide="true"
-        data-mdb-delay="4000">
-        <p class="alertBody m-0 p-0 text-center"></p>
-    </div>
     {{--MAIN CONTENT--}}
+
+    <div class="d-none">
+        <div
+            class="alert fade"
+            id="return-data-alert"
+            role="alert"
+            data-mdb-color="success"
+            data-mdb-position="top-right"
+            data-mdb-stacking="true"
+            data-mdb-width="300px"
+            data-mdb-append-to-body="true"
+            data-mdb-hidden="true"
+            data-mdb-autohide="true"
+            data-mdb-delay="4000">
+            <p class="alertBody m-0 p-0 text-center"></p>
+        </div>
+
+        <div
+            class="alert fade"
+            id="return-data-alert-bad"
+            role="alert"
+            data-mdb-color="danger"
+            data-mdb-position="top-right"
+            data-mdb-stacking="true"
+            data-mdb-width="300px"
+            data-mdb-append-to-body="true"
+            data-mdb-hidden="true"
+            data-mdb-autohide="true"
+            data-mdb-delay="4000">
+            <p class="alertBody m-0 p-0 text-center"></p>
+        </div>
+    </div>
 </div>
 
 @include('components.footer')

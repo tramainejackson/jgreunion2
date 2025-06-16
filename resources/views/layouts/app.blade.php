@@ -61,40 +61,42 @@
 
     {{--MAIN CONTENT--}}
     {{ $slot }}
+    {{--MAIN CONTENT--}}
 
+    <div class="d-none">
+        <div
+            class="alert fade"
+            id="return-data-alert"
+            role="alert"
+            data-mdb-color="success"
+            data-mdb-position="top-right"
+            data-mdb-stacking="true"
+            data-mdb-width="300px"
+            data-mdb-append-to-body="true"
+            data-mdb-hidden="true"
+            data-mdb-autohide="true"
+            data-mdb-delay="4000">
+            <p class="alertBody m-0 p-0 text-center"></p>
+        </div>
+
+        <div
+            class="alert fade"
+            id="return-data-alert-bad"
+            role="alert"
+            data-mdb-color="danger"
+            data-mdb-position="top-right"
+            data-mdb-stacking="true"
+            data-mdb-width="300px"
+            data-mdb-append-to-body="true"
+            data-mdb-hidden="true"
+            data-mdb-autohide="true"
+            data-mdb-delay="4000">
+            <p class="alertBody m-0 p-0 text-center"></p>
+        </div>
+    </div>
 </div>
 
 @include('components.footer')
-
-<div
-    class="alert fade"
-    id="return-data-alert"
-    role="alert"
-    data-mdb-color="success"
-    data-mdb-position="top-right"
-    data-mdb-stacking="true"
-    data-mdb-width="300px"
-    data-mdb-append-to-body="true"
-    data-mdb-hidden="true"
-    data-mdb-autohide="true"
-    data-mdb-delay="4000">
-    <p class="alertBody m-0 p-0 text-center"></p>
-</div>
-
-<div
-    class="alert fade"
-    id="return-data-alert-bad"
-    role="alert"
-    data-mdb-color="danger"
-    data-mdb-position="top-right"
-    data-mdb-stacking="true"
-    data-mdb-width="300px"
-    data-mdb-append-to-body="true"
-    data-mdb-hidden="true"
-    data-mdb-autohide="true"
-    data-mdb-delay="4000">
-    <p class="alertBody m-0 p-0 text-center"></p>
-</div>
 
 <!-- Scripts -->
 <!-- Core -->

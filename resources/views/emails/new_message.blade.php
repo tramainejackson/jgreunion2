@@ -380,8 +380,7 @@
                                                                     style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;">
                                                                     Below is all the information that we received on
                                                                     your registration form. If any of this information
-                                                                    is incorrect, please respond to this email so that
-                                                                    we can correct the information.</p></td>
+                                                                    is incorrect, please reach out to jacksongreenreunion@gmail.com to get it corrected.</p></td>
                                                         </tr>
                                                         <tr style="border-collapse:collapse;">
                                                             <td align="left"

@@ -238,7 +238,6 @@ function deleteCommitteeMemberBtn(deleteBtn) {
     }
 }
 
-
 export {addNewRowNumber}
 export {addNewRowFromBtn}
 export {btnToggle}

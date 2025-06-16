@@ -1,17 +1,10 @@
-@section('add_scripts')
-    <script type="module">
-        document.getElementById('addCommitteeMember').addEventListener("click", (event) => addNewRowFromBtn('committee'));
-        document.getElementById('addReunionEvent').addEventListener("click", (event) => addNewRowFromBtn('reunion_event'));
-    </script>
-@endsection
-
 <div id="reunion_events_form" class="my-5 container-fluid">
     <div class="row">
         <div class="col-12">
             <!-- Reunion Events Section -->
-            <div class="form-block-header">
+            <div class="form-block-header mb-2">
                 <h3 class="">Events
-                    <button type="button" id="addReunionEvent" class="btn btn-outline-success mb-2">Add New
+                    <button type="button" id="addReunionEvent" class="btn btn-outline-success">Add New
                         Event
                     </button>
                 </h3>

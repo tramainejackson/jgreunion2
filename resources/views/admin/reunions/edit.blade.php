@@ -51,7 +51,7 @@
 
             <div class="col-12 col-md-10 col-xl-8 my-2 mx-auto">
 
-                <form action="{{ route('reunions.update', $reunion->id) }}" method="POST">
+                <form action="{{ route('reunions.update', $reunion->id) }}" method="POST" enctype="multipart/form-data">
 
                     @csrf
                     @method('PUT')

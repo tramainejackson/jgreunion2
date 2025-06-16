@@ -69,7 +69,7 @@ class RegistrationController extends Controller
                     } else {
                         $member = Auth::user()->member;
 
-                        if($registered_for_reunion) {
+                        if ($registered_for_reunion) {
                             return redirect()->action([FamilyMemberController::class, 'edit'], $member);
                         } else {
                             return response()->view('admin.registrations.member_registration', compact('reunion', 'member', 'states', 'events', 'committee_members', 'committee_president', 'registered_for_reunion'));
@@ -153,7 +153,7 @@ class RegistrationController extends Controller
                         Mail::to('jackson.tramaine3@gmail.com')->send(new Registration_Admin($registration, $registration->reunion));
                     } else {
                         Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
-                        Mail::to('jackson521961@yahoo.com')->send(new Registration_User($registration, $registration->reunion));
+                        Mail::to('jacksond1961@yahoo.com')->send(new Registration_User($registration, $registration->reunion));
                     }
 
                     $newAdults = explode('; ', $registration->adult_names);
@@ -322,7 +322,7 @@ class RegistrationController extends Controller
                         Mail::to('jackson.tramaine3@gmail.com')->send(new Registration_Admin($registration, $registration->reunion));
                     } else {
                         Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
-                        Mail::to('jackson521961@yahoo.com')->send(new Registration_User($registration, $registration->reunion));
+                        Mail::to('jacksond1961@yahoo.com')->send(new Registration_User($registration, $registration->reunion));
                     }
                 }
 
@@ -481,7 +481,7 @@ class RegistrationController extends Controller
      */
     public function update(Request $request, Registration $registration)
     {
-
+        dd($registration);
         $registration->total_amount_due = $request->total_amount_due;
         $registration->total_amount_paid = $request->total_amount_paid;
         $registration->due_at_reg = $request->due_at_reg;
@@ -498,9 +498,7 @@ class RegistrationController extends Controller
         }
 
         if ($registration->save()) {
-
             return redirect()->action('RegistrationController@edit', $registration)->with('status', 'Registration Updated Successfully');
-
         }
 
     }
@@ -513,7 +511,13 @@ class RegistrationController extends Controller
      */
     public function destroy(Registration $registration)
     {
-        dd($registration);
+        if ($registration->children_reg->isNotEmpty()) {
+            foreach ($registration->children_reg as $childReg) {
+                if ($childReg->delete()) {
+                }
+            }
+        }
+
         if ($registration->delete()) {
             return redirect()->back()->with('status', 'Registration Deleted Successfully');
         }
@@ -536,306 +540,5 @@ class RegistrationController extends Controller
         $states = State::all();
 
         return view('guest_registration', compact('reunion', 'states', 'member'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Registration $registration
-     * @return mixed
-     */
-    public function add_registration_member(Request $request, Registration $registration)
-    {
-        if (isset($request->family_member_id)) {
-            $member = FamilyMember::find($request->family_member_id);
-
-            // Create a new registration
-            $newRegistration = new Registration();
-            $newRegistration->reunion_id = $registration->reunion_id;
-            $newRegistration->family_member_id = $member->id;
-            $newRegistration->reg_date = $registration->reg_date;
-            $newRegistration->registree_name = $member->firstname . ' ' . $member->lastname;
-            $newRegistration->parent_registration_id = $registration->id;
-            $newRegistration->address = $member->address;
-            $newRegistration->city = $member->city;
-            $newRegistration->state = $member->state;
-            $newRegistration->zip = $member->zip;
-            $newRegistration->email = $member->email != null ? $member->email : null;
-            $newRegistration->phone = $member->phone != null ? $member->phone : null;
-
-            // Get all the shirt sizes
-            $shirtSizes = explode('; ', $registration->shirt_sizes);
-
-            // Get the count of the adults and youths age group
-            // And get the sizes of the shirts in reference to
-            // the amount of each age group
-            $adults = $registration->adult_names != null || $registration->adult_names != '' ? $registration->adult_names : null;
-            $adultSizes = array_slice($shirtSizes, 0, count(explode('; ', $adults)));
-            $youths = $registration->youth_names != null || $registration->youth_names != '' ? $registration->youth_names : null;
-            $youthSizes = array_slice($shirtSizes, count(explode('; ', $adults)), count(explode('; ', $youths)));
-            $childs = $registration->children_names != null || $registration->children_names != '' ? $registration->children_names : null;
-            $childrenSizes = array_slice($shirtSizes, (count(explode('; ', $adults)) + count(explode('; ', $youths))));
-
-            // Add user to appropriate age group and their shirt size
-            if ($member->age_group == 'adult') {
-                if (count(explode('; ', $registration->adult_names)) > 1) {
-                    $registration->adult_names .= '; ' . $member->firstname;
-                    array_push($adultSizes, 'S');
-                } else {
-                    if ($adults != null) {
-                        $registration->adult_names .= '; ' . $member->firstname;
-                        array_push($adultSizes, 'S');
-                    } else {
-                        $registration->adult_names = $member->firstname;
-                        array_unshift($adultSizes, 'S');
-                    }
-                }
-
-                $registration->shirt_sizes = implode('; ', array_merge($adultSizes, $youthSizes, $childrenSizes));
-
-            } elseif ($member->age_group == 'youth') {
-
-                if (count(explode('; ', $registration->youth_names)) > 1) {
-                    $registration->youth_names .= '; ' . $member->firstname;
-                    array_push($youthSizes, 'S');
-                } else {
-                    if ($registration->youth_names != null || $registration->youth_names != '') {
-                        $registration->youth_names .= '; ' . $member->firstname;
-                        array_push($youthSizes, 'S');
-                    } else {
-                        $registration->youth_names = $member->firstname;
-                        array_unshift($youthSizes, 'S');
-                    }
-                }
-
-                $registration->shirt_sizes = implode('; ', array_merge($adultSizes, $youthSizes, $childrenSizes));
-
-            } elseif ($member->age_group == 'child') {
-
-                $registration->shirt_sizes .= '; ' . 'S';
-
-                if (count(explode('; ', $registration->children_names)) > 1) {
-                    $registration->children_names .= '; ' . $member->firstname;
-                } else {
-                    if ($registration->children_names != null || $registration->children_names != '') {
-                        $registration->children_names .= '; ' . $member->firstname;
-                    } else {
-                        $registration->children_names = $member->firstname;
-                    }
-                }
-            }
-
-            // Adjust registration price to reflect the amount of
-            // people in the registration
-            $adultCost = $registration->adult_names != null ? $registration->reunion->adult_price * count(explode('; ', $registration->adult_names)) : 0;
-            $youthCost = $registration->youth_names != null ? $registration->reunion->youth_price * count(explode('; ', $registration->youth_names)) : 0;
-            $childrenCost = $registration->children_names != null ? $registration->reunion->child_price * count(explode('; ', $registration->children_names)) : 0;
-            $registration->due_at_reg = $adultCost + $youthCost + $childrenCost;
-            $registration->total_amount_due = $registration->due_at_reg - $registration->total_amount_paid;
-
-            if ($newRegistration->save()) {
-                if ($registration->save()) {
-                    return redirect()->back()->with('status', 'New Member Added to Registration Successfully');
-                }
-            }
-
-        } else {
-
-            $this->validate($request, [
-                'firstname' => 'required|max:50',
-                'lastname' => 'required|max:50',
-            ]);
-            // Create New Member
-            $member = new FamilyMember();
-            $member->firstname = $request->firstname;
-            $member->lastname = $request->lastname;
-            $member->age_group = $request->age_group;
-            $maxFamilyID = FamilyMember::max('family_id');
-
-            // Create a new registration
-            $newRegistration = new Registration();
-            $newRegistration->reunion_id = $registration->reunion_id;
-            $newRegistration->reg_date = $registration->reg_date;
-            $newRegistration->registree_name = $request->firstname . ' ' . $request->lastname;
-            $newRegistration->parent_registration_id = $registration->id;
-
-            // If household members isn't empty then add a family ID
-            // to all the parties
-            if ($registration->FamilyMember->family_id == null) {
-                $newFamilyID = $maxFamilyID + 1;
-                $member->family_id = $newFamilyID;
-                $registration->reunion_dl->family_id = $newFamilyID;
-
-                if ($registration->reunion_dl->save()) {
-                }
-            } else {
-                $member->family_id = $registration->reunion_dl->family_id;
-            }
-
-            $newRegistration->address = $member->address = $registration->reunion_dl->address;
-            $newRegistration->city = $member->city = $registration->reunion_dl->city;
-            $newRegistration->state = $member->state = $registration->reunion_dl->state;
-            $newRegistration->zip = $member->zip = $registration->reunion_dl->zip;
-            $newRegistration->phone = $member->phone = $registration->reunion_dl->phone != null ? $registration->reunion_dl->phone : null;
-            $newRegistration->email = $registration->reunion_dl->email != null ? $registration->reunion_dl->email : null;
-
-            // Get all the shirt sizes
-            $shirtSizes = explode('; ', $registration->shirt_sizes);
-
-            // Get the count of the adults and youths age group
-            // And get the sizes of the shirts in reference to
-            // the amount of each age group
-            $adults = $registration->adult_names != null || $registration->adult_names != '' ? explode('; ', $registration->adult_names) : null;
-            $adultSizes = array_slice($shirtSizes, 0, count($adults));
-            $youths = $registration->youth_names != null || $registration->youth_names != '' ? explode('; ', $registration->youth_names) : null;
-            $youthSizes = array_slice($shirtSizes, count($adults), count($youths));
-            $childs = $registration->children_names != null || $registration->children_names != '' ? explode('; ', $registration->children_names) : null;
-            $childrenSizes = array_slice($shirtSizes, (count($adults) + count($youths)));
-
-            // Add user to appropriate age group and their shirt size
-            if ($request->age_group == 'adult') {
-                if (count(explode('; ', $registration->adult_names)) > 1) {
-                    $registration->adult_names .= '; ' . $request->firstname;
-                    array_push($adultSizes, $request->shirt_size);
-                } else {
-                    if ($adults != null) {
-                        $registration->adult_names .= '; ' . $request->firstname;
-                        array_push($adultSizes, $request->shirt_size);
-                    } else {
-                        $registration->adult_names = $request->firstname;
-                        array_unshift($adultSizes, $request->shirt_size);
-                    }
-                }
-
-                $registration->shirt_sizes = implode('; ', array_merge($adultSizes, $youthSizes, $childrenSizes));
-            } elseif ($request->age_group == 'youth') {
-                if (count(explode('; ', $registration->youth_names)) > 1) {
-                    $registration->youth_names .= '; ' . $request->firstname;
-                    array_push($youthSizes, $request->shirt_size);
-                } else {
-                    if ($registration->youth_names != null || $registration->youth_names != '') {
-                        $registration->youth_names .= '; ' . $request->firstname;
-                        array_push($youthSizes, $request->shirt_size);
-                    } else {
-                        $registration->youth_names = $request->firstname;
-                        array_unshift($youthSizes, $request->shirt_size);
-                    }
-                }
-
-                $registration->shirt_sizes = implode('; ', array_merge($adultSizes, $youthSizes, $childrenSizes));
-            } elseif ($request->age_group == 'child') {
-                $registration->shirt_sizes .= '; ' . $request->shirt_size;
-
-                if (count(explode('; ', $registration->children_names)) > 1) {
-                    $registration->children_names .= '; ' . $request->firstname;
-                } else {
-                    if ($registration->children_names != null || $registration->children_names != '') {
-                        $registration->children_names .= '; ' . $request->firstname;
-                    } else {
-                        $registration->children_names = $request->firstname;
-                    }
-                }
-            }
-
-            // Adjust registration price to reflect the amount of
-            // people in the registration
-            $adultCost = $registration->adult_names != null ? $registration->reunion->adult_price * count(explode('; ', $registration->adult_names)) : 0;
-            $youthCost = $registration->youth_names != null ? $registration->reunion->youth_price * count(explode('; ', $registration->youth_names)) : 0;
-            $childrenCost = $registration->children_names != null ? $registration->reunion->child_price * count(explode('; ', $registration->children_names)) : 0;
-            $registration->due_at_reg = $adultCost + $youthCost + $childrenCost;
-            $registration->total_amount_due = $registration->due_at_reg - $registration->total_amount_paid;
-
-            if ($member->save()) {
-                $newRegistration->family_member_id = $member->id;
-
-                if ($newRegistration->save()) {
-                    if ($registration->save()) {
-                        return redirect()->back()->with('status', 'New Member Added to Registration Successfully');
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Registration $registration
-     * @return Response
-     */
-    public function remove_ind_member($registration, $remove_ind_member)
-    {
-        $registration = Registration::find($registration);
-        $adults = explode('; ', $registration->adult_names);
-        $youths = explode('; ', $registration->youth_names);
-        $childs = explode('; ', $registration->children_names);
-        $shirtSizes = explode('; ', $registration->shirt_sizes);
-        $adultSizes = array_slice($shirtSizes, 0, count($adults));
-        $youthSizes = array_slice($shirtSizes, count($adults), count($youths));
-        $childrenSizes = array_slice($shirtSizes, (count($adults) + count($youths)));
-        $removeIndex = 0;
-        $removedName = "";
-        $all_members = FamilyMember::orderby('firstname', 'asc')->get();
-        $states = State::all();
-        $family = FamilyMember::where([
-            ['family_id', $registration->family_id],
-            ['family_id', '<>', null]
-        ])->get();
-
-        if (substr_count($remove_ind_member, 'adult') > 0) {
-            $removeIndex = (int)(str_ireplace('adult', '', $remove_ind_member) - 1);
-            $removedName = $adults[$removeIndex];
-
-            unset($adults[$removeIndex]);
-            unset($adultSizes[$removeIndex]);
-
-            $registration->adult_names = implode('; ', $adults);
-        } elseif (substr_count($remove_ind_member, 'youth') > 0) {
-            $removeIndex = (int)(str_ireplace('youth', '', $remove_ind_member) - 1);
-            $removedName = $youths[$removeIndex];
-
-            unset($youths[$removeIndex]);
-            unset($youthSizes[$removeIndex]);
-
-            $registration->youth_names = implode('; ', $youths);
-        } elseif (substr_count($remove_ind_member, 'child') > 0) {
-            $removeIndex = (int)(str_ireplace('child', '', $remove_ind_member) - 1);
-            $removedName = $childs[$removeIndex];
-
-            unset($childs[$removeIndex]);
-            unset($childrenSizes[$removeIndex]);
-
-            $registration->children_names = implode('; ', $childs);
-        }
-
-        // Adjust registration price to reflect the amount of
-        // people in the registration
-        $adultCost = $registration->adult_names != null ? $registration->reunion->adult_price * count(explode('; ', $registration->adult_names)) : 0;
-        $youthCost = $registration->youth_names != null ? $registration->reunion->youth_price * count(explode('; ', $registration->youth_names)) : 0;
-        $childrenCost = $registration->children_names != null ? $registration->reunion->child_price * count(explode('; ', $registration->children_names)) : 0;
-        $registration->due_at_reg = $adultCost + $youthCost + $childrenCost;
-        $registration->total_amount_due = $registration->due_at_reg - $registration->total_amount_paid;
-        $registration->shirt_sizes = implode('; ', array_merge($adultSizes, $youthSizes, $childrenSizes));
-
-        // Check and see if this a parent registration and
-        // remove the user from the registration
-        $associatedRegistrations = Registration::where([
-            ['parent_registration_id	', $registration->id],
-            ['registree_name', 'like', $removedName . '%']
-        ])->get();
-
-        if ($associatedRegistrations->count() > 0) {
-            $associatedRegistrations[0]->parent_registration_id = null;
-            $associatedRegistrations[0]->reg_notes = 'Removed from parent registration';
-
-            if ($associatedRegistrations[0]->save()) {
-                if ($associatedRegistrations[0]->delete()) {
-                }
-            }
-        }
-
-        if ($registration->save()) {
-            return view('admin.registrations.edit', compact('registration', 'states', 'family', 'adultSizes', 'youthSizes', 'childrenSizes', 'adults', 'youths', 'childs', 'all_members'))->with('status', 'Member removed from registration successful');
-        }
     }
 }

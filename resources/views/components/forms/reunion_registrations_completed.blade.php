@@ -1,17 +1,17 @@
 <div id="reunion_registration_completed" class="my-5 container-fluid">
     <!-- Registered Members Section -->
-    <div class="form-block-header">
+    <div class="form-block-header mb-2">
         <h3 class="text-left">Registered Members
             <a href="{{ route('registrations.create') }}"
-               class="btn btn-outline-success mb-2" target="_blank">Add New Registration</a>
+               class="btn btn-outline-success" target="_blank">Add New Registration</a>
 
-            <button type="button" class="btn btn-primary mb-2">Registrations <span
+            <button type="button" class="btn btn-primary">Registrations <span
                     class="badge badge-light">{{ $totalRegistrations }}</span>
                 <span class="sr-only">total registrations</span>
             </button>
 
             <button type="button"
-                    class="btn btn-outline-primary mb-2"
+                    class="btn btn-outline-primary"
                     data-mdb-target="#viewRgistrationsModal"
                     data-mdb-ripple-init
                     data-mdb-modal-init>View Registrations Totals
@@ -29,7 +29,7 @@
                 $childs = $registration->children_names != null || $registration->children_names != '' ? explode('; ', $registration->children_names) : array();
             @endphp
 
-            <div class="col">
+            <div class="col mb-3">
                 <div class="card h-100">
                     <img
                         src="{{ $registration->family_member->get_profile_image() }}"
@@ -81,7 +81,7 @@
         @endforeach
     </div>
 
-    @if($reunion->registrations != null)
+    @if($reunion->registrations == null)
 
         <div class="form-row emptyRegistrations">
             <h2 class="text-left col-10">No Members Registered Yet</h2>
