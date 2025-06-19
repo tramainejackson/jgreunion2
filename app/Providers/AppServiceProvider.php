@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Reunion;
 use App\Models\Settings;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
@@ -27,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         View::share('setting', Settings::first());
+        View::share('reunion', Reunion::active()->first());
         Paginator::useBootstrap();
     }
 }

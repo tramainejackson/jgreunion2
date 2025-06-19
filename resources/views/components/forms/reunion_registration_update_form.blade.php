@@ -1,17 +1,26 @@
 @section('add_scripts')
     <script type="module">
-        import {addNewRowNumber, updateAdultName} from '/js/myjs_functions.js';
+        import {addNewRowNumber, updateAdultName, deleteCommitteeMemberBtn, checkErrors} from '/js/myjs_functions.js';
 
         document.getElementById('attending_adult').addEventListener("change", (event) => addNewRowNumber('adult'));
         document.getElementById('attending_youth').addEventListener("change", (event) => addNewRowNumber('youth'));
         document.getElementById('attending_children').addEventListener("change", (event) => addNewRowNumber('children'));
-        document.getElementById('firstname').addEventListener("change", (event) => updateAdultName());
+        document.getElementById('first_name').addEventListener("change", (event) => updateAdultName());
+        document.getElementById('last_name').addEventListener("change", (event) => updateAdultName());
+        document.getElementById('submit_reg_form').addEventListener("click", (event) => checkErrors(document.getElementById('registration_update_form')));
+
+        const deleteCommitteeMembersBtns = document.getElementById('registration_update_form').querySelectorAll('button.deleteCommitteeMemberBtn');
+
+        deleteCommitteeMembersBtns.forEach(function (deleteBtn) {
+            deleteBtn.addEventListener("click", (event) => deleteCommitteeMemberBtn(event.target));
+        });
     </script>
 @endsection
 
 <div id="reunion_registration_form">
 
-    <form action="{{ route('registrations.update', $registration) }}" method="POST" name="registration_form">
+    <form action="{{ route('registrations.update', $registration) }}" method="POST" name="registration_update_form"
+          id="registration_update_form">
         @csrf
         @method('PUT')
 
@@ -20,36 +29,36 @@
                 <div class="col-12 col-sm-6 my-2">
                     <div class="form-outline" id="" data-mdb-input-init>
                         <input type="text"
-                               name="firstname"
-                               id="firstname"
+                               name="first_name"
+                               id="first_name"
                                class="form-control"
-                               value="{{ $registration->registree_name != '' ? $registration->registree_name : '' }}"
-                               placeholder="Enter Firstname"
+                               value="{{ $registration->first_name != '' ? $registration->first_name : '' }}"
+                               placeholder="Enter First Name"
                                required/>
 
-                        <label for="firstname" class="form-label">Enter First Name</label>
+                        <label for="first_name" class="form-label">Enter First Name</label>
                     </div>
 
-                    @if($errors->has('firstname'))
-                        <span class="text-danger">{{ $errors->first('firstname') }}</span>
+                    @if($errors->has('first_name'))
+                        <span class="text-danger">{{ $errors->first('first_name') }}</span>
                     @endif
                 </div>
 
                 <div class="col-12 col-sm-6 my-2">
                     <div class="form-outline" id="" data-mdb-input-init>
                         <input type="text"
-                               name="lastname"
-                               id="lastname"
+                               name="last_name"
+                               id="last_name"
                                class="form-control"
-                               placeholder="Enter Lastname"
-                               value="{{ $registration->registree_name != '' ? $registration->registree_name : '' }}"
+                               placeholder="Enter Last Name"
+                               value="{{ $registration->last_name != '' ? $registration->last_name : '' }}"
                                required/>
 
                         <label for="lastname" class="form-label">Enter Last Name</label>
                     </div>
 
-                    @if($errors->has('lastname'))
-                        <span class="text-danger">{{ $errors->first('lastname') }}</span>
+                    @if($errors->has('last_name'))
+                        <span class="text-danger">{{ $errors->first('last_name') }}</span>
                     @endif
                 </div>
             </div>
@@ -213,19 +222,30 @@
                     </tr>
 
                     <tr id="attending_adult_row_duplicate" class="">
+                        <td></td>
                         <td>
-                            <button class="btn btn-danger">Delete</button>
-                        </td>
-                        <td colspan="2">
                             <div class="form-outline" data-mdb-input-init>
                                 <input type="text"
-                                       name="attending_adult_name[]"
+                                       name="attending_adult_first_name[]"
                                        class="form-control"
                                        value="{{ Auth::check() ? $member->firstname : '' }}"
                                        required
                                 />
 
-                                <label for="attending_adult_name" class="form-label">First Name</label>
+                                <label for="attending_adult_first_name" class="form-label">First Name</label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="form-outline" data-mdb-input-init>
+                                <input type="text"
+                                       name="attending_adult_last_name[]"
+                                       class="form-control"
+                                       value="{{ Auth::check() ? $member->lastname : '' }}"
+                                       required
+                                />
+
+                                <label for="attending_adult_last_name" class="form-label">Last Name</label>
                             </div>
                         </td>
 
@@ -244,58 +264,100 @@
                     </tr>
 
                     @if($adults != null && (count($adults) >= 2))
-                        @for($x=0; $x < count($adults); $x++)
-                            @if($x != 0)
+                        @foreach($adults as $index => $adult)
+                            @if($index != 0)
+
                                 <tr id="" class="attending_adult_row">
                                     <td>
-                                        <button class="btn btn-danger">Delete</button>
+                                        <button type="button"
+                                                class="btn btn-outline-danger w-100 m-0 deleteCommitteeMemberBtn">Delete
+                                            <input type="text" name="remove_adult_member[]" value="N" hidden>
+                                        </button>
                                     </td>
-                                    <td colspan="2">
+
+                                    <td>
                                         <div class="form-outline" data-mdb-input-init>
                                             <input type="text"
-                                                   name="attending_adult_name[]"
+                                                   name="attending_adult_first_name[]"
                                                    class="form-control"
-                                                   value="{{ $adults[$x] }}"
+                                                   value="{{ $adult->first_name }}"
                                                    required
                                             />
 
-                                            <label for="attending_adult_name" class="form-label">First Name</label>
+                                            <label for="attending_adult_first_name" class="form-label">First
+                                                Name</label>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <div class="form-outline" data-mdb-input-init>
+                                            <input type="text"
+                                                   name="attending_adult_last_name[]"
+                                                   class="form-control"
+                                                   value="{{ $adult->last_name }}"
+                                                   required
+                                            />
+
+                                            <label for="attending_adult_last_name" class="form-label">Last Name</label>
                                         </div>
                                     </td>
 
                                     <td>
                                         <select name="adult_shirts[]" class="shirt_size" data-mdb-select-init>
-                                            <option value="S"{{ $adultSizes[$x] == 'S' ? ' selected' : '' }}>Small</option>
-                                            <option value="M"{{ $adultSizes[$x] == 'M' ? ' selected' : '' }}>Medium</option>
-                                            <option value="L"{{ $adultSizes[$x] == 'L' ? ' selected' : '' }}>Large</option>
-                                            <option value="XL"{{ $adultSizes[$x] == 'XL' ? ' selected' : '' }}>XL</option>
-                                            <option value="XXL"{{ $adultSizes[$x] == 'XXL' ? ' selected' : '' }}>XXL</option>
-                                            <option value="XXXL"{{ $adultSizes[$x] == 'XXXL' ? ' selected' : '' }}>3XL</option>
+                                            <option value="S"{{ $adult->shirt_size == 'S' ? ' selected' : '' }}>Small
+                                            </option>
+                                            <option value="M"{{ $adult->shirt_size == 'M' ? ' selected' : '' }}>Medium
+                                            </option>
+                                            <option value="L"{{ $adult->shirt_size == 'L' ? ' selected' : '' }}>Large
+                                            </option>
+                                            <option value="XL"{{ $adult->shirt_size == 'XL' ? ' selected' : '' }}>XL
+                                            </option>
+                                            <option value="XXL"{{ $adult->shirt_size == 'XXL' ? ' selected' : '' }}>XXL
+                                            </option>
+                                            <option value="XXXL"{{ $adult->shirt_size == 'XXXL' ? ' selected' : '' }}>
+                                                3XL
+                                            </option>
                                         </select>
 
                                         <label for="adult_shirts" class="form-label select-label">Shirt Size</label>
                                     </td>
+
+                                    <td class="d-none"><input type="number" name="adult_member_reg_id[]"
+                                                              value="{{ $adult->id }}" hidden></td>
                                 </tr>
                             @endif
-                        @endfor
+                        @endforeach
                     @endif
 
                     <tr id="attending_adult_row_default" class="attending_adult_row d-none">
                         <td></td>
-                        <td colspan="2">
+
+                        <td>
                             <div class="form-outline" data-mdb-input-init>
                                 <input type="text"
-                                       name="attending_adult_name[]"
+                                       name="attending_new_adult_first_name[]"
                                        class="form-control"
                                        required
                                        disabled/>
 
-                                <label for="attending_adult_name" class="form-label">First Name</label>
+                                <label for="attending_new_adult_first_name" class="form-label">First Name</label>
                             </div>
                         </td>
 
                         <td>
-                            <select name="adult_shirts[]" class="shirt_size" disabled>
+                            <div class="form-outline" data-mdb-input-init>
+                                <input type="text"
+                                       name="attending_new_adult_last_name[]"
+                                       class="form-control"
+                                       required
+                                       disabled/>
+
+                                <label for="attending_new_adult_last_name" class="form-label">Last Name</label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <select name="new_adult_shirts[]" class="shirt_size" disabled>
                                 <option value="S">Small</option>
                                 <option value="M">Medium</option>
                                 <option value="L">Large</option>
@@ -304,7 +366,7 @@
                                 <option value="XXXL">3XL</option>
                             </select>
 
-                            <label for="adult_shirts" class="form-label select-label">Shirt Size</label>
+                            <label for="new_adult_shirts" class="form-label select-label">Shirt Size</label>
                         </td>
                     </tr>
 
@@ -348,56 +410,98 @@
                     </tr>
 
                     @if($youths != null && (count($youths) >= 1))
-                        @for($x=0; $x < count($youths); $x++)
+                        @foreach($youths as $index => $youth)
                             <tr id="" class="attending_youth_row">
                                 <td>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button type="button"
+                                            class="btn btn-outline-danger w-100 m-0 deleteCommitteeMemberBtn">Delete
+                                        <input type="text" name="remove_youth_member[]" value="N" hidden>
+                                    </button>
                                 </td>
-                                <td colspan="2">
+
+                                <td>
                                     <div class="form-outline" data-mdb-input-init>
                                         <input type="text"
-                                               name="attending_youth_name[]"
+                                               name="attending_youth_first_name[]"
                                                class="form-control"
-                                               value="{{ $youths[$x] }}"
+                                               value="{{ $youth->first_name }}"
                                                required
-                                               />
+                                        />
 
-                                        <label for="attending_youth_name" class="form-label">First Name</label>
+                                        <label for="attending_youth_first_name" class="form-label">First Name</label>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-outline" data-mdb-input-init>
+                                        <input type="text"
+                                               name="attending_youth_last_name[]"
+                                               class="form-control"
+                                               value="{{ $youth->last_name }}"
+                                               required
+                                        />
+
+                                        <label for="attending_youth_last_name" class="form-label">Last Name</label>
                                     </div>
                                 </td>
 
                                 <td>
                                     <select name="youth_shirts[]" class="shirt_size" data-mdb-select-init>
-                                        <option value="XS"{{ $youthSizes[$x] == 'XS' ? ' selected' : '' }}>Youth XSmall</option>
-                                        <option value="S"{{ $youthSizes[$x] == 'S' ? ' selected' : '' }}>Youth Small</option>
-                                        <option value="M"{{ $youthSizes[$x] == 'M' ? ' selected' : '' }}>Youth Medium</option>
-                                        <option value="L"{{ $youthSizes[$x] == 'L' ? ' selected' : '' }}>Youth Large</option>
-                                        <option value="XL"{{ $youthSizes[$x] == 'XL' ? ' selected' : '' }}>Adult Small</option>
-                                        <option value="XXL"{{ $youthSizes[$x] == 'XXXL' ? ' selected' : '' }}>Adult Medium</option>
+                                        <option value="XS"{{ $youth->shirt_size == 'XS' ? ' selected' : '' }}>Youth
+                                            XSmall
+                                        </option>
+                                        <option value="S"{{ $youth->shirt_size == 'S' ? ' selected' : '' }}>Youth Small
+                                        </option>
+                                        <option value="M"{{ $youth->shirt_size == 'M' ? ' selected' : '' }}>Youth Medium
+                                        </option>
+                                        <option value="L"{{ $youth->shirt_size == 'L' ? ' selected' : '' }}>Youth Large
+                                        </option>
+                                        <option value="XL"{{ $youth->shirt_size == 'XL' ? ' selected' : '' }}>Adult
+                                            Small
+                                        </option>
+                                        <option value="XXL"{{ $youth->shirt_size == 'XXXL' ? ' selected' : '' }}>Adult
+                                            Medium
+                                        </option>
                                     </select>
 
                                     <label for="youth_shirts" class="form-label select-label">Shirt Size</label>
                                 </td>
+
+                                <td class="d-none"><input type="number" name="youth_member_reg_id[]"
+                                                          value="{{ $youth->id }}" hidden></td>
                             </tr>
-                        @endfor
+                        @endforeach
                     @endif
 
                     <tr id="attending_youth_row_default" class="attending_youth_row d-none">
                         <td></td>
-                        <td colspan="2">
+
+                        <td>
                             <div class="form-outline" data-mdb-input-init>
                                 <input type="text"
-                                       name="attending_youth_name[]"
+                                       name="attending_new_youth_first_name[]"
                                        class="form-control"
                                        required
                                        disabled/>
 
-                                <label for="attending_youth_name" class="form-label">First Name</label>
+                                <label for="attending_new_youth_first_name" class="form-label">First Name</label>
                             </div>
                         </td>
 
                         <td>
-                            <select name="youth_shirts[]" class="shirt_size" disabled>
+                            <div class="form-outline" data-mdb-input-init>
+                                <input type="text"
+                                       name="attending_new_youth_last_name[]"
+                                       class="form-control"
+                                       required
+                                       disabled/>
+
+                                <label for="attending_new_youth_last_name" class="form-label">Last Name</label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <select name="new_youth_shirts[]" class="shirt_size" disabled>
                                 <option value="XS">Youth XSmall</option>
                                 <option value="S">Youth Small</option>
                                 <option value="M">Youth Medium</option>
@@ -406,7 +510,7 @@
                                 <option value="XXL">Adult Medium</option>
                             </select>
 
-                            <label for="youth_shirts" class="form-label select-label">Shirt Size</label>
+                            <label for="new_youth_shirts" class="form-label select-label">Shirt Size</label>
                         </td>
                     </tr>
 
@@ -431,8 +535,8 @@
                                    name="attending_children"
                                    id="attending_children"
                                    class="form-control"
-                                   min="{{ $childs != null ? (count($childs)) : 1 }}"
-                                   value="{{ $childs != null ? (count($childs)) : 1 }}"/>
+                                   min="{{ $children != null ? (count($children)) : 1 }}"
+                                   value="{{ $children != null ? (count($children)) : 1 }}"/>
                         </td>
 
                         <td>
@@ -445,62 +549,98 @@
                                        name="total_children"
                                        id="total_children"
                                        class="form-control"
-                                       value="{{ $childs != null ? (count($childs) * $reunion->child_price) : $reunion->child_price }}"
+                                       value="{{ $children != null ? (count($children) * $reunion->child_price) : $reunion->child_price }}"
                                        disabled/>
                             </div>
                         </td>
                     </tr>
 
-                    @if($childs != null && (count($childs) >= 1))
-                        @for($x=0; $x < count($childs); $x++)
+                    @if($children != null && (count($children) >= 1))
+                        @foreach($children as $index => $child)
                             <tr id="" class="attending_children_row">
                                 <td>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button type="button"
+                                            class="btn btn-outline-danger w-100 m-0 deleteCommitteeMemberBtn">Delete
+                                        <input type="text" name="remove_child_member[]" value="N" hidden>
+                                    </button>
                                 </td>
-                                <td colspan="2">
+
+                                <td>
                                     <div class="form-outline" data-mdb-input-init>
                                         <input type="text"
-                                               name="attending_children_name[]"
+                                               name="attending_children_first_name[]"
                                                class="form-control"
-                                               value="{{ $childs[$x] }}"
+                                               value="{{ $child->first_name }}"
                                                required/>
 
-                                        <label for="attending_children_name" class="form-label">First Name</label>
+                                        <label for="attending_children_first_name" class="form-label">First Name</label>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="form-outline" data-mdb-input-init>
+                                        <input type="text"
+                                               name="attending_children_last_name[]"
+                                               class="form-control"
+                                               value="{{ $child->last_name }}"
+                                               required/>
+
+                                        <label for="attending_children_last_name" class="form-label">Last Name</label>
                                     </div>
                                 </td>
 
                                 <td>
                                     <select name="children_shirts[]" class="shirt_size" data-mdb-select-init>
-                                        <option value="S"{{ $childrenSizes[$x] == 'S' ? ' selected' : '' }}>12 Months</option>
-                                        <option value="M"{{ $childrenSizes[$x] == 'M' ? ' selected' : '' }}>2T</option>
-                                        <option value="L"{{ $childrenSizes[$x] == 'L' ? ' selected' : '' }}>3T</option>
-                                        <option value="XL"{{ $childrenSizes[$x] == 'XL' ? ' selected' : '' }}>4T</option>
-                                        <option value="XXL"{{ $childrenSizes[$x] == 'XXL' ? ' selected' : '' }}>5T</option>
-                                        <option value="XXXL"{{ $childrenSizes[$x] == 'XXXL' ? ' selected' : '' }}>6T</option>
+                                        <option value="S"{{ $child->shirt_size == 'S' ? ' selected' : '' }}>12 Months
+                                        </option>
+                                        <option value="M"{{ $child->shirt_size == 'M' ? ' selected' : '' }}>2T</option>
+                                        <option value="L"{{ $child->shirt_size == 'L' ? ' selected' : '' }}>3T</option>
+                                        <option value="XL"{{ $child->shirt_size == 'XL' ? ' selected' : '' }}>4T
+                                        </option>
+                                        <option value="XXL"{{ $child->shirt_size == 'XXL' ? ' selected' : '' }}>5T
+                                        </option>
+                                        <option value="XXXL"{{ $child->shirt_size == 'XXXL' ? ' selected' : '' }}>6T
+                                        </option>
                                     </select>
 
                                     <label for="children_shirts" class="form-label select-label">Shirt Size</label>
                                 </td>
+
+                                <td class="d-none"><input type="number" name="child_member_reg_id[]"
+                                                          value="{{ $child->id }}" hidden></td>
                             </tr>
-                        @endfor
+                        @endforeach
                     @endif
 
                     <tr id="attending_children_row_default" class="attending_children_row d-none">
                         <td></td>
-                        <td colspan="2">
+
+                        <td>
                             <div class="form-outline" data-mdb-input-init>
                                 <input type="text"
-                                       name="attending_children_name[]"
+                                       name="attending_new_children_first_name[]"
                                        class="form-control"
                                        required
                                        disabled/>
 
-                                <label for="attending_children_name" class="form-label">First Name</label>
+                                <label for="attending_new_children_first_name" class="form-label">First Name</label>
                             </div>
                         </td>
 
                         <td>
-                            <select name="children_shirts[]" class="shirt_size" disabled>
+                            <div class="form-outline" data-mdb-input-init>
+                                <input type="text"
+                                       name="attending_new_children_last_name[]"
+                                       class="form-control"
+                                       required
+                                       disabled/>
+
+                                <label for="attending_new_children_last_name" class="form-label">Last Name</label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <select name="new_children_shirts[]" class="shirt_size" disabled>
                                 <option value="S">12 Months</option>
                                 <option value="M">2T</option>
                                 <option value="L">3T</option>
@@ -509,7 +649,7 @@
                                 <option value="XXXL">6T</option>
                             </select>
 
-                            <label for="children_shirts" class="form-label select-label">Shirt Size</label>
+                            <label for="new_children_shirts" class="form-label select-label">Shirt Size</label>
                         </td>
                     </tr>
 
@@ -524,7 +664,7 @@
                                 </div>
 
                                 <input type="number"
-                                       name="total_amount_due"
+                                       name="due_at_reg"
                                        id="total_amount_due"
                                        class="form-control"
                                        value="{{ $registration->due_at_reg }}"
@@ -551,13 +691,12 @@
                             <span class="input-group-text" id="basic-addon1">$</span>
 
                             <input type="number"
-                                   name="due_at_reg"
                                    class="form-control"
-                                   value="{{ $registration->due_at_reg > 0 ? $registration->due_at_reg : '' }}"
+                                   value="{{ $registration->due_at_reg }}"
                                    placeholder="Enter Registration Cost"
                                    step="0.01"
                                    aria-describedby="basic-addon1"
-                                {{ !Auth::user()->is_admin() ? 'disabled' : '' }}/>
+                                   disabled/>
                         </div>
                     </div>
 
@@ -570,11 +709,11 @@
                             <input type="number"
                                    name="total_amount_due"
                                    class="form-control"
-                                   value="{{ $registration->total_amount_due > 0 ? $registration->total_amount_due : '' }}"
-                                   placeholder="Enter Due Cost"
+                                   value="{{ $registration->total_amount_due }}"
+                                   placeholder="Enter Cost Due"
                                    step="0.01"
                                    aria-describedby="basic-addon2"
-                                {{ !Auth::user()->is_admin() ? 'disabled' : '' }}/>
+                                   disabled/>
                         </div>
                     </div>
 
@@ -587,7 +726,7 @@
                             <input type="number"
                                    name="total_amount_paid"
                                    class="form-control"
-                                   value="{{ $registration->total_amount_paid > 0 ? $registration->total_amount_paid : '' }}"
+                                   value="{{ $registration->total_amount_paid }}"
                                    placeholder="Enter Amount Paid"
                                    step="0.01"
                                    aria-describedby="basic-addon3"
@@ -600,16 +739,15 @@
             <div class="form-outline" data-mdb-input-init>
                 <textarea class="form-control"
                           name="registration_notes"
-                          placeholder="Enter registration notes for {{ $registration->registree_name }}"
+                          placeholder="Enter registration notes for {{ $registration->full_name() }}"
                             {{ !Auth::user()->is_admin() ? 'disabled' : '' }}>{{ $registration->reg_notes }}</textarea>
                 <label class="form-label" for="registration_notes">Registration Notes</label>
             </div>
 
             <div class="row mt-4">
                 <div class="mx-auto col-11 col-sm-6 col-lg-4">
-                    <button type="submit" class="btn btn-primary btn-lg form-control"
-                            onclick="event.preventDefault(); document.getElementById('total_amount_due').removeAttribute('disabled'); this.closest('form').submit();">
-                        Update Registration
+                    <button type="submit" class="btn btn-primary btn-lg form-control" id="submit_reg_form">Update
+                        Registration
                     </button>
                 </div>
             </div>

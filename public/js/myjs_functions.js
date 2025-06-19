@@ -2,9 +2,12 @@ import {Input, Select, Datepicker, initMDB} from './mdb.es.min.js';
 
 function updateAdultName() {
     let registree_input = document.getElementById('attending_adult_row_duplicate').querySelectorAll('input')[0];
+    let registree_input2 = document.getElementById('attending_adult_row_duplicate').querySelectorAll('input')[1];
 
     registree_input.classList.add('active');
-    registree_input.value = document.getElementById('firstname').value;
+    registree_input2.classList.add('active');
+    registree_input.value = document.getElementById('first_name').value;
+    registree_input2.value = document.getElementById('last_name').value;
 }
 
 function addNewRowNumber(attending) {
@@ -13,37 +16,59 @@ function addNewRowNumber(attending) {
 
     let count = document.getElementById("attending_" + attending).value;
     let currentRows = document.getElementById('registration_form_table').querySelectorAll('.attending_' + attending + '_row:not(#attending_' + attending + '_row_default)');
+    let currentRowCount = currentRows.length;
     let currentPrice = document.getElementById("cost_per_" + attending);
     let currentTotalPrice = document.getElementById("total_" + attending);
     let totalPrice = document.getElementById("total_amount_due");
-
-    // Remove new rows if any exist
-    for (var x = 0; x < currentRows.length; x++) {
-        currentRows[x].remove();
-    }
 
     // Add new rows
     if (attending === 'adult') {
         count--;
     }
 
-    for (var x = 0; x < count; x++) {
-        let newRow = document.getElementById('attending_' + attending + '_row_default').cloneNode(true);
+    if (count == currentRowCount) {
+    } else if (count < currentRowCount) {
+        let countDifference = currentRowCount - count;
 
-        //Remove disables
-        newRow.classList.remove('d-none');
-        newRow.id = '';
-        newRow.querySelector('input').removeAttribute('disabled');
-        newRow.querySelector('select').removeAttribute('disabled');
+        for (var x = 0; x < countDifference; x++) {
+            let lastRow = currentRows[currentRowCount - (x + 1)];
 
-        //Add new row
-        document.getElementsByClassName('attending_' + attending + '_row')[0].insertAdjacentElement('afterend', newRow);
+            lastRow.remove();
+        }
+    } else {
+        for (var x = 0; x < (count - currentRowCount); x++) {
+            let newRow = document.getElementById('attending_' + attending + '_row_default').cloneNode(true);
 
-        console.log(newRow.querySelector('input').parentElement);
-        console.log(newRow.querySelector('input'));
+            //Remove disables
+            newRow.classList.remove('d-none');
+            newRow.id = '';
 
-        new Input(newRow.querySelector('input').parentElement).init();
-        new Select(newRow.querySelector('select'));
+            if (newRow.querySelectorAll('input').length > 1) {
+                newRow.querySelectorAll('input').forEach(function (item) {
+                    item.removeAttribute('disabled');
+                });
+            } else {
+                newRow.querySelector('input').removeAttribute('disabled');
+            }
+
+            if (newRow.querySelectorAll('select').length > 1) {
+                newRow.querySelectorAll('select').forEach(function (item) {
+                    item.removeAttribute('disabled');
+                });
+            } else {
+                newRow.querySelector('select').removeAttribute('disabled');
+            }
+
+            //Add new row
+            if (currentRowCount != 0) {
+                document.getElementsByClassName('attending_' + attending + '_row')[currentRowCount - 1].insertAdjacentElement('afterend', newRow);
+            } else {
+                document.getElementsByClassName('attending_' + attending + '_row')[0].insertAdjacentElement('afterend', newRow);
+            }
+
+            new Input(newRow.querySelector('input').parentElement).init();
+            new Select(newRow.querySelector('select'));
+        }
     }
 
     //Update total price per person
@@ -108,7 +133,7 @@ function addNewRowFromBtn(taskTitle) {
         }
     }
 
-    if(newRow.querySelectorAll('button[class*="remove"]').length > 0) {
+    if (newRow.querySelectorAll('button[class*="remove"]').length > 0) {
         //Add an addEventListener to the remove buttons of the new rows
         newRow.querySelectorAll('button[class*="remove"]')[0].addEventListener("click", (event) => removeNewRow(event.target));
     }
@@ -199,18 +224,18 @@ function updateModalToRemoveModel(deleteBtn) {
     let deleteModalBody = deleteModal.querySelectorAll('.modal-body')[0];
     let deleteModalForm = deleteModal.querySelectorAll('form')[0];
 
-    if(deleteModalBody.hasChildNodes()) {
-        if(deleteModalBody.childElementCount > 0) {
+    if (deleteModalBody.hasChildNodes()) {
+        if (deleteModalBody.childElementCount > 0) {
             let elementCount = deleteModalBody.childElementCount;
 
-            for (let i=0; i < elementCount; i++) {
+            for (let i = 0; i < elementCount; i++) {
                 deleteModalBody.firstElementChild.remove();
             }
         }
     }
 
     //Update the action string for sending the form
-    let newStr = deleteModalForm.action.slice(0, deleteModalForm.action.lastIndexOf('/')+1);
+    let newStr = deleteModalForm.action.slice(0, deleteModalForm.action.lastIndexOf('/') + 1);
     let regID = forModalInfo.classList.item(2).replace('forModalInfo', '');
     newStr += regID;
     deleteModalForm.action = newStr;
@@ -222,12 +247,11 @@ function updateModalToRemoveModel(deleteBtn) {
     deleteModalBody.appendChild(forModalInfo);
 }
 
-
 //Toggle input value and button color when deleting a committee member
 function deleteCommitteeMemberBtn(deleteBtn) {
     let inputValue = deleteBtn.firstElementChild;
 
-    if(deleteBtn.classList.contains('btn-outline-danger')) {
+    if (deleteBtn.classList.contains('btn-outline-danger')) {
         deleteBtn.classList.remove('btn-outline-danger');
         deleteBtn.classList.add('btn-danger');
         inputValue.value = 'Y';
@@ -235,6 +259,33 @@ function deleteCommitteeMemberBtn(deleteBtn) {
         deleteBtn.classList.add('btn-outline-danger');
         deleteBtn.classList.remove('btn-danger');
         inputValue.value = 'N';
+    }
+}
+
+function checkErrors(form) {
+    event.preventDefault();
+
+    let formInput = form.querySelectorAll('input:enabled, select:enabled');
+    let errorCount = 0;
+
+    formInput.forEach(function (item) {
+        if (item.value == '' && item.id == '') {
+            errorCount++;
+
+            let errorSpan = document.createElement('span')
+            errorSpan.innerHTML = 'This field cannot be empty';
+            errorSpan.classList.add('text-danger');
+
+            item.parentElement.insertAdjacentElement('afterend', errorSpan);
+        }
+    });
+
+    if (errorCount == 0) {
+        if (form.querySelector('#total_amount_due') !== undefined) {
+            form.querySelector('#total_amount_due').removeAttribute('disabled');
+        }
+
+        form.submit();
     }
 }
 
@@ -247,3 +298,4 @@ export {removeNewRow}
 export {createNewRegistration}
 export {updateModalToRemoveModel}
 export {deleteCommitteeMemberBtn}
+export {checkErrors}

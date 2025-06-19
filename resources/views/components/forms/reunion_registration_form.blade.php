@@ -1,17 +1,19 @@
 @section('add_scripts')
     <script type="module">
-        import {addNewRowNumber, updateAdultName} from '/js/myjs_functions.js';
+        import {addNewRowNumber, updateAdultName, checkErrors} from '/js/myjs_functions.js';
 
         document.getElementById('attending_adult').addEventListener("change", (event) => addNewRowNumber('adult'));
         document.getElementById('attending_youth').addEventListener("change", (event) => addNewRowNumber('youth'));
         document.getElementById('attending_children').addEventListener("change", (event) => addNewRowNumber('children'));
-        document.getElementById('firstname').addEventListener("change", (event) => updateAdultName());
+        document.getElementById('first_name').addEventListener("change", (event) => updateAdultName());
+        document.getElementById('last_name').addEventListener("change", (event) => updateAdultName());
+        document.getElementById('submit_reg_form').addEventListener("click", (event) => checkErrors(document.getElementById('registration_form')));
     </script>
 @endsection
 
 <div id="reunion_registration_form">
 
-    <form action="{{ route('registrations.store') }}" method="POST" name="registration_form">
+    <form action="{{ route('registrations.store') }}" method="POST" name="registration_form" id="registration_form">
         @csrf
 
         <div class="container-fluid" id="">
@@ -22,36 +24,36 @@
                     <div class="col-12 col-sm-6 my-2">
                         <div class="form-outline" id="" data-mdb-input-init>
                             <input type="text"
-                                   name="firstname"
-                                   id="firstname"
+                                   name="first_name"
+                                   id="first_name"
                                    class="form-control"
                                    value="{{ $member->firstname != '' ? $member->firstname : '' }}"
-                                   placeholder="Enter Firstname"
+                                   placeholder="Enter First Name"
                                    required/>
 
-                            <label for="firstname" class="form-label">Enter First Name</label>
+                            <label for="first_name" class="form-label">Enter First Name</label>
                         </div>
 
-                        @if($errors->has('firstname'))
-                            <span class="text-danger">{{ $errors->first('firstname') }}</span>
+                        @if($errors->has('first_name'))
+                            <span class="text-danger">{{ $errors->first('first_name') }}</span>
                         @endif
                     </div>
 
                     <div class="col-12 col-sm-6 my-2">
                         <div class="form-outline" id="" data-mdb-input-init>
                             <input type="text"
-                                   name="lastname"
-                                   id="lastname"
+                                   name="last_name"
+                                   id="last_name"
                                    class="form-control"
-                                   placeholder="Enter Lastname"
+                                   placeholder="Enter Last Name"
                                    value="{{ $member->lastname != '' ? $member->lastname : '' }}"
                                    required/>
 
-                            <label for="lastname" class="form-label">Enter Last Name</label>
+                            <label for="last_name" class="form-label">Enter Last Name</label>
                         </div>
 
-                        @if($errors->has('lastname'))
-                            <span class="text-danger">{{ $errors->first('lastname') }}</span>
+                        @if($errors->has('last_name'))
+                            <span class="text-danger">{{ $errors->first('last_name') }}</span>
                         @endif
                     </div>
                 </div>
@@ -179,36 +181,36 @@
                     <div class="col-12 col-sm-6 my-2">
                         <div class="form-outline" id="" data-mdb-input-init>
                             <input type="text"
-                                   name="firstname"
-                                   id="firstname"
+                                   name="first_name"
+                                   id="first_name"
                                    class="form-control"
-                                   value="{{ old('firstname') ? old('firstname') : '' }}"
-                                   placeholder="Enter Firstname"
+                                   value="{{ old('first_name') ? old('first_name') : '' }}"
+                                   placeholder="Enter First Name"
                                    required/>
 
-                            <label for="firstname" class="form-label">Enter First Name</label>
+                            <label for="first_name" class="form-label">Enter First Name</label>
                         </div>
 
-                        @if($errors->has('firstname'))
-                            <span class="text-danger">{{ $errors->first('firstname') }}</span>
+                        @if($errors->has('first_name'))
+                            <span class="text-danger">{{ $errors->first('first_name') }}</span>
                         @endif
                     </div>
 
                     <div class="col-12 col-sm-6 my-2">
                         <div class="form-outline" id="" data-mdb-input-init>
                             <input type="text"
-                                   name="lastname"
-                                   id="lastname"
+                                   name="last_name"
+                                   id="last_name"
                                    class="form-control"
-                                   placeholder="Enter Lastname"
-                                   value="{{ old('lastname') ? old('lastname') : '' }}"
+                                   placeholder="Enter Last Name"
+                                   value="{{ old('last_name') ? old('last_name') : '' }}"
                                    required/>
 
-                            <label for="lastname" class="form-label">Enter Last Name</label>
+                            <label for="last_name" class="form-label">Enter Last Name</label>
                         </div>
 
-                        @if($errors->has('lastname'))
-                            <span class="text-danger">{{ $errors->first('lastname') }}</span>
+                        @if($errors->has('last_name'))
+                            <span class="text-danger">{{ $errors->first('last_name') }}</span>
                         @endif
                     </div>
                 </div>
@@ -375,16 +377,30 @@
 
                     <tr id="attending_adult_row_duplicate" class="">
                         <td></td>
-                        <td colspan="2">
+
+                        <td>
                             <div class="form-outline" data-mdb-input-init>
                                 <input type="text"
-                                       name="attending_adult_name[]"
+                                       name="attending_adult_first_name[]"
                                        class="form-control"
                                        value="{{ Auth::check() ? $member->firstname : '' }}"
                                        required
                                 />
 
-                                <label for="attending_adult_name" class="form-label">First Name</label>
+                                <label for="attending_adult_first_name" class="form-label">First Name</label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="form-outline" data-mdb-input-init>
+                                <input type="text"
+                                       name="attending_adult_last_name[]"
+                                       class="form-control"
+                                       value="{{ Auth::check() ? $member->lastname : '' }}"
+                                       required
+                                />
+
+                                <label for="attending_adult_last_name" class="form-label">Last Name</label>
                             </div>
                         </td>
 
@@ -404,15 +420,28 @@
 
                     <tr id="attending_adult_row_default" class="attending_adult_row d-none">
                         <td></td>
-                        <td colspan="2">
+
+                        <td>
                             <div class="form-outline" data-mdb-input-init>
                                 <input type="text"
-                                       name="attending_adult_name[]"
+                                       name="attending_adult_first_name[]"
                                        class="form-control"
                                        required
                                        disabled/>
 
-                                <label for="attending_adult_name" class="form-label">First Name</label>
+                                <label for="attending_adult_first_name" class="form-label">First Name</label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="form-outline" data-mdb-input-init>
+                                <input type="text"
+                                       name="attending_adult_last_name[]"
+                                       class="form-control"
+                                       required
+                                       disabled/>
+
+                                <label for="attending_adult_last_name" class="form-label">Last Name</label>
                             </div>
                         </td>
 
@@ -467,15 +496,28 @@
 
                     <tr id="attending_youth_row_default" class="attending_youth_row d-none">
                         <td></td>
-                        <td colspan="2">
+
+                        <td>
                             <div class="form-outline" data-mdb-input-init>
                                 <input type="text"
-                                       name="attending_youth_name[]"
+                                       name="attending_youth_first_name[]"
                                        class="form-control"
                                        required
                                        disabled/>
 
-                                <label for="attending_youth_name" class="form-label">First Name</label>
+                                <label for="attending_youth_first_name" class="form-label">First Name</label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="form-outline" data-mdb-input-init>
+                                <input type="text"
+                                       name="attending_youth_last_name[]"
+                                       class="form-control"
+                                       required
+                                       disabled/>
+
+                                <label for="attending_youth_last_name" class="form-label">Last Name</label>
                             </div>
                         </td>
 
@@ -532,15 +574,28 @@
 
                     <tr id="attending_children_row_default" class="attending_children_row d-none">
                         <td></td>
-                        <td colspan="2">
+
+                        <td>
                             <div class="form-outline" data-mdb-input-init>
                                 <input type="text"
-                                       name="attending_children_name[]"
+                                       name="attending_children_first_name[]"
                                        class="form-control"
                                        required
                                        disabled/>
 
-                                <label for="attending_children_name" class="form-label">First Name</label>
+                                <label for="attending_children_first_name" class="form-label">First Name</label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div class="form-outline" data-mdb-input-init>
+                                <input type="text"
+                                       name="attending_children_last_name[]"
+                                       class="form-control"
+                                       required
+                                       disabled/>
+
+                                <label for="attending_children_last_name" class="form-label">Last Name</label>
                             </div>
                         </td>
 
@@ -584,8 +639,7 @@
 
             <div class="row pt-2 mb-5">
                 <div class="mx-auto col-11 col-sm-6 col-lg-4">
-                    <button type="submit" class="btn btn-lg btn-primary form-control"
-                            onclick="event.preventDefault(); document.getElementById('total_amount_due').removeAttribute('disabled'); this.closest('form').submit();">
+                    <button type="submit" class="btn btn-lg btn-primary form-control" id="submit_reg_form">
                         Submit Registration
                     </button>
                 </div>

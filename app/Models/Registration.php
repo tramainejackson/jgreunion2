@@ -44,6 +44,14 @@ class Registration extends Model
     }
 
     /**
+     * Get the user for the family member account.
+     */
+    public function full_name()
+    {
+        return $this->first_name . ' ' . $this->last_name;
+    }
+
+    /**
      * Format the shirt sized for the youth shirts.
      */
     public function youth_shirts_formatted($size_to_format)
