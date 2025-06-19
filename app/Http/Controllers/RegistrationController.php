@@ -27,7 +27,7 @@ class RegistrationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['store', 'guest_registration']);
+        $this->middleware('auth')->except(['store']);
     }
 
     /**
