@@ -12,8 +12,6 @@
             </div>
         </div>
 
-        @include('components.nav')
-
         <div class="row">
 
             <div class="col-11 col-sm-7 col-md-6 col-lg-5 col-xl-4 col-xxl-3 membersForm mx-auto mt-2">

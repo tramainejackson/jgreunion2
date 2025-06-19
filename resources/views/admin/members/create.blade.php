@@ -1,10 +1,8 @@
 <x-app-layout>
 
+    <x-admin-jumbotron>Create Member</x-admin-jumbotron>
+    
     <div class="container-fluid" id="">
-
-        <x-admin-jumbotron>Create Member</x-admin-jumbotron>
-
-        @include('components.nav')
 
         <div class="row">
 

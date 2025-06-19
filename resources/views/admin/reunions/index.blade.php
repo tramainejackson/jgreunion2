@@ -1,11 +1,8 @@
 <x-app-layout>
 
+    <x-admin-jumbotron>Reunions</x-admin-jumbotron>
+
     <div class="container-fluid" id="">
-
-        <x-admin-jumbotron>Reunions</x-admin-jumbotron>
-
-        @include('components.nav')
-
         <div class="row">
 
             <div class="col-12 col-lg-2 my-2">

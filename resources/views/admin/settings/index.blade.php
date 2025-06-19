@@ -1,8 +1,5 @@
 <x-app-layout>
     <div class="container-fluid" id="profilePage">
-
-        @include('components.nav')
-
         <div class="row bg-light">
             <!-- <div class="col-2 my-2">
                 <div class="">

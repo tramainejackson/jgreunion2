@@ -12,8 +12,6 @@
             </div>
         </div>
 
-        @include('components.nav')
-
         <div class="row py-4" id="distribution_list">
 
             @if($family_member->user->is_admin())

@@ -1,8 +1,5 @@
 <x-app-layout>
     <div class="container-fluid" id="">
-
-        @include('components.nav')
-
         <div class="row">
 
             <div class="col-12 col-lg-2 my-2">

@@ -8,12 +8,9 @@
         </script>
     @endsection
 
+    <x-admin-jumbotron>Create Reunion</x-admin-jumbotron>
+
     <div class="container-fluid" id="">
-
-        <x-admin-jumbotron>Create Reunion</x-admin-jumbotron>
-
-        @include('components.nav')
-
         <div class="row">
 
             {{--            <div class="col-12 col-md-2 my-2">--}}
@@ -154,7 +151,8 @@
                                 <div class="d-flex align-items-center justify-content-between">
                                     <h3 class="">Committee</h3>
 
-                                    <button type="button" id="addCommitteeMember" class="btn btn-outline-success mb-2">Add Committee
+                                    <button type="button" id="addCommitteeMember" class="btn btn-outline-success mb-2">
+                                        Add Committee
                                         Member
                                     </button>
                                 </div>

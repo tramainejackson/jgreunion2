@@ -8,12 +8,9 @@
         </script>
     @endsection
 
+    <x-admin-jumbotron>Create New Registration</x-admin-jumbotron>
+
     <div class="container-fluid" id="">
-
-        <x-admin-jumbotron>Create New Registration</x-admin-jumbotron>
-
-        @include('components.nav')
-
         <div class="row">
 
             <div class="col-2 my-2">
@@ -52,8 +49,11 @@
                         </div>
 
                         <div class="col-3">
-                            <a href="#" target="_blank" type="button" class="d-none" id="member_registration_link" hidden></a>
-                            <button type="button" class="btn btn-info createRegSelectLink" id="create_reg_select_link" onclick="document.getElementById('member_registration_link').click();">Go</button>
+                            <a href="#" target="_blank" type="button" class="d-none" id="member_registration_link"
+                               hidden></a>
+                            <button type="button" class="btn btn-info createRegSelectLink" id="create_reg_select_link"
+                                    onclick="document.getElementById('member_registration_link').click();">Go
+                            </button>
                         </div>
                     </div>
 

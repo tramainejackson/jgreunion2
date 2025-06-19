@@ -34,12 +34,9 @@
         </script>
     @endsection
 
+    <x-admin-jumbotron>Edit Reunion</x-admin-jumbotron>
+
     <div class="container-fluid" id="">
-
-        <x-admin-jumbotron>Edit Reunion</x-admin-jumbotron>
-
-        @include('components.nav')
-
         <div class="row">
             {{--            <div class="col-12 col-xl-2 my-2">--}}
 

@@ -12,8 +12,6 @@
             </div>
         </div>
 
-        @include('components.nav')
-
         <div class="row">
 
             <div class="col-12 d-flex flex-column flex-xl-row align-items-center">
