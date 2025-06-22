@@ -407,7 +407,7 @@
                                                                     <li style="margin-left: 0px;">
                                                                         <span
                                                                             style="text-decoration: underline; font-weight: bold; Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;">Registree:</span><span
-                                                                            style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;"> {{ ucwords($registration->registree_name) }}
+                                                                            style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:14px;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;"> {{ ucwords($registration->first_name . ' ' . $registration->last_name) }}
                                                                     </li>
                                                                     </span>
 
