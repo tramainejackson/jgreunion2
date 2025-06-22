@@ -27,7 +27,7 @@ class RegistrationController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['store', 'guest_registration']);
+        $this->middleware('auth')->except(['store']);
     }
 
     /**
@@ -285,11 +285,11 @@ class RegistrationController extends Controller
 
         //Add children registrations
         foreach ($children_registrations as $child_registration) {
-            if (strtolower($child_registration->age_group) == 'adult') {
+            if (strtolower($child_registration->family_member->age_group) == 'adult') {
                 $adults->prepend($child_registration);
-            } elseif (strtolower($child_registration->age_group) == 'youth') {
+            } elseif (strtolower($child_registration->family_member->age_group) == 'youth') {
                 $youths->prepend($child_registration);
-            } elseif (strtolower($child_registration->age_group) == 'child') {
+            } elseif (strtolower($child_registration->family_member->age_group) == 'child') {
                 $children->prepend($child_registration);
             }
         }
