@@ -13,6 +13,17 @@
 
 <div id="reunion_registration_form">
 
+    <div class="text-center mb-3">
+        @if($reunion->registration_form != null)
+            <h2 class="fs-6"><i class="fas fa-circle-info text-info"></i>&nbsp;&nbsp;If you prefer a paper registration form, please click the link below to
+                download the paper
+                registration form&nbsp;&nbsp;<i class="fas fa-circle-info text-info"></i></h2>
+
+            <a href="{{ $reunion->get_downloadable_registration() }}" class="btn btn-outline-secondary"
+               download="registration_form_2026_reunion"><i class="fas fa-download"></i>&nbsp;&nbsp;Download Paper Registration Form&nbsp;&nbsp;<i class="fas fa-download"></i></a>
+        @endif
+    </div>
+
     <form action="{{ route('registrations.store') }}" method="POST" name="registration_form" id="registration_form">
         @csrf
 

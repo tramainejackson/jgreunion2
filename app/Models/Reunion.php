@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Facades\Storage;
 
 class Reunion extends Model
 {
@@ -46,6 +47,21 @@ class Reunion extends Model
     public function images(): HasMany
     {
         return $this->hasMany(Images::class);
+    }
+
+    /**
+     * Get the user for the family member account.
+     * @return string
+     */
+    public function get_downloadable_registration()
+    {
+        if ($this->registration_form != null) {
+            if (Storage::disk('local')->exists('public/reg_forms/' . str_ireplace('public/reg_forms/', '', $this->registration_form))) {
+                $this->registration_form = asset('storage/reg_forms/' . str_ireplace('public/reg_forms/', '',  $this->registration_form));
+            }
+        }
+
+        return $this->registration_form;
     }
 
     public function scopeActive($query) {
