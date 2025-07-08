@@ -356,7 +356,7 @@ class FamilyMemberController extends Controller
             $delete_account = FamilyMember::find($accounts[1]);
             $delete_account_registrations = $delete_account->registrations;
             $delete_account_committees = $delete_account->committees;
-
+dd($delete_account);
             //Update reunion committees with parent account
             if($delete_account_committees->isNotEmpty()) {
                 foreach ($delete_account_committees as $updated_committee) {
@@ -370,7 +370,6 @@ class FamilyMemberController extends Controller
                 foreach ($delete_account_registrations as $update_registration) {
                     $update_registration->family_member_id = $parent_account->id;
 
-                    dd($update_registration);
                     if($update_registration->save()) {
                         $update_registration->delete();
                     }
