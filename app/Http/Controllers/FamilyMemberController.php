@@ -173,9 +173,9 @@ class FamilyMemberController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
-     * @return Response
+     * @param Request $request
+     * @param FamilyMember $member
+     * @return mixed
      */
     public function update(Request $request, FamilyMember $member)
     {
@@ -318,7 +318,7 @@ class FamilyMemberController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return mixed
      */
     public function duplicates()
     {
@@ -336,14 +336,15 @@ class FamilyMemberController extends Controller
     /**
      * Keep the potential duplicate account.
      *
-     * @return Response
+     * @param Request $request
+     * @return mixed
      */
     public function update_duplicate(Request $request)
     {
         $keep = isset($request->keep_duplicate_member) && $request->keep_duplicate_member_form == 'Y';
         $delete = isset($request->delete_duplicate_member) && $request->delete_duplicate_member_form == 'Y';
 
-        if($keep) {
+        if ($keep) {
             $member = FamilyMember::find($request->keep_duplicate_member);
             $member->duplicate = 0;
 
@@ -356,9 +357,9 @@ class FamilyMemberController extends Controller
             $delete_account = FamilyMember::find($accounts[1]);
             $delete_account_registrations = $delete_account->registrations;
             $delete_account_committees = $delete_account->committees;
-dd($delete_account);
+
             //Update reunion committees with parent account
-            if($delete_account_committees->isNotEmpty()) {
+            if ($delete_account_committees->isNotEmpty()) {
                 foreach ($delete_account_committees as $updated_committee) {
                     $updated_committee->family_member_id = $parent_account->id;
                     $updated_committee->save();
@@ -366,19 +367,16 @@ dd($delete_account);
             }
 
             //Update reunion registrations with parent account
-            if($delete_account_registrations->isNotEmpty()) {
+            if ($delete_account_registrations->isNotEmpty()) {
                 foreach ($delete_account_registrations as $update_registration) {
-                    $update_registration->family_member_id = $parent_account->id;
-
-                    if($update_registration->save()) {
-                        $update_registration->delete();
+                    if ($update_registration->delete()) {
                     }
                 }
             }
 
             // Delete the member account
             if ($delete_account->delete()) {
-                return redirect()->back();
+                return redirect()->back()->with('status', $parent_account->full_name() . '\'s Duplicate Account Removed And Current Account Updated');
             }
         } else {
 
