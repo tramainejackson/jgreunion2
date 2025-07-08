@@ -369,7 +369,9 @@ class FamilyMemberController extends Controller
             if($delete_account_registrations->isNotEmpty()) {
                 foreach ($delete_account_registrations as $update_registration) {
                     $update_registration->family_member_id = $parent_account->id;
-                    $update_registration->save();
+                    if($update_registration->save()) {
+                        $update_registration->delete();
+                    }
                 }
             }
 
