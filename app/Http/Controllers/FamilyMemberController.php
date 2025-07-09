@@ -193,7 +193,7 @@ class FamilyMemberController extends Controller
         $member->firstname = $request->firstname;
         $member->lastname = $request->lastname;
         $member->email = $request->email;
-        $member->date_of_birth = new Carbon($request->date_of_birth);
+        $member->date_of_birth = $request->date_of_birth != '' ? new Carbon($request->date_of_birth) : '';
         $member->address = $request->address;
         $member->city = $request->city;
         $member->state = $request->state;
