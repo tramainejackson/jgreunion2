@@ -76,10 +76,10 @@
 
                     <li class="nav-item">
                         <a href="{{ route('logout') }}" class="profileLink nav-link"
-                           onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log
+                           onclick="event.preventDefault(); document.getElementsByClassName('logout-form')[0].submit();">Log
                             Out</a>
 
-                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        <form class="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                             @csrf
                         </form>
                     </li>

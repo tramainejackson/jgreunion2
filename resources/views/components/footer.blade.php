@@ -9,10 +9,10 @@
             <ul class="list-unstyled list-inline text-center mb-0">
                 <li class="list-inline-item">
                     <a href="{{ route('logout') }}" class="btn btn-outline-primary btn-rounded"
-                       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Log
+                       onclick="event.preventDefault(); document.getElementsByClassName('logout-form')[0].submit();">Log
                         Out</a>
 
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    <form class="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                         @csrf
                     </form>
                 </li>
