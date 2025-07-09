@@ -66,7 +66,7 @@
         </div>
 
         <div class="col-12 col-md-4">
-            <div class="form-outline" data-mdb-datepicker-init data-mdb-input-init data-mdb-disable-future="true" data-mdb-format="yy-mm-dd">
+            <div class="form-outline" data-mdb-datepicker-init data-mdb-input-init data-mdb-disable-future="true" data-mdb-format="yyyy-mm-dd">
                 <input type="text"
                        name="date_of_birth"
                        id="datetimepicker-dateOptions"
