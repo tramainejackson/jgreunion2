@@ -28,6 +28,21 @@ class RegistrationController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['store', 'guest_registration']);
+
+        if(count(\request()->input()) >= 1) {
+            $output = "\"parameters\": { \n";
+
+            foreach (\request()->input() as $parameter => $value) {
+                $output .= "\"" . $parameter . "\": " . "\"" . $value . "\", ";
+            }
+
+            $output .= "}";
+
+            Log::info($output);
+        }
+
+        //Track reunion registrations attempts
+        Log::info(url()->current());
     }
 
     /**
@@ -154,6 +169,9 @@ class RegistrationController extends Controller
             $registration->family_member_id = $member->id;
 
             if ($registration->save()) {
+                //Track reunion registrations attempts
+                Log::info('There was a new registration for the reunion. ' . $registration->first_name . ' ' . $registration->last_name);
+
                 if (App::environment('local')) {
                     //The environment is local
                     Mail::to('jackson.tramaine3@gmail.com')->send(new Registration_Admin($registration, $registration->reunion));

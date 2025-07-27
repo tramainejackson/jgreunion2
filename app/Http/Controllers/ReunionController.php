@@ -29,6 +29,21 @@ class ReunionController extends Controller
     public function __construct()
     {
         $this->middleware('auth')->except(['show', 'show_past_reunion']);
+
+        if(count(\request()->input()) >= 1) {
+            $output = "\"parameters\": { \n";
+
+            foreach (\request()->input() as $parameter => $value) {
+                $output .= "\"" . $parameter . "\": " . "\"" . $value . "\", ";
+            }
+
+            $output .= "}";
+
+            Log::info($output);
+        }
+
+        //Track reunion registrations attempts
+        Log::info(url()->current());
     }
 
     /**
