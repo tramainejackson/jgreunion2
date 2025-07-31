@@ -130,7 +130,9 @@ class RegistrationController extends Controller
 
         // Create New Registration
         $registration = new Registration();
+//        $registration_head_count = 0;
         $registration->reunion_id = Settings::first()->current_reunion;
+        $current_reunion = Reunion::find($registration->reunion_id);
         $registration->address = $member->address = $request->address;
         $registration->city = $member->city = $request->city;
         $registration->state = $member->state = $request->state;
@@ -153,6 +155,8 @@ class RegistrationController extends Controller
         // registree's first name
         if ($request->attending_adult <= 1) {
             $registration->adult_names = $request->first_name;
+//            $registration_head_count++;
+            $registration->due_at_reg += $current_reunion->adult_price;
         } else {
             $registration->adult_names = '';
 
@@ -162,12 +166,32 @@ class RegistrationController extends Controller
                 } else {
                     $registration->adult_names .= '; ' . $adultName;
                 }
+
+                $registration->due_at_reg += $current_reunion->adult_price;
+                $registration_head_count++;
             }
         }
 
-        $registration->youth_names = isset($request->attending_youth_first_name) ? join('; ', $request->attending_youth_first_name) : null;
-        $registration->children_names = isset($request->attending_children_first_name) ? join('; ', $request->attending_children_first_name) : null;
-        $registration->total_amount_due = $registration->due_at_reg = $request->total_amount_due;
+        if(isset($request->attending_youth_first_name)) {
+            $registration->youth_names = join('; ', $request->attending_youth_first_name);
+            $registration->due_at_reg += ($current_reunion->youth_price * count($request->attending_youth_first_name));
+//            $registration_head_count += count($request->attending_youth_first_name);
+        } else {
+            $registration->youth_names = null;
+        }
+
+        if(isset($request->attending_children_first_name)) {
+            $registration->children_names = join('; ', $request->attending_children_first_name);
+            $registration->due_at_reg += ($current_reunion->child_price * count($request->attending_children_first_name));
+//            $registration_head_count += count($request->attending_children_first_name);
+        } else {
+            $registration->children_names = null;
+        }
+
+//        $registration->youth_names = isset($request->attending_youth_first_name) ? join('; ', $request->attending_youth_first_name) : null;
+//        $registration->children_names = isset($request->attending_children_first_name) ? join('; ', $request->attending_children_first_name) : null;
+
+        $registration->total_amount_due = $registration->due_at_reg;
 
         //Not Going To Save Registration If Phone Number Not US
         if($registration->phone != false) {
