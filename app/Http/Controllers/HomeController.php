@@ -30,6 +30,10 @@ class HomeController extends Controller
             $output = "\"parameters\": { \n";
 
             foreach (\request()->input() as $parameter => $value) {
+                if(is_array($value)) {
+                    $value = implode(',', $value);
+                }
+
                 $output .= "\"" . $parameter . "\": " . "\"" . $value . "\", ";
             }
 
