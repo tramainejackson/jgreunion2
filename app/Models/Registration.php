@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\AreaCodes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -44,11 +45,26 @@ class Registration extends Model
     }
 
     /**
-     * Get the user for the family member account.
+     * Get the full name formatted.
      */
     public function full_name()
     {
         return $this->first_name . ' ' . $this->last_name;
+    }
+
+    /**
+     * Get a formatted and cleaned version of the phone number.
+     */
+    public function phone_number($requested_number)
+    {
+        preg_match('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', $requested_number, $matches);
+        $cleaned_number = $matches[1] . '-' .$matches[2] . '-' . $matches[3];;
+
+        if(in_array($matches[1], AreaCodes::all_codes())){
+            return $cleaned_number;
+        } else {
+            return false;
+        }
     }
 
     /**

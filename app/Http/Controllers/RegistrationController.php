@@ -116,7 +116,7 @@ class RegistrationController extends Controller
             'last_name' => 'required|max:50',
             'address' => 'required|max:100',
             'city' => 'required|max:100',
-            'zip' => 'required|max:99999|min:0|numeric',
+            'zip' => 'required|digits:5',
             'email' => 'nullable|email',
             'phone' => 'nullable',
         ]);
@@ -136,7 +136,7 @@ class RegistrationController extends Controller
         $registration->state = $member->state = $request->state;
         $registration->zip = $member->zip = $request->zip;
         $registration->email = $member->email = $request->email;
-        $registration->phone = $member->phone = $request->phone != '' ? $request->phone : null;
+        $registration->phone = $member->phone = $request->phone != '' ? $registration->phone_number($request->phone) : null;
         $registration->first_name = $request->first_name;
         $registration->last_name = $request->last_name;
         $registration->reg_date = Carbon::now();
@@ -169,118 +169,125 @@ class RegistrationController extends Controller
         $registration->children_names = isset($request->attending_children_first_name) ? join('; ', $request->attending_children_first_name) : null;
         $registration->total_amount_due = $registration->due_at_reg = $request->total_amount_due;
 
-        if ($member->save()) {
-            $registration->family_member_id = $member->id;
+        //Not Going To Save Registration If Phone Number Not US
+        if($registration->phone != false) {
+            if ($member->save()) {
+                $registration->family_member_id = $member->id;
 
-            if ($registration->save()) {
-                //Track reunion registrations attempts
-                Log::info('There was a new registration for the reunion. ' . $registration->first_name . ' ' . $registration->last_name);
+                if ($registration->save()) {
+                    //Track reunion registrations attempts
+                    Log::info('There was a new registration for the reunion. ' . $registration->first_name . ' ' . $registration->last_name);
 
-                if (App::environment('local')) {
-                    //The environment is local
-                    Mail::to('jackson.tramaine3@gmail.com')->send(new Registration_Admin($registration, $registration->reunion));
-                } else {
-                    Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
-                    Mail::to('jacksongreenreunion@gmail.com')->send(new Registration_User($registration, $registration->reunion));
-                }
+                    if (App::environment('local')) {
+                        //The environment is local
+                        Mail::to('jackson.tramaine3@gmail.com')->send(new Registration_Admin($registration, $registration->reunion));
+                    } else {
+                        Mail::to($registration->email)->send(new Registration_Admin($registration, $registration->reunion));
+                        Mail::to('jacksongreenreunion@gmail.com')->send(new Registration_User($registration, $registration->reunion));
+                    }
 
-                if (count($request->attending_adult_first_name) > 1) {
-                    foreach ($request->attending_adult_first_name as $key => $newAdult) {
-                        // Skip the first adult name
-                        if ($key > 0) {
-                            // Create New Member
-                            $adultMember = new FamilyMember();
+                    if (count($request->attending_adult_first_name) > 1) {
+                        foreach ($request->attending_adult_first_name as $key => $newAdult) {
+                            // Skip the first adult name
+                            if ($key > 0) {
+                                // Create New Member
+                                $adultMember = new FamilyMember();
 
-                            // Create New Registration
-                            $adultRegistration = new Registration();
-                            $adultRegistration->reunion_id = $registration->reunion_id;
-                            $adultRegistration->parent_registration_id = $registration->id;
-                            $adultRegistration->shirt_size = $request->adult_shirts[$key];
-                            $adultRegistration->address = $adultMember->address = $member->address;
-                            $adultRegistration->city = $adultMember->city = $member->city;
-                            $adultRegistration->state = $adultMember->state = $member->state;
-                            $adultRegistration->zip = $adultMember->zip = $member->zip;
-                            $adultRegistration->first_name = $request->attending_adult_first_name[$key];
-                            $adultRegistration->last_name = $request->attending_adult_last_name[$key];
-                            $adultMember->firstname = $request->attending_adult_first_name[$key];
-                            $adultMember->lastname = $request->attending_adult_last_name[$key];
-                            $adultMember->age_group = 'adult';
+                                // Create New Registration
+                                $adultRegistration = new Registration();
+                                $adultRegistration->reunion_id = $registration->reunion_id;
+                                $adultRegistration->parent_registration_id = $registration->id;
+                                $adultRegistration->shirt_size = $request->adult_shirts[$key];
+                                $adultRegistration->address = $adultMember->address = $member->address;
+                                $adultRegistration->city = $adultMember->city = $member->city;
+                                $adultRegistration->state = $adultMember->state = $member->state;
+                                $adultRegistration->zip = $adultMember->zip = $member->zip;
+                                $adultRegistration->first_name = $request->attending_adult_first_name[$key];
+                                $adultRegistration->last_name = $request->attending_adult_last_name[$key];
+                                $adultMember->firstname = $request->attending_adult_first_name[$key];
+                                $adultMember->lastname = $request->attending_adult_last_name[$key];
+                                $adultMember->age_group = 'adult';
 
-                            if ($adultMember->save()) {
-                                $adultRegistration->family_member_id = $adultMember->id;
-                                $adultRegistration->save();
+                                if ($adultMember->save()) {
+                                    $adultRegistration->family_member_id = $adultMember->id;
+                                    $adultRegistration->save();
+                                }
                             }
                         }
                     }
-                }
 
-                // If the youths aren't equal to null then create a child registration
-                // and a member account
-                if (isset($request->attending_youth_first_name)) {
-                    foreach ($request->attending_youth_first_name as $key => $newYouth) {
-                        // Create New Member
-                        $youthMember = new FamilyMember();
+                    // If the youths aren't equal to null then create a child registration
+                    // and a member account
+                    if (isset($request->attending_youth_first_name)) {
+                        foreach ($request->attending_youth_first_name as $key => $newYouth) {
+                            // Create New Member
+                            $youthMember = new FamilyMember();
 
-                        // Create New Registration
-                        $youthRegistration = new Registration();
-                        $youthRegistration->reunion_id = $registration->reunion_id;
-                        $youthRegistration->parent_registration_id = $registration->id;
-                        $youthRegistration->shirt_size = $request->youth_shirts[$key];
-                        $youthRegistration->address = $youthMember->address = $member->address;
-                        $youthRegistration->city = $youthMember->city = $member->city;
-                        $youthRegistration->state = $youthMember->state = $member->state;
-                        $youthRegistration->zip = $youthMember->zip = $member->zip;
-                        $youthRegistration->first_name = $request->attending_youth_first_name[$key];
-                        $youthRegistration->last_name = $request->attending_youth_last_name[$key];
-                        $youthMember->firstname = $request->attending_youth_first_name[$key];
-                        $youthMember->lastname = $request->attending_youth_last_name[$key];
-                        $youthMember->age_group = 'youth';
+                            // Create New Registration
+                            $youthRegistration = new Registration();
+                            $youthRegistration->reunion_id = $registration->reunion_id;
+                            $youthRegistration->parent_registration_id = $registration->id;
+                            $youthRegistration->shirt_size = $request->youth_shirts[$key];
+                            $youthRegistration->address = $youthMember->address = $member->address;
+                            $youthRegistration->city = $youthMember->city = $member->city;
+                            $youthRegistration->state = $youthMember->state = $member->state;
+                            $youthRegistration->zip = $youthMember->zip = $member->zip;
+                            $youthRegistration->first_name = $request->attending_youth_first_name[$key];
+                            $youthRegistration->last_name = $request->attending_youth_last_name[$key];
+                            $youthMember->firstname = $request->attending_youth_first_name[$key];
+                            $youthMember->lastname = $request->attending_youth_last_name[$key];
+                            $youthMember->age_group = 'youth';
 
-                        if ($youthMember->save()) {
-                            $youthRegistration->family_member_id = $youthMember->id;
-                            $youthRegistration->save();
+                            if ($youthMember->save()) {
+                                $youthRegistration->family_member_id = $youthMember->id;
+                                $youthRegistration->save();
+                            }
                         }
                     }
-                }
 
-                // If the children aren't equal to null then create a child registration
-                // and a member account
-                if (isset($request->attending_children_first_name)) {
-                    foreach ($request->attending_children_first_name as $key => $newChild) {
-                        // Create New Member
-                        $childMember = new FamilyMember();
+                    // If the children aren't equal to null then create a child registration
+                    // and a member account
+                    if (isset($request->attending_children_first_name)) {
+                        foreach ($request->attending_children_first_name as $key => $newChild) {
+                            // Create New Member
+                            $childMember = new FamilyMember();
 
-                        // Create New Registration
-                        $childRegistration = new Registration();
-                        $childRegistration->reunion_id = $registration->reunion_id;
-                        $childRegistration->parent_registration_id = $registration->id;
-                        $childRegistration->shirt_size = $request->children_shirts[$key];
-                        $childRegistration->address = $childMember->address = $member->address;
-                        $childRegistration->city = $childMember->city = $member->city;
-                        $childRegistration->state = $childMember->state = $member->state;
-                        $childRegistration->zip = $childMember->zip = $member->zip;
-                        $childRegistration->first_name = $request->attending_children_first_name[$key];
-                        $childRegistration->last_name = $request->attending_children_last_name[$key];
-                        $childMember->firstname = $request->attending_children_first_name[$key];
-                        $childMember->lastname = $request->attending_children_last_name[$key];
-                        $childMember->age_group = 'child';
+                            // Create New Registration
+                            $childRegistration = new Registration();
+                            $childRegistration->reunion_id = $registration->reunion_id;
+                            $childRegistration->parent_registration_id = $registration->id;
+                            $childRegistration->shirt_size = $request->children_shirts[$key];
+                            $childRegistration->address = $childMember->address = $member->address;
+                            $childRegistration->city = $childMember->city = $member->city;
+                            $childRegistration->state = $childMember->state = $member->state;
+                            $childRegistration->zip = $childMember->zip = $member->zip;
+                            $childRegistration->first_name = $request->attending_children_first_name[$key];
+                            $childRegistration->last_name = $request->attending_children_last_name[$key];
+                            $childMember->firstname = $request->attending_children_first_name[$key];
+                            $childMember->lastname = $request->attending_children_last_name[$key];
+                            $childMember->age_group = 'child';
 
-                        if ($childMember->save()) {
-                            $childRegistration->family_member_id = $childMember->id;
-                            $childRegistration->save();
+                            if ($childMember->save()) {
+                                $childRegistration->family_member_id = $childMember->id;
+                                $childRegistration->save();
+                            }
                         }
                     }
-                }
 
-                if (!Auth::check()) {
-                    return redirect()->action([HomeController::class, 'index'])->with('status', 'Registration Completed Successfully');
-                } else {
-                    return redirect()->action([FamilyMemberController:: class, 'edit'], $member)->with('status', 'Registration Added Successfully');
+                    if (!Auth::check()) {
+                        return redirect()->action([HomeController::class, 'index'])->with('status', 'Registration Completed Successfully');
+                    } else {
+                        return redirect()->action([FamilyMemberController:: class, 'edit'], $member)->with('status', 'Registration Added Successfully');
+                    }
                 }
+            } else {
+
+                return redirect()->back()->with('bad_status', 'Registration Not Completed. Please Try To Register Again');
             }
         } else {
+            Log::info('There was a new registration attempt by . ' . $registration->first_name . ' ' . $registration->last_name . ' that was not saved. None US area codes will not be saved');
 
-            return redirect()->back()->with('bad_status', 'Registration Not Completed. Please Try To Register Again');
+            return redirect()->back()->with('bad_status', 'Registration was not saved. Please email us directly for a new registration. Thank You.');
         }
     }
 
