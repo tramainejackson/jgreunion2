@@ -53,7 +53,7 @@
 
     @include('components.nav')
 
-    @if(request()->routeIs('guest_home') || request()->routeIs('login') || request()->routeIs('register'))
+    @if(request()->routeIs('guest_home') || request()->routeIs('password.request')  || request()->routeIs('login') || request()->routeIs('register'))
         @include('components.carousel')
     @endif
 
