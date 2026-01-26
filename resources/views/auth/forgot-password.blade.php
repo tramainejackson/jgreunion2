@@ -15,14 +15,14 @@
                                    type="text"
                                    class="form-control"
                                    name="email"
-                                   value="{{ old('username') }}"
+                                   value="{{ old('email') }}"
                                    placeholder="Enter Email Address" required autofocus>
 
                             <label for="email" class="form-label">Email Address</label>
 
-                            @if ($errors->has('username'))
+                            @if ($errors->has('email'))
                                 <span class="help-block">
-										<strong>{{ $errors->first('username') }}</strong>
+										<strong>{{ $errors->first('email') }}</strong>
 									</span>
                             @endif
                         </div>
