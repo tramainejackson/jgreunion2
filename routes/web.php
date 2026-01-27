@@ -5,7 +5,11 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ReunionController;
+use App\Mail\Registration_Account;
 use App\Mail\Registration_Admin;
+use App\Models\Registration;
+use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -40,10 +44,17 @@ Route::resources([
     'reunions' => ReunionController::class,
 ]);
 
-//Route::get('/test', function (){
+//Route::get('/test', function () {
+//    $user = User::find(1);
+//    $member = $user->member;
 //
-//return view('test');
+//    if (App::environment('local')) {
+//        //The environment is local
+//        Mail::to('jackson.tramaine3@gmail.com')->send(new Registration_Account($user));
+//    }
+//
+//    return view('emails.new_account', compact('user', 'member'));
 ////  return phpinfo();
 //});
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

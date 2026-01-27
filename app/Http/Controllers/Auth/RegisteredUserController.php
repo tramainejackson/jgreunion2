@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Registration_Admin;
+use App\Mail\Registration_User;
+use App\Mail\Registration_Account;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
@@ -46,7 +51,6 @@ class RegisteredUserController extends Controller
         ]);
 
         $user = User::create([
-            'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
@@ -66,6 +70,14 @@ class RegisteredUserController extends Controller
 
         //Track successful registration attempts
         Log::info('There was a successful registration by ' . $request->username);
+
+        if (App::environment('local')) {
+            //The environment is local
+            Mail::to('jackson.tramaine3@gmail.com')->send(new Registration_Account($user));
+        } else {
+            Mail::to($user->email)->send(new Registration_Account($user));
+            Mail::to('jacksongreenreunion@gmail.com')->send(new Registration_Account($user));
+        }
 
         return redirect('members/' . $user->member->id);
     }
