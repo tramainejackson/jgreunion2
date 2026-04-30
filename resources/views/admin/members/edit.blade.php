@@ -58,46 +58,4 @@
             </div>
         </div>
     </div>
-
-    <!--Modal: modalConfirmDelete-->
-    <div class="modal fade" id="modalConfirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-
-        <div class="modal-dialog modal-sm modal-notify modal-danger" role="document">
-
-            <!--Content-->
-            <div class="modal-content text-center">
-
-                <!--Header-->
-                <div class="modal-header d-flex justify-content-center">
-                    <p class="heading">Are you sure you want to delete this family member?</p>
-                </div>
-
-                <!--Body-->
-                <div class="modal-body">
-                    <i class="fa fa-times fa-4x animated rotateIn"></i>
-                </div>
-
-                <!--Footer-->
-                <div class="modal-footer flex-center">
-                    <form action="{{ route('members.destroy', $family_member->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-
-
-                        <button type="submit" class="btn btn-outline-danger">Yes</button>
-
-                        <button type="button" class="btn btn-danger waves-effect" data-dismiss="modal">No</button>
-
-                    </form>
-
-                </div>
-
-            </div>
-            <!--/.Content-->
-
-        </div>
-
-    </div>
-    <!--Modal: modalConfirmDelete-->
 </x-app-layout>

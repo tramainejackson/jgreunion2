@@ -327,12 +327,10 @@ class FamilyMemberController extends Controller
      */
     public function destroy(FamilyMember $member)
     {
+//        dd($member);
         if ($member->delete()) {
-
-            return redirect()->action('FamilyMemberController@index')->with('status', 'Family member account deleted successfully');
-
+            return redirect()->action([FamilyMemberController::class, 'index'])->with('status', 'Family member account deleted successfully');
         }
-
     }
 
     /**
