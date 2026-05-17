@@ -251,12 +251,19 @@
 
                         <td>
                             <select name="adult_shirts[]" class="shirt_size" data-mdb-select-init>
-                                <option value="S">Small</option>
-                                <option value="M">Medium</option>
-                                <option value="L">Large</option>
-                                <option value="XL">XL</option>
-                                <option value="XXL">XXL</option>
-                                <option value="XXXL">3XL</option>
+                                <option value="S"{{ $registration->shirt_size == 'S' ? ' selected' : '' }}>Small
+                                </option>
+                                <option value="M"{{ $registration->shirt_size == 'M' ? ' selected' : '' }}>Medium
+                                </option>
+                                <option value="L"{{ $registration->shirt_size == 'L' ? ' selected' : '' }}>Large
+                                </option>
+                                <option value="XL"{{ $registration->shirt_size == 'XL' ? ' selected' : '' }}>XL
+                                </option>
+                                <option value="XXL"{{ $registration->shirt_size == 'XXL' ? ' selected' : '' }}>XXL
+                                </option>
+                                <option value="XXXL"{{ $registration->shirt_size == 'XXXL' ? ' selected' : '' }}>
+                                    3XL
+                                </option>
                             </select>
 
                             <label for="adult_shirts" class="form-label select-label">Shirt Size</label>
