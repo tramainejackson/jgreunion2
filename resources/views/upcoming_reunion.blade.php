@@ -60,7 +60,7 @@
                     <div class="card pb-3">
 
                         <img
-                            src="{{ asset($reunion->hotel->picture != null ? $reunion->hotel->picture : '/images/hotel_default.jpg' ) }}"
+                            src="{{ asset($reunion->hotel->picture != null ? $reunion->hotel->picture : '/images/upcoming_reunion_bgrd_v1.jpg' ) }}"
                             class="card-img"/>
 
                         <div class="card-title">
